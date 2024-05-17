@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoardForm_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BoardForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

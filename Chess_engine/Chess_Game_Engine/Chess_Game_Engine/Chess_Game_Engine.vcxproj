@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoardForm.cpp" />
+    <ClCompile Include="BoardForm_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardForm.h">

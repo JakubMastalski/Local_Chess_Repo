@@ -54,7 +54,7 @@ namespace ChessGameEngine {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(949, 532);
+			this->ClientSize = System::Drawing::Size(980, 562);
 			this->Name = L"BoardForm";
 			this->Text = L"BoardForm";
 			this->ResumeLayout(false);
