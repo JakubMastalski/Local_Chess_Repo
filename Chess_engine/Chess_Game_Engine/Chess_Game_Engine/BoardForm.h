@@ -40,8 +40,10 @@ namespace ChessGameEngine {
 
 	private: System::Windows::Forms::Label^ label_blacktime;
 	private: System::Windows::Forms::Label^ label_whitetime;
-	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::Label^ time_white;
+
+	private: System::Windows::Forms::Label^ time_black;
+
 	private: System::Windows::Forms::MenuStrip^ chess_menu;
 	private: System::Windows::Forms::ToolStripMenuItem^ setTimeToolStripMenuItem;
 
@@ -81,8 +83,8 @@ namespace ChessGameEngine {
 		void InitializeComponent(void)
 		{
 			this->board_panel = (gcnew System::Windows::Forms::Panel());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->time_white = (gcnew System::Windows::Forms::Label());
+			this->time_black = (gcnew System::Windows::Forms::Label());
 			this->label_whitetime = (gcnew System::Windows::Forms::Label());
 			this->label_blacktime = (gcnew System::Windows::Forms::Label());
 			this->picturebox_board = (gcnew System::Windows::Forms::PictureBox());
@@ -96,8 +98,8 @@ namespace ChessGameEngine {
 			// 
 			// board_panel
 			// 
-			this->board_panel->Controls->Add(this->label1);
-			this->board_panel->Controls->Add(this->label2);
+			this->board_panel->Controls->Add(this->time_white);
+			this->board_panel->Controls->Add(this->time_black);
 			this->board_panel->Controls->Add(this->label_whitetime);
 			this->board_panel->Controls->Add(this->label_blacktime);
 			this->board_panel->Controls->Add(this->picturebox_board);
@@ -106,33 +108,35 @@ namespace ChessGameEngine {
 			this->board_panel->Size = System::Drawing::Size(698, 411);
 			this->board_panel->TabIndex = 0;
 			// 
-			// label1
+			// time_white
 			// 
-			this->label1->AutoSize = true;
-			this->label1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
+			this->time_white->AutoSize = true;
+			this->time_white->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
 				static_cast<System::Int32>(static_cast<System::Byte>(5)));
-			this->label1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->label1->Location = System::Drawing::Point(565, 257);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(126, 59);
-			this->label1->TabIndex = 4;
-			this->label1->Text = L"03:00";
+			this->time_white->Location = System::Drawing::Point(565, 257);
+			this->time_white->Name = L"time_white";
+			this->time_white->Size = System::Drawing::Size(126, 59);
+			this->time_white->TabIndex = 4;
+			this->time_white->Text = L"00:00";
+			this->time_white->Visible = false;
 			// 
-			// label2
+			// time_black
 			// 
-			this->label2->AutoSize = true;
-			this->label2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
+			this->time_black->AutoSize = true;
+			this->time_black->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
 				static_cast<System::Int32>(static_cast<System::Byte>(5)));
-			this->label2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->label2->Location = System::Drawing::Point(565, 70);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(126, 59);
-			this->label2->TabIndex = 5;
-			this->label2->Text = L"03:00";
+			this->time_black->Location = System::Drawing::Point(565, 70);
+			this->time_black->Name = L"time_black";
+			this->time_black->Size = System::Drawing::Size(126, 59);
+			this->time_black->TabIndex = 5;
+			this->time_black->Text = L"00:00";
+			this->time_black->Visible = false;
 			// 
 			// label_whitetime
 			// 
@@ -142,7 +146,7 @@ namespace ChessGameEngine {
 			this->label_whitetime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->label_whitetime->Font = (gcnew System::Drawing::Font(L"Georgia", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->label_whitetime->Location = System::Drawing::Point(565, 206);
+			this->label_whitetime->Location = System::Drawing::Point(565, 203);
 			this->label_whitetime->Name = L"label_whitetime";
 			this->label_whitetime->Size = System::Drawing::Size(103, 35);
 			this->label_whitetime->TabIndex = 3;
@@ -237,17 +241,23 @@ namespace ChessGameEngine {
 		}
 #pragma endregion
 	
+		Point start_black = Point(565, 20);
+		Point start_white = Point(575, 203);
 
 private: System::Void flipBoardToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (this->picturebox_board->ImageLocation == L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg")
 	{
 		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg";
 		picturebox_board->Refresh();
+		label_blacktime->Location = start_white;
+		label_whitetime->Location = start_black;
 	}
 	else
 	{
 		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
 		picturebox_board->Refresh();
+		label_blacktime->Location = start_black;
+		label_whitetime->Location = start_white;
 	}
 
 }
