@@ -63,7 +63,8 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::Panel^ panel2;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
-	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Button^ save_time_button;
+
 	private: System::Windows::Forms::TrackBar^ trackbar_minperside;
 	private: System::Windows::Forms::TrackBar^ trackbar_secincrement;
 	private: System::Windows::Forms::Label^ label_minperside;
@@ -113,6 +114,10 @@ namespace ChessGameEngine {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->board_panel = (gcnew System::Windows::Forms::Panel());
+			this->time_white = (gcnew System::Windows::Forms::Label());
+			this->label_whitetime = (gcnew System::Windows::Forms::Label());
+			this->label_blacktime = (gcnew System::Windows::Forms::Label());
+			this->time_black = (gcnew System::Windows::Forms::Label());
 			this->timeset_panel = (gcnew System::Windows::Forms::Panel());
 			this->label_minperside = (gcnew System::Windows::Forms::Label());
 			this->trackbar_minperside = (gcnew System::Windows::Forms::TrackBar());
@@ -122,13 +127,9 @@ namespace ChessGameEngine {
 			this->trackbar_secincrement = (gcnew System::Windows::Forms::TrackBar());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->save_time_button = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
-			this->time_white = (gcnew System::Windows::Forms::Label());
-			this->time_black = (gcnew System::Windows::Forms::Label());
-			this->label_whitetime = (gcnew System::Windows::Forms::Label());
-			this->label_blacktime = (gcnew System::Windows::Forms::Label());
 			this->picturebox_board = (gcnew System::Windows::Forms::PictureBox());
 			this->chess_menu = (gcnew System::Windows::Forms::MenuStrip());
 			this->flipBoardToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -149,16 +150,70 @@ namespace ChessGameEngine {
 			// 
 			// board_panel
 			// 
-			this->board_panel->Controls->Add(this->timeset_panel);
 			this->board_panel->Controls->Add(this->time_white);
-			this->board_panel->Controls->Add(this->time_black);
 			this->board_panel->Controls->Add(this->label_whitetime);
 			this->board_panel->Controls->Add(this->label_blacktime);
+			this->board_panel->Controls->Add(this->time_black);
+			this->board_panel->Controls->Add(this->timeset_panel);
 			this->board_panel->Controls->Add(this->picturebox_board);
 			this->board_panel->Location = System::Drawing::Point(26, 61);
 			this->board_panel->Name = L"board_panel";
-			this->board_panel->Size = System::Drawing::Size(698, 411);
+			this->board_panel->Size = System::Drawing::Size(698, 444);
 			this->board_panel->TabIndex = 0;
+			// 
+			// time_white
+			// 
+			this->time_white->AutoSize = true;
+			this->time_white->BackColor = System::Drawing::Color::Gray;
+			this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->time_white->Location = System::Drawing::Point(572, 262);
+			this->time_white->Name = L"time_white";
+			this->time_white->Size = System::Drawing::Size(0, 59);
+			this->time_white->TabIndex = 4;
+			this->time_white->Visible = false;
+			// 
+			// label_whitetime
+			// 
+			this->label_whitetime->AutoSize = true;
+			this->label_whitetime->BackColor = System::Drawing::Color::Gray;
+			this->label_whitetime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->label_whitetime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->label_whitetime->Location = System::Drawing::Point(565, 203);
+			this->label_whitetime->Name = L"label_whitetime";
+			this->label_whitetime->Size = System::Drawing::Size(94, 43);
+			this->label_whitetime->TabIndex = 3;
+			this->label_whitetime->Text = L" White";
+			this->label_whitetime->Visible = false;
+			// 
+			// label_blacktime
+			// 
+			this->label_blacktime->AutoSize = true;
+			this->label_blacktime->BackColor = System::Drawing::Color::Gray;
+			this->label_blacktime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->label_blacktime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->label_blacktime->Location = System::Drawing::Point(574, 13);
+			this->label_blacktime->Name = L"label_blacktime";
+			this->label_blacktime->Size = System::Drawing::Size(80, 43);
+			this->label_blacktime->TabIndex = 2;
+			this->label_blacktime->Text = L"Black";
+			this->label_blacktime->Visible = false;
+			// 
+			// time_black
+			// 
+			this->time_black->AutoSize = true;
+			this->time_black->BackColor = System::Drawing::Color::Gray;
+			this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->time_black->Location = System::Drawing::Point(572, 71);
+			this->time_black->Name = L"time_black";
+			this->time_black->Size = System::Drawing::Size(0, 59);
+			this->time_black->TabIndex = 5;
+			this->time_black->Visible = false;
 			// 
 			// timeset_panel
 			// 
@@ -258,7 +313,7 @@ namespace ChessGameEngine {
 			// 
 			this->panel2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(125)), static_cast<System::Int32>(static_cast<System::Byte>(125)),
 				static_cast<System::Int32>(static_cast<System::Byte>(125)));
-			this->panel2->Controls->Add(this->button1);
+			this->panel2->Controls->Add(this->save_time_button);
 			this->panel2->Controls->Add(this->label1);
 			this->panel2->Controls->Add(this->comboBox1);
 			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
@@ -267,20 +322,20 @@ namespace ChessGameEngine {
 			this->panel2->Size = System::Drawing::Size(328, 56);
 			this->panel2->TabIndex = 9;
 			// 
-			// button1
+			// save_time_button
 			// 
-			this->button1->BackColor = System::Drawing::Color::Firebrick;
-			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->button1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 6, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->save_time_button->BackColor = System::Drawing::Color::Black;
+			this->save_time_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->save_time_button->Font = (gcnew System::Drawing::Font(L"Segoe UI", 6, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->button1->ForeColor = System::Drawing::Color::Black;
-			this->button1->Location = System::Drawing::Point(302, 0);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(28, 25);
-			this->button1->TabIndex = 11;
-			this->button1->Text = L"✕";
-			this->button1->UseVisualStyleBackColor = false;
-			this->button1->Click += gcnew System::EventHandler(this, &BoardForm::button1_Click);
+			this->save_time_button->ForeColor = System::Drawing::Color::White;
+			this->save_time_button->Location = System::Drawing::Point(12, 16);
+			this->save_time_button->Name = L"save_time_button";
+			this->save_time_button->Size = System::Drawing::Size(40, 25);
+			this->save_time_button->TabIndex = 11;
+			this->save_time_button->Text = L"Set";
+			this->save_time_button->UseVisualStyleBackColor = false;
+			this->save_time_button->Click += gcnew System::EventHandler(this, &BoardForm::button1_Click);
 			// 
 			// label1
 			// 
@@ -289,7 +344,7 @@ namespace ChessGameEngine {
 			this->label1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->label1->Location = System::Drawing::Point(36, 15);
+			this->label1->Location = System::Drawing::Point(58, 15);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(111, 25);
 			this->label1->TabIndex = 7;
@@ -301,90 +356,30 @@ namespace ChessGameEngine {
 				static_cast<System::Byte>(238)));
 			this->comboBox1->FormattingEnabled = true;
 			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Real time", L"Unlimited" });
-			this->comboBox1->Location = System::Drawing::Point(153, 16);
+			this->comboBox1->Location = System::Drawing::Point(175, 16);
 			this->comboBox1->Name = L"comboBox1";
 			this->comboBox1->Size = System::Drawing::Size(131, 28);
 			this->comboBox1->TabIndex = 8;
 			this->comboBox1->Text = L"Set time option";
-			// 
-			// time_white
-			// 
-			this->time_white->AutoSize = true;
-			this->time_white->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
-				static_cast<System::Int32>(static_cast<System::Byte>(5)));
-			this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->time_white->Location = System::Drawing::Point(565, 257);
-			this->time_white->Name = L"time_white";
-			this->time_white->Size = System::Drawing::Size(126, 59);
-			this->time_white->TabIndex = 4;
-			this->time_white->Text = L"00:00";
-			this->time_white->Visible = false;
-			// 
-			// time_black
-			// 
-			this->time_black->AutoSize = true;
-			this->time_black->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
-				static_cast<System::Int32>(static_cast<System::Byte>(5)));
-			this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->time_black->Location = System::Drawing::Point(565, 70);
-			this->time_black->Name = L"time_black";
-			this->time_black->Size = System::Drawing::Size(126, 59);
-			this->time_black->TabIndex = 5;
-			this->time_black->Text = L"00:00";
-			this->time_black->Visible = false;
-			// 
-			// label_whitetime
-			// 
-			this->label_whitetime->AutoSize = true;
-			this->label_whitetime->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(5)), static_cast<System::Int32>(static_cast<System::Byte>(5)),
-				static_cast<System::Int32>(static_cast<System::Byte>(5)));
-			this->label_whitetime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label_whitetime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->label_whitetime->Location = System::Drawing::Point(565, 203);
-			this->label_whitetime->Name = L"label_whitetime";
-			this->label_whitetime->Size = System::Drawing::Size(94, 43);
-			this->label_whitetime->TabIndex = 3;
-			this->label_whitetime->Text = L" White";
-			this->label_whitetime->Visible = false;
-			// 
-			// label_blacktime
-			// 
-			this->label_blacktime->AutoSize = true;
-			this->label_blacktime->BackColor = System::Drawing::Color::Black;
-			this->label_blacktime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label_blacktime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->label_blacktime->Location = System::Drawing::Point(565, 20);
-			this->label_blacktime->Name = L"label_blacktime";
-			this->label_blacktime->Size = System::Drawing::Size(80, 43);
-			this->label_blacktime->TabIndex = 2;
-			this->label_blacktime->Text = L"Black";
-			this->label_blacktime->Visible = false;
 			// 
 			// picturebox_board
 			// 
 			this->picturebox_board->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->picturebox_board->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(7)), static_cast<System::Int32>(static_cast<System::Byte>(7)),
-				static_cast<System::Int32>(static_cast<System::Byte>(7)));
+			this->picturebox_board->BackColor = System::Drawing::Color::Gray;
 			this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
-			this->picturebox_board->Location = System::Drawing::Point(3, 3);
+			this->picturebox_board->Location = System::Drawing::Point(21, 3);
 			this->picturebox_board->Name = L"picturebox_board";
-			this->picturebox_board->Size = System::Drawing::Size(672, 411);
+			this->picturebox_board->Size = System::Drawing::Size(654, 444);
 			this->picturebox_board->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
 			this->picturebox_board->TabIndex = 0;
 			this->picturebox_board->TabStop = false;
 			// 
 			// chess_menu
 			// 
-			this->chess_menu->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(20)), static_cast<System::Int32>(static_cast<System::Byte>(20)),
-				static_cast<System::Int32>(static_cast<System::Byte>(20)));
+			this->chess_menu->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(35)), static_cast<System::Int32>(static_cast<System::Byte>(35)),
+				static_cast<System::Int32>(static_cast<System::Byte>(35)));
 			this->chess_menu->ImageScalingSize = System::Drawing::Size(20, 20);
 			this->chess_menu->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->flipBoardToolStripMenuItem });
 			this->chess_menu->Location = System::Drawing::Point(0, 0);
@@ -405,8 +400,8 @@ namespace ChessGameEngine {
 				static_cast<System::Byte>(238)));
 			this->flipBoardToolStripMenuItem->ForeColor = System::Drawing::Color::White;
 			this->flipBoardToolStripMenuItem->Name = L"flipBoardToolStripMenuItem";
-			this->flipBoardToolStripMenuItem->Size = System::Drawing::Size(82, 37);
-			this->flipBoardToolStripMenuItem->Text = L"Menu";
+			this->flipBoardToolStripMenuItem->Size = System::Drawing::Size(103, 37);
+			this->flipBoardToolStripMenuItem->Text = L"Options";
 			// 
 			// flipBoardToolStripMenuItem1
 			// 
@@ -416,7 +411,7 @@ namespace ChessGameEngine {
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238)));
 			this->flipBoardToolStripMenuItem1->ForeColor = System::Drawing::Color::White;
 			this->flipBoardToolStripMenuItem1->Name = L"flipBoardToolStripMenuItem1";
-			this->flipBoardToolStripMenuItem1->Size = System::Drawing::Size(224, 34);
+			this->flipBoardToolStripMenuItem1->Size = System::Drawing::Size(183, 34);
 			this->flipBoardToolStripMenuItem1->Text = L"Flip Board";
 			this->flipBoardToolStripMenuItem1->Click += gcnew System::EventHandler(this, &BoardForm::flipBoardToolStripMenuItem1_Click);
 			// 
@@ -427,7 +422,7 @@ namespace ChessGameEngine {
 				static_cast<System::Byte>(238)));
 			this->setTimeToolStripMenuItem->ForeColor = System::Drawing::Color::White;
 			this->setTimeToolStripMenuItem->Name = L"setTimeToolStripMenuItem";
-			this->setTimeToolStripMenuItem->Size = System::Drawing::Size(224, 34);
+			this->setTimeToolStripMenuItem->Size = System::Drawing::Size(183, 34);
 			this->setTimeToolStripMenuItem->Text = L"Set time";
 			this->setTimeToolStripMenuItem->Click += gcnew System::EventHandler(this, &BoardForm::setTimeToolStripMenuItem_Click);
 			// 
@@ -439,7 +434,7 @@ namespace ChessGameEngine {
 				static_cast<System::Byte>(238)));
 			this->restartToolStripMenuItem1->ForeColor = System::Drawing::Color::White;
 			this->restartToolStripMenuItem1->Name = L"restartToolStripMenuItem1";
-			this->restartToolStripMenuItem1->Size = System::Drawing::Size(224, 34);
+			this->restartToolStripMenuItem1->Size = System::Drawing::Size(183, 34);
 			this->restartToolStripMenuItem1->Text = L"Restart";
 			// 
 			// exitToolStripMenuItem
@@ -449,14 +444,19 @@ namespace ChessGameEngine {
 				static_cast<System::Byte>(238)));
 			this->exitToolStripMenuItem->ForeColor = System::Drawing::Color::White;
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(224, 34);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(183, 34);
 			this->exitToolStripMenuItem->Text = L"Exit";
+			// 
+			// menu_timer
+			// 
+			this->menu_timer->Interval = 1000;
+			this->menu_timer->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_Tick);
 			// 
 			// BoardForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::Black;
+			this->BackColor = System::Drawing::SystemColors::GrayText;
 			this->ClientSize = System::Drawing::Size(799, 538);
 			this->Controls->Add(this->board_panel);
 			this->Controls->Add(this->chess_menu);
@@ -510,8 +510,23 @@ private: System::Void flipBoardToolStripMenuItem1_Click(System::Object^ sender, 
 private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	timeset_panel->Visible = true;
 }
+	   int seconds =  366;
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	timeset_panel->Visible = false;
+	if (comboBox1->Text == "Real time")
+	{
+		menu_timer->Enabled = true;
+		label_blacktime->Visible = true;
+		time_black->Visible = true;
+		label_whitetime->Visible = true;
+		time_white->Visible = true;
+		
+	}
+	
+
+
+	
+
 }
 private: System::Void trackbar_minperside_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	switch (trackbar_minperside->Value)
@@ -594,6 +609,23 @@ private: System::Void trackbar_secincrement_Scroll(System::Object^ sender, Syste
 		label_incpersec->Text = "Incoret value";
 		break;
 	}
+}
+
+private: System::Void menu_timer_Tick(System::Object^ sender, System::EventArgs^ e) {
+	seconds--;
+	int minutes = seconds / 60;
+	int sec = seconds - minutes * 60;
+    time_black->Text = "0" + Convert::ToString(minutes) + ":" + Convert::ToString(sec);
+	
+	if(sec < 10)
+	time_black->Text = "0" + Convert::ToString(minutes) + ":"+ "0" + Convert::ToString(sec);
+
+	if(minutes > 10)
+	time_black->Text = Convert::ToString(minutes) + ":" + Convert::ToString(sec);
+
+	
+
+
 }
 };
 }
