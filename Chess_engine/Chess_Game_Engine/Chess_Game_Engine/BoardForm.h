@@ -73,6 +73,7 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::Label^ label_incpersec;
 	private: System::Windows::Forms::Timer^ menu_timer_black;
 	private: System::Windows::Forms::Timer^ menu_timer_white;
+	private: System::Windows::Forms::Button^ close_timepanel;
 
 	private: System::ComponentModel::IContainer^ components;
 
@@ -130,6 +131,7 @@ namespace ChessGameEngine {
 			this->trackbar_secincrement = (gcnew System::Windows::Forms::TrackBar());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->close_timepanel = (gcnew System::Windows::Forms::Button());
 			this->save_time_button = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->time_options_box = (gcnew System::Windows::Forms::ComboBox());
@@ -317,6 +319,7 @@ namespace ChessGameEngine {
 			// 
 			this->panel2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(125)), static_cast<System::Int32>(static_cast<System::Byte>(125)),
 				static_cast<System::Int32>(static_cast<System::Byte>(125)));
+			this->panel2->Controls->Add(this->close_timepanel);
 			this->panel2->Controls->Add(this->save_time_button);
 			this->panel2->Controls->Add(this->label1);
 			this->panel2->Controls->Add(this->time_options_box);
@@ -326,6 +329,20 @@ namespace ChessGameEngine {
 			this->panel2->Size = System::Drawing::Size(328, 56);
 			this->panel2->TabIndex = 9;
 			// 
+			// close_timepanel
+			// 
+			this->close_timepanel->BackColor = System::Drawing::Color::Black;
+			this->close_timepanel->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->close_timepanel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 6.8F, System::Drawing::FontStyle::Bold));
+			this->close_timepanel->ForeColor = System::Drawing::Color::White;
+			this->close_timepanel->Location = System::Drawing::Point(307, -1);
+			this->close_timepanel->Name = L"close_timepanel";
+			this->close_timepanel->Size = System::Drawing::Size(22, 23);
+			this->close_timepanel->TabIndex = 12;
+			this->close_timepanel->Text = L"X";
+			this->close_timepanel->UseVisualStyleBackColor = false;
+			this->close_timepanel->Click += gcnew System::EventHandler(this, &BoardForm::close_timepanel_Click);
+			// 
 			// save_time_button
 			// 
 			this->save_time_button->BackColor = System::Drawing::Color::Black;
@@ -333,7 +350,7 @@ namespace ChessGameEngine {
 			this->save_time_button->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
 			this->save_time_button->ForeColor = System::Drawing::Color::White;
-			this->save_time_button->Location = System::Drawing::Point(3, 16);
+			this->save_time_button->Location = System::Drawing::Point(3, 14);
 			this->save_time_button->Name = L"save_time_button";
 			this->save_time_button->Size = System::Drawing::Size(49, 25);
 			this->save_time_button->TabIndex = 11;
@@ -361,7 +378,7 @@ namespace ChessGameEngine {
 			this->time_options_box->ForeColor = System::Drawing::SystemColors::WindowText;
 			this->time_options_box->FormattingEnabled = true;
 			this->time_options_box->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Real time", L"Unlimited" });
-			this->time_options_box->Location = System::Drawing::Point(175, 16);
+			this->time_options_box->Location = System::Drawing::Point(153, 13);
 			this->time_options_box->Name = L"time_options_box";
 			this->time_options_box->Size = System::Drawing::Size(131, 28);
 			this->time_options_box->TabIndex = 8;
@@ -380,6 +397,9 @@ namespace ChessGameEngine {
 			this->picturebox_board->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
 			this->picturebox_board->TabIndex = 0;
 			this->picturebox_board->TabStop = false;
+			this->picturebox_board->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseDown);
+			this->picturebox_board->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseMove);
+			this->picturebox_board->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseUp);
 			// 
 			// chess_menu
 			// 
@@ -441,6 +461,7 @@ namespace ChessGameEngine {
 			this->restartToolStripMenuItem1->Name = L"restartToolStripMenuItem1";
 			this->restartToolStripMenuItem1->Size = System::Drawing::Size(183, 34);
 			this->restartToolStripMenuItem1->Text = L"Restart";
+			this->restartToolStripMenuItem1->Click += gcnew System::EventHandler(this, &BoardForm::restartToolStripMenuItem1_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -451,6 +472,7 @@ namespace ChessGameEngine {
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
 			this->exitToolStripMenuItem->Size = System::Drawing::Size(183, 34);
 			this->exitToolStripMenuItem->Text = L"Exit";
+			this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &BoardForm::exitToolStripMenuItem_Click);
 			// 
 			// menu_timer_black
 			// 
@@ -474,6 +496,10 @@ namespace ChessGameEngine {
 				static_cast<System::Byte>(238)));
 			this->ForeColor = System::Drawing::Color::White;
 			this->MainMenuStrip = this->chess_menu;
+			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(817, 585);
+			this->MinimizeBox = false;
+			this->MinimumSize = System::Drawing::Size(817, 585);
 			this->Name = L"BoardForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"BoardForm";
@@ -497,8 +523,8 @@ namespace ChessGameEngine {
 #pragma endregion
 	
 		//flip board
-	   Point start_black = Point(565, 20);
-	   Point start_white = Point(575, 203);
+	   Point start_black = Point(565, 13);
+	   Point start_white = Point(565, 203);
 
 private: System::Void flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (this->picturebox_board->ImageLocation == L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg")
@@ -520,6 +546,7 @@ private: System::Void flipBoardToolStripMenuItem1_Click(System::Object^ sender, 
 	   //open panel with time
 private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	timeset_panel->Visible = true;
+	timeset_panel->Enabled = true;
 }
 	 //set button set time 
 	   int seconds, seconds_white;
@@ -535,11 +562,9 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		//test time
 		//black
 		menu_timer_black->Enabled = true;
-		label_blacktime->Visible = true;
 		time_black->Visible = true;
 		//white
 		menu_timer_white->Enabled = true;
-		label_whitetime->Visible = true;
 		time_white->Visible = true;
 		//switch black
 		switch (trackbar_minperside->Value)
@@ -580,9 +605,21 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		}
 		//switch white
 		seconds_white = seconds;
+		//add increment
+		increment = trackbar_secincrement->Value;
+	}
+	else
+	{
+		//black
+		menu_timer_black->Enabled = false;
+		label_blacktime->Visible = false;
+		time_black->Visible = false;
+		//white
+		menu_timer_white->Enabled = false;
+		label_whitetime->Visible = false;
+		time_white->Visible = false;
 	}
 
-	increment = trackbar_secincrement->Value;
 }
 	   //set time
 private: System::Void trackbar_minperside_Scroll(System::Object^ sender, System::EventArgs^ e) {
@@ -674,6 +711,7 @@ private: System::Void menu_timer_Tick(System::Object^ sender, System::EventArgs^
 		seconds--;
 		int minutes = seconds / 60;
 		int sec = seconds - minutes * 60;
+		label_blacktime->Visible = true;
 		time_black->Text = "0" + Convert::ToString(minutes) + ":" + Convert::ToString(sec);
 
 		if (sec < 10)
@@ -695,6 +733,7 @@ private: System::Void menu_timer_white_Tick(System::Object^ sender, System::Even
 	seconds_white--;
 	int minutes_white = seconds_white / 60;
 	int sec_white = seconds_white - minutes_white * 60;
+	label_whitetime->Visible = true;
 	time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
 
 	if (sec_white < 10)
@@ -709,6 +748,36 @@ private: System::Void menu_timer_white_Tick(System::Object^ sender, System::Even
 		menu_timer_white->Stop();
 		menu_timer_black->Stop();
 	}
+}
+	   //restart app
+private: System::Void restartToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
+	Application::Restart();
+}
+	   //close app
+private: System::Void exitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	Application::Exit();
+}
+private: System::Void close_timepanel_Click(System::Object^ sender, System::EventArgs^ e) {
+	timeset_panel->Visible = false;
+	timeset_panel->Enabled = false;
+}
+	  //drag form
+	   bool dragging = false;
+	   Point scope;
+private: System::Void picturebox_board_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	dragging = true;
+	scope.X = e->X;
+	scope.Y = e->Y;
+}
+private: System::Void picturebox_board_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	if (dragging)
+	{
+		Point current_scope = PointToScreen(Point(e->X, e->Y));
+	    Location = Point(current_scope.X - scope.X, current_scope.Y - scope.Y);
+	}
+}
+private: System::Void picturebox_board_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	dragging = false;
 }
 };
 }
