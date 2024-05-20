@@ -170,11 +170,11 @@ namespace ChessGameEngine {
 			this->time_white->AutoSize = true;
 			this->time_white->BackColor = System::Drawing::Color::Gray;
 			this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->time_white->Location = System::Drawing::Point(572, 262);
+			this->time_white->Location = System::Drawing::Point(564, 237);
 			this->time_white->Name = L"time_white";
-			this->time_white->Size = System::Drawing::Size(0, 59);
+			this->time_white->Size = System::Drawing::Size(0, 50);
 			this->time_white->TabIndex = 4;
 			this->time_white->Visible = false;
 			// 
@@ -211,11 +211,11 @@ namespace ChessGameEngine {
 			this->time_black->AutoSize = true;
 			this->time_black->BackColor = System::Drawing::Color::Gray;
 			this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 25.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->time_black->Location = System::Drawing::Point(572, 71);
+			this->time_black->Location = System::Drawing::Point(563, 45);
 			this->time_black->Name = L"time_black";
-			this->time_black->Size = System::Drawing::Size(0, 59);
+			this->time_black->Size = System::Drawing::Size(0, 50);
 			this->time_black->TabIndex = 5;
 			this->time_black->Visible = false;
 			// 
@@ -533,9 +533,15 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	if (time_options_box->Text == "Real time")
 	{
 		//test time
+		//black
 		menu_timer_black->Enabled = true;
 		label_blacktime->Visible = true;
 		time_black->Visible = true;
+		//white
+		menu_timer_white->Enabled = true;
+		label_whitetime->Visible = true;
+		time_white->Visible = true;
+		//switch black
 		switch (trackbar_minperside->Value)
 		{
 		case 0:
@@ -572,46 +578,8 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 			seconds = 10800;
 			break;
 		}
-		//test white
-		menu_timer_white->Enabled = true;
-		label_whitetime->Visible = true;
-		time_white->Visible = true;
-		switch (trackbar_minperside->Value)
-		{
-		case 0:
-			seconds_white = 60;
-			break;
-		case 1:
-			seconds_white = 120;
-			break;
-		case 2:
-			seconds_white = 180;
-			break;
-		case 3:
-			seconds_white = 300;
-			break;
-		case 4:
-			seconds_white = 600;
-			break;
-		case 5:
-			seconds_white = 900;
-			break;
-		case 6:
-			seconds_white = 1200;
-			break;
-		case 7:
-			seconds_white = 1800;
-			break;
-		case 8:
-			seconds_white = 3600;
-			break;
-		case 9:
-			seconds_white = 7200;
-			break;
-		case 10:
-			seconds_white = 10800;
-			break;
-		}
+		//switch white
+		seconds_white = seconds;
 	}
 
 	increment = trackbar_secincrement->Value;
@@ -703,8 +671,6 @@ private: System::Void trackbar_secincrement_Scroll(System::Object^ sender, Syste
 
 	   //black timer tick
 private: System::Void menu_timer_Tick(System::Object^ sender, System::EventArgs^ e) {
-	if (!on_move)
-	{
 		seconds--;
 		int minutes = seconds / 60;
 		int sec = seconds - minutes * 60;
@@ -720,29 +686,28 @@ private: System::Void menu_timer_Tick(System::Object^ sender, System::EventArgs^
 		{
 			MessageBox::Show("White wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			menu_timer_black->Stop();
+			menu_timer_white->Stop();
 		}
-	}
+	
 }
 	   //white timer tick
 private: System::Void menu_timer_white_Tick(System::Object^ sender, System::EventArgs^ e) {
-	if (on_move)
+	seconds_white--;
+	int minutes_white = seconds_white / 60;
+	int sec_white = seconds_white - minutes_white * 60;
+	time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
+
+	if (sec_white < 10)
+		time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + "0" + Convert::ToString(sec_white);
+
+	if (minutes_white > 10)
+		time_white->Text = Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
+
+	if (seconds_white <= 0)
 	{
-		seconds--;
-		int minutes_white = seconds / 60;
-		int sec_white = seconds - minutes_white * 60;
-		time_black->Text = "0" + Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
-
-		if (sec_white < 10)
-			time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + "0" + Convert::ToString(sec_white);
-
-		if (minutes_white > 10)
-			time_black->Text = Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
-
-		if (seconds <= 0)
-		{
-			MessageBox::Show("White wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			menu_timer_black->Stop();
-		}
+		MessageBox::Show("Black wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		menu_timer_white->Stop();
+		menu_timer_black->Stop();
 	}
 }
 };
