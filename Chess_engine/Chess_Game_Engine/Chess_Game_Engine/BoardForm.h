@@ -51,7 +51,8 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::Panel^ timeset_panel;
 
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::ComboBox^ comboBox1;
+	private: System::Windows::Forms::ComboBox^ time_options_box;
+
 	private: System::Windows::Forms::ToolStripMenuItem^ setTimeToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ restartToolStripMenuItem1;
 
@@ -70,7 +71,9 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::Label^ label_minperside;
 
 	private: System::Windows::Forms::Label^ label_incpersec;
-	private: System::Windows::Forms::Timer^ menu_timer;
+	private: System::Windows::Forms::Timer^ menu_timer_black;
+	private: System::Windows::Forms::Timer^ menu_timer_white;
+
 	private: System::ComponentModel::IContainer^ components;
 
 
@@ -129,7 +132,7 @@ namespace ChessGameEngine {
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->save_time_button = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
+			this->time_options_box = (gcnew System::Windows::Forms::ComboBox());
 			this->picturebox_board = (gcnew System::Windows::Forms::PictureBox());
 			this->chess_menu = (gcnew System::Windows::Forms::MenuStrip());
 			this->flipBoardToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -137,7 +140,8 @@ namespace ChessGameEngine {
 			this->setTimeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->restartToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->menu_timer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->menu_timer_black = (gcnew System::Windows::Forms::Timer(this->components));
+			this->menu_timer_white = (gcnew System::Windows::Forms::Timer(this->components));
 			this->board_panel->SuspendLayout();
 			this->timeset_panel->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_minperside))->BeginInit();
@@ -315,7 +319,7 @@ namespace ChessGameEngine {
 				static_cast<System::Int32>(static_cast<System::Byte>(125)));
 			this->panel2->Controls->Add(this->save_time_button);
 			this->panel2->Controls->Add(this->label1);
-			this->panel2->Controls->Add(this->comboBox1);
+			this->panel2->Controls->Add(this->time_options_box);
 			this->panel2->Dock = System::Windows::Forms::DockStyle::Top;
 			this->panel2->Location = System::Drawing::Point(0, 0);
 			this->panel2->Name = L"panel2";
@@ -326,12 +330,12 @@ namespace ChessGameEngine {
 			// 
 			this->save_time_button->BackColor = System::Drawing::Color::Black;
 			this->save_time_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->save_time_button->Font = (gcnew System::Drawing::Font(L"Segoe UI", 6, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->save_time_button->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
 			this->save_time_button->ForeColor = System::Drawing::Color::White;
-			this->save_time_button->Location = System::Drawing::Point(12, 16);
+			this->save_time_button->Location = System::Drawing::Point(3, 16);
 			this->save_time_button->Name = L"save_time_button";
-			this->save_time_button->Size = System::Drawing::Size(40, 25);
+			this->save_time_button->Size = System::Drawing::Size(49, 25);
 			this->save_time_button->TabIndex = 11;
 			this->save_time_button->Text = L"Set";
 			this->save_time_button->UseVisualStyleBackColor = false;
@@ -344,23 +348,24 @@ namespace ChessGameEngine {
 			this->label1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->label1->Location = System::Drawing::Point(58, 15);
+			this->label1->Location = System::Drawing::Point(58, 16);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(111, 25);
 			this->label1->TabIndex = 7;
 			this->label1->Text = L"Time control";
 			// 
-			// comboBox1
+			// time_options_box
 			// 
-			this->comboBox1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->time_options_box->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Real time", L"Unlimited" });
-			this->comboBox1->Location = System::Drawing::Point(175, 16);
-			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(131, 28);
-			this->comboBox1->TabIndex = 8;
-			this->comboBox1->Text = L"Set time option";
+			this->time_options_box->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->time_options_box->FormattingEnabled = true;
+			this->time_options_box->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Real time", L"Unlimited" });
+			this->time_options_box->Location = System::Drawing::Point(175, 16);
+			this->time_options_box->Name = L"time_options_box";
+			this->time_options_box->Size = System::Drawing::Size(131, 28);
+			this->time_options_box->TabIndex = 8;
+			this->time_options_box->Text = L"Real time";
 			// 
 			// picturebox_board
 			// 
@@ -447,10 +452,15 @@ namespace ChessGameEngine {
 			this->exitToolStripMenuItem->Size = System::Drawing::Size(183, 34);
 			this->exitToolStripMenuItem->Text = L"Exit";
 			// 
-			// menu_timer
+			// menu_timer_black
 			// 
-			this->menu_timer->Interval = 1000;
-			this->menu_timer->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_Tick);
+			this->menu_timer_black->Interval = 1000;
+			this->menu_timer_black->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_Tick);
+			// 
+			// menu_timer_white
+			// 
+			this->menu_timer_white->Interval = 1000;
+			this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
 			// 
 			// BoardForm
 			// 
@@ -507,27 +517,106 @@ private: System::Void flipBoardToolStripMenuItem1_Click(System::Object^ sender, 
 	}
 
 }
+	   //open panel with time
 private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	timeset_panel->Visible = true;
 }
-	   int seconds =  366;
+	 //set button set time 
+	   int seconds, seconds_white;
+	   int increment;
+	   //on move true == white on move
+	   bool on_move = true;
+
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	timeset_panel->Visible = false;
-	if (comboBox1->Text == "Real time")
+	//set time for black pieces
+	if (time_options_box->Text == "Real time")
 	{
-		menu_timer->Enabled = true;
+		//test time
+		menu_timer_black->Enabled = true;
 		label_blacktime->Visible = true;
 		time_black->Visible = true;
+		switch (trackbar_minperside->Value)
+		{
+		case 0:
+			seconds = 60;
+			break;
+		case 1:
+			seconds = 120;
+			break;
+		case 2:
+			seconds = 180;
+			break;
+		case 3:
+			seconds = 300;
+			break;
+		case 4:
+			seconds = 600;
+			break;
+		case 5:
+			seconds = 900;
+			break;
+		case 6:
+			seconds = 1200;
+			break;
+		case 7:
+			seconds = 1800;
+			break;
+		case 8:
+			seconds = 3600;
+			break;
+		case 9:
+			seconds = 7200;
+			break;
+		case 10:
+			seconds = 10800;
+			break;
+		}
+		//test white
+		menu_timer_white->Enabled = true;
 		label_whitetime->Visible = true;
 		time_white->Visible = true;
-		
+		switch (trackbar_minperside->Value)
+		{
+		case 0:
+			seconds_white = 60;
+			break;
+		case 1:
+			seconds_white = 120;
+			break;
+		case 2:
+			seconds_white = 180;
+			break;
+		case 3:
+			seconds_white = 300;
+			break;
+		case 4:
+			seconds_white = 600;
+			break;
+		case 5:
+			seconds_white = 900;
+			break;
+		case 6:
+			seconds_white = 1200;
+			break;
+		case 7:
+			seconds_white = 1800;
+			break;
+		case 8:
+			seconds_white = 3600;
+			break;
+		case 9:
+			seconds_white = 7200;
+			break;
+		case 10:
+			seconds_white = 10800;
+			break;
+		}
 	}
-	
 
-
-	
-
+	increment = trackbar_secincrement->Value;
 }
+	   //set time
 private: System::Void trackbar_minperside_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	switch (trackbar_minperside->Value)
 	{
@@ -569,6 +658,7 @@ private: System::Void trackbar_minperside_Scroll(System::Object^ sender, System:
 		break;
 	}
 }
+	   //set increment
 private: System::Void trackbar_secincrement_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	switch (trackbar_secincrement->Value)
 	{
@@ -611,21 +701,49 @@ private: System::Void trackbar_secincrement_Scroll(System::Object^ sender, Syste
 	}
 }
 
+	   //black timer tick
 private: System::Void menu_timer_Tick(System::Object^ sender, System::EventArgs^ e) {
-	seconds--;
-	int minutes = seconds / 60;
-	int sec = seconds - minutes * 60;
-    time_black->Text = "0" + Convert::ToString(minutes) + ":" + Convert::ToString(sec);
-	
-	if(sec < 10)
-	time_black->Text = "0" + Convert::ToString(minutes) + ":"+ "0" + Convert::ToString(sec);
+	if (!on_move)
+	{
+		seconds--;
+		int minutes = seconds / 60;
+		int sec = seconds - minutes * 60;
+		time_black->Text = "0" + Convert::ToString(minutes) + ":" + Convert::ToString(sec);
 
-	if(minutes > 10)
-	time_black->Text = Convert::ToString(minutes) + ":" + Convert::ToString(sec);
+		if (sec < 10)
+			time_black->Text = "0" + Convert::ToString(minutes) + ":" + "0" + Convert::ToString(sec);
 
-	
+		if (minutes > 10)
+			time_black->Text = Convert::ToString(minutes) + ":" + Convert::ToString(sec);
 
+		if (seconds <= 0)
+		{
+			MessageBox::Show("White wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			menu_timer_black->Stop();
+		}
+	}
+}
+	   //white timer tick
+private: System::Void menu_timer_white_Tick(System::Object^ sender, System::EventArgs^ e) {
+	if (on_move)
+	{
+		seconds--;
+		int minutes_white = seconds / 60;
+		int sec_white = seconds - minutes_white * 60;
+		time_black->Text = "0" + Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
 
+		if (sec_white < 10)
+			time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + "0" + Convert::ToString(sec_white);
+
+		if (minutes_white > 10)
+			time_black->Text = Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
+
+		if (seconds <= 0)
+		{
+			MessageBox::Show("White wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			menu_timer_black->Stop();
+		}
+	}
 }
 };
 }
