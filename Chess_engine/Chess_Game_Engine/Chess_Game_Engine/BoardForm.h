@@ -81,82 +81,181 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::Button^ close_timepanel;
 	private: System::Windows::Forms::Label^ label_whitetime;
 	private: System::Windows::Forms::Label^ label_blacktime;
-
-	private: System::Windows::Forms::PictureBox^ white_bishopC;
-
-	private: System::Windows::Forms::PictureBox^ white_pawnB;
-	private: System::Windows::Forms::PictureBox^ white_pawnD;
-	private: System::Windows::Forms::PictureBox^ white_rookH;
+	private: System::Windows::Forms::PictureBox^ pb_C;
 
 
-
-
-	private: System::Windows::Forms::PictureBox^ white_pawnF;
-	private: System::Windows::Forms::PictureBox^ white_pawnH;
-	private: System::Windows::Forms::PictureBox^ white_knightG;
+	private: System::Windows::Forms::PictureBox^ pb_B2;
+	private: System::Windows::Forms::PictureBox^ pb_D2;
+	private: System::Windows::Forms::PictureBox^ pb_H1;
 
 
 
 
-	private: System::Windows::Forms::PictureBox^ white_bishopF;
-
-
-
-	private: System::Windows::Forms::PictureBox^ white_king;
-	private: System::Windows::Forms::PictureBox^ white_queen;
-	private: System::Windows::Forms::PictureBox^ white_knightB;
-
-
-
-
-	private: System::Windows::Forms::PictureBox^ white_pawnG;
-
-
-	private: System::Windows::Forms::PictureBox^ white_pawnE;
-
-	private: System::Windows::Forms::PictureBox^ white_pawnC;
-
-	private: System::Windows::Forms::PictureBox^ white_rookA;
+	private: System::Windows::Forms::PictureBox^ pb_F2;
+	private: System::Windows::Forms::PictureBox^ pb_H2;
 
 
 
 
 
 
-private: System::Windows::Forms::PictureBox^ black_pawnA;
-private: System::Windows::Forms::PictureBox^ black_rookH;
+	private: System::Windows::Forms::PictureBox^ pb_G1;
 
-
-private: System::Windows::Forms::PictureBox^ black_knightG;
-
-private: System::Windows::Forms::PictureBox^ black_bishopF;
-
-private: System::Windows::Forms::PictureBox^ black_king;
-
-private: System::Windows::Forms::PictureBox^ black_queen;
-
-private: System::Windows::Forms::PictureBox^ black_bishopC;
-
-private: System::Windows::Forms::PictureBox^ black_knightB;
-
-private: System::Windows::Forms::PictureBox^ black_rookA;
-
-private: System::Windows::Forms::PictureBox^ black_pawnB;
-private: System::Windows::Forms::PictureBox^ black_pawnH;
-
-
-private: System::Windows::Forms::PictureBox^ black_pawnF;
-
-private: System::Windows::Forms::PictureBox^ black_pawnD;
-private: System::Windows::Forms::PictureBox^ black_pawnG;
+	private: System::Windows::Forms::PictureBox^ pb_F1;
 
 
 
-private: System::Windows::Forms::PictureBox^ black_pawnE;
 
-private: System::Windows::Forms::PictureBox^ black_pawnC;
-private: System::Windows::Forms::PictureBox^ white_pawnA;
+
+	private: System::Windows::Forms::PictureBox^ pb_E1;
+
+
+
+
+	private: System::Windows::Forms::PictureBox^ pb_D1;
+
+	private: System::Windows::Forms::PictureBox^ pb_B1;
+	private: System::Windows::Forms::PictureBox^ pb_G2;
+
+
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_E2;
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_C2;
+
+
+private: System::Windows::Forms::PictureBox^ pb_A1;
+
+private: System::Windows::Forms::PictureBox^ pb_A7;
+private: System::Windows::Forms::PictureBox^ pb_H8;
+
+
+
+
+
+
+
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_G8;
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_F8;
+
+
+private: System::Windows::Forms::PictureBox^ pb_E8;
+
+
+private: System::Windows::Forms::PictureBox^ pb_D8;
+
+
+private: System::Windows::Forms::PictureBox^ pb_C8;
+
+
+private: System::Windows::Forms::PictureBox^ pb_B8;
+
+
+private: System::Windows::Forms::PictureBox^ pb_A8;
+private: System::Windows::Forms::PictureBox^ pb_B7;
+private: System::Windows::Forms::PictureBox^ pb_H7;
+
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_F7;
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_D7;
+private: System::Windows::Forms::PictureBox^ pb_G7;
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_E7;
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_C7;
+
+
+private: System::Windows::Forms::PictureBox^ pb_A2;
+
+
 private: System::Windows::Forms::PictureBox^ picturebox_board;
+private: System::Windows::Forms::PictureBox^ pb_B3;
+private: System::Windows::Forms::PictureBox^ pb_B5;
+private: System::Windows::Forms::PictureBox^ pb_C6;
+private: System::Windows::Forms::PictureBox^ pb_H3;
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_G4;
+private: System::Windows::Forms::PictureBox^ pb_G6;
+private: System::Windows::Forms::PictureBox^ pb_H5;
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_F5;
+
+private: System::Windows::Forms::PictureBox^ pb_E6;
+
+private: System::Windows::Forms::PictureBox^ pb_D5;
+
+private: System::Windows::Forms::PictureBox^ pb_a6;
+private: System::Windows::Forms::PictureBox^ pb_A4;
+private: System::Windows::Forms::PictureBox^ pb_C4;
+private: System::Windows::Forms::PictureBox^ pb_E4;
+private: System::Windows::Forms::PictureBox^ pb_F3;
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_C3;
+private: System::Windows::Forms::PictureBox^ pb_G5;
+
+
+private: System::Windows::Forms::PictureBox^ pb_F6;
+
+private: System::Windows::Forms::PictureBox^ pb_D6;
+private: System::Windows::Forms::PictureBox^ pb_E5;
+
+
+private: System::Windows::Forms::PictureBox^ pb_C5;
+
+private: System::Windows::Forms::PictureBox^ pb_B6;
+
+private: System::Windows::Forms::PictureBox^ pb_A5;
+private: System::Windows::Forms::PictureBox^ pb_A3;
+private: System::Windows::Forms::PictureBox^ pb_B4;
+private: System::Windows::Forms::PictureBox^ pb_D4;
+private: System::Windows::Forms::PictureBox^ pb_F4;
+private: System::Windows::Forms::PictureBox^ pb_H6;
+private: System::Windows::Forms::PictureBox^ pb_H4;
+
+
+
+
+
+
+
+private: System::Windows::Forms::PictureBox^ pb_G3;
+
+private: System::Windows::Forms::PictureBox^ pb_E3;
+
+private: System::Windows::Forms::PictureBox^ pb_D3;
+
+
 
 
 
@@ -432,25 +531,8 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(BoardForm::typeid));
 			this->board_panel = (gcnew System::Windows::Forms::Panel());
-			this->white_rookA = (gcnew System::Windows::Forms::PictureBox());
-			this->white_bishopC = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnB = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnD = (gcnew System::Windows::Forms::PictureBox());
-			this->white_rookH = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnF = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnH = (gcnew System::Windows::Forms::PictureBox());
-			this->white_knightG = (gcnew System::Windows::Forms::PictureBox());
-			this->white_bishopF = (gcnew System::Windows::Forms::PictureBox());
-			this->white_king = (gcnew System::Windows::Forms::PictureBox());
-			this->white_queen = (gcnew System::Windows::Forms::PictureBox());
-			this->white_knightB = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnG = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnE = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnC = (gcnew System::Windows::Forms::PictureBox());
-			this->time_white = (gcnew System::Windows::Forms::Label());
-			this->label_whitetime = (gcnew System::Windows::Forms::Label());
-			this->label_blacktime = (gcnew System::Windows::Forms::Label());
-			this->time_black = (gcnew System::Windows::Forms::Label());
+			this->pb_A2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H8 = (gcnew System::Windows::Forms::PictureBox());
 			this->timeset_panel = (gcnew System::Windows::Forms::Panel());
 			this->increment_panel = (gcnew System::Windows::Forms::Panel());
 			this->trackbar_secincrement = (gcnew System::Windows::Forms::TrackBar());
@@ -464,6 +546,41 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->label_minperside = (gcnew System::Windows::Forms::Label());
 			this->trackbar_minperside = (gcnew System::Windows::Forms::TrackBar());
 			this->minperside_label = (gcnew System::Windows::Forms::Label());
+			this->pb_G8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_A8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_A7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_A1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C2 = (gcnew System::Windows::Forms::PictureBox());
+			this->time_white = (gcnew System::Windows::Forms::Label());
+			this->label_whitetime = (gcnew System::Windows::Forms::Label());
+			this->label_blacktime = (gcnew System::Windows::Forms::Label());
+			this->time_black = (gcnew System::Windows::Forms::Label());
+			this->picturebox_board = (gcnew System::Windows::Forms::PictureBox());
 			this->chess_menu = (gcnew System::Windows::Forms::MenuStrip());
 			this->flipBoardToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->flipBoardToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -472,101 +589,179 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menu_timer_black = (gcnew System::Windows::Forms::Timer(this->components));
 			this->menu_timer_white = (gcnew System::Windows::Forms::Timer(this->components));
-			this->black_pawnA = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnC = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnE = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnG = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnD = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnF = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnH = (gcnew System::Windows::Forms::PictureBox());
-			this->black_pawnB = (gcnew System::Windows::Forms::PictureBox());
-			this->black_rookA = (gcnew System::Windows::Forms::PictureBox());
-			this->black_knightB = (gcnew System::Windows::Forms::PictureBox());
-			this->black_bishopC = (gcnew System::Windows::Forms::PictureBox());
-			this->black_queen = (gcnew System::Windows::Forms::PictureBox());
-			this->black_king = (gcnew System::Windows::Forms::PictureBox());
-			this->black_bishopF = (gcnew System::Windows::Forms::PictureBox());
-			this->black_knightG = (gcnew System::Windows::Forms::PictureBox());
-			this->black_rookH = (gcnew System::Windows::Forms::PictureBox());
-			this->picturebox_board = (gcnew System::Windows::Forms::PictureBox());
-			this->white_pawnA = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_A3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_A5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_A4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_a6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_D5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_E6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_F5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_G4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_H3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_C6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pb_B5 = (gcnew System::Windows::Forms::PictureBox());
 			this->board_panel->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_rookA))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_bishopC))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnB))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnD))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_rookH))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnF))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnH))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_knightG))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_bishopF))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_king))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_queen))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_knightB))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnG))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnE))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnC))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H8))->BeginInit();
 			this->timeset_panel->SuspendLayout();
 			this->increment_panel->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_secincrement))->BeginInit();
 			this->timeroptions_panel->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_minperside))->BeginInit();
-			this->chess_menu->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnA))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnC))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnE))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnG))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnD))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnF))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnH))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnB))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_rookA))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_knightB))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_bishopC))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_queen))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_king))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_bishopF))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_knightG))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_rookH))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picturebox_board))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnA))->BeginInit();
+			this->chess_menu->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_a6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B5))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// board_panel
 			// 
-			this->board_panel->Controls->Add(this->white_pawnA);
-			this->board_panel->Controls->Add(this->black_rookH);
+			this->board_panel->Controls->Add(this->pb_B5);
+			this->board_panel->Controls->Add(this->pb_C6);
 			this->board_panel->Controls->Add(this->timeset_panel);
-			this->board_panel->Controls->Add(this->black_knightG);
-			this->board_panel->Controls->Add(this->black_bishopF);
-			this->board_panel->Controls->Add(this->black_king);
-			this->board_panel->Controls->Add(this->black_queen);
-			this->board_panel->Controls->Add(this->black_bishopC);
-			this->board_panel->Controls->Add(this->black_knightB);
-			this->board_panel->Controls->Add(this->black_rookA);
-			this->board_panel->Controls->Add(this->black_pawnB);
-			this->board_panel->Controls->Add(this->black_pawnH);
-			this->board_panel->Controls->Add(this->black_pawnF);
-			this->board_panel->Controls->Add(this->black_pawnD);
-			this->board_panel->Controls->Add(this->black_pawnG);
-			this->board_panel->Controls->Add(this->black_pawnE);
-			this->board_panel->Controls->Add(this->black_pawnC);
-			this->board_panel->Controls->Add(this->black_pawnA);
-			this->board_panel->Controls->Add(this->white_rookA);
-			this->board_panel->Controls->Add(this->white_bishopC);
-			this->board_panel->Controls->Add(this->white_pawnB);
-			this->board_panel->Controls->Add(this->white_pawnD);
-			this->board_panel->Controls->Add(this->white_rookH);
-			this->board_panel->Controls->Add(this->white_pawnF);
-			this->board_panel->Controls->Add(this->white_pawnH);
-			this->board_panel->Controls->Add(this->white_knightG);
-			this->board_panel->Controls->Add(this->white_bishopF);
-			this->board_panel->Controls->Add(this->white_king);
-			this->board_panel->Controls->Add(this->white_queen);
-			this->board_panel->Controls->Add(this->white_knightB);
-			this->board_panel->Controls->Add(this->white_pawnG);
-			this->board_panel->Controls->Add(this->white_pawnE);
-			this->board_panel->Controls->Add(this->white_pawnC);
+			this->board_panel->Controls->Add(this->pb_H3);
+			this->board_panel->Controls->Add(this->pb_G4);
+			this->board_panel->Controls->Add(this->pb_G6);
+			this->board_panel->Controls->Add(this->pb_H5);
+			this->board_panel->Controls->Add(this->pb_F5);
+			this->board_panel->Controls->Add(this->pb_E6);
+			this->board_panel->Controls->Add(this->pb_D5);
+			this->board_panel->Controls->Add(this->pb_a6);
+			this->board_panel->Controls->Add(this->pb_A4);
+			this->board_panel->Controls->Add(this->pb_C4);
+			this->board_panel->Controls->Add(this->pb_E4);
+			this->board_panel->Controls->Add(this->pb_F3);
+			this->board_panel->Controls->Add(this->pb_C3);
+			this->board_panel->Controls->Add(this->pb_G5);
+			this->board_panel->Controls->Add(this->pb_F6);
+			this->board_panel->Controls->Add(this->pb_D6);
+			this->board_panel->Controls->Add(this->pb_E5);
+			this->board_panel->Controls->Add(this->pb_C5);
+			this->board_panel->Controls->Add(this->pb_B6);
+			this->board_panel->Controls->Add(this->pb_A5);
+			this->board_panel->Controls->Add(this->pb_A3);
+			this->board_panel->Controls->Add(this->pb_B4);
+			this->board_panel->Controls->Add(this->pb_D4);
+			this->board_panel->Controls->Add(this->pb_F4);
+			this->board_panel->Controls->Add(this->pb_H6);
+			this->board_panel->Controls->Add(this->pb_H4);
+			this->board_panel->Controls->Add(this->pb_G3);
+			this->board_panel->Controls->Add(this->pb_E3);
+			this->board_panel->Controls->Add(this->pb_D3);
+			this->board_panel->Controls->Add(this->pb_B3);
+			this->board_panel->Controls->Add(this->pb_A2);
+			this->board_panel->Controls->Add(this->pb_H8);
+			this->board_panel->Controls->Add(this->pb_G8);
+			this->board_panel->Controls->Add(this->pb_F8);
+			this->board_panel->Controls->Add(this->pb_E8);
+			this->board_panel->Controls->Add(this->pb_D8);
+			this->board_panel->Controls->Add(this->pb_C8);
+			this->board_panel->Controls->Add(this->pb_B8);
+			this->board_panel->Controls->Add(this->pb_A8);
+			this->board_panel->Controls->Add(this->pb_B7);
+			this->board_panel->Controls->Add(this->pb_H7);
+			this->board_panel->Controls->Add(this->pb_F7);
+			this->board_panel->Controls->Add(this->pb_D7);
+			this->board_panel->Controls->Add(this->pb_G7);
+			this->board_panel->Controls->Add(this->pb_E7);
+			this->board_panel->Controls->Add(this->pb_C7);
+			this->board_panel->Controls->Add(this->pb_A7);
+			this->board_panel->Controls->Add(this->pb_A1);
+			this->board_panel->Controls->Add(this->pb_C);
+			this->board_panel->Controls->Add(this->pb_B2);
+			this->board_panel->Controls->Add(this->pb_D2);
+			this->board_panel->Controls->Add(this->pb_H1);
+			this->board_panel->Controls->Add(this->pb_F2);
+			this->board_panel->Controls->Add(this->pb_H2);
+			this->board_panel->Controls->Add(this->pb_G1);
+			this->board_panel->Controls->Add(this->pb_F1);
+			this->board_panel->Controls->Add(this->pb_E1);
+			this->board_panel->Controls->Add(this->pb_D1);
+			this->board_panel->Controls->Add(this->pb_B1);
+			this->board_panel->Controls->Add(this->pb_G2);
+			this->board_panel->Controls->Add(this->pb_E2);
+			this->board_panel->Controls->Add(this->pb_C2);
 			this->board_panel->Controls->Add(this->time_white);
 			this->board_panel->Controls->Add(this->label_whitetime);
 			this->board_panel->Controls->Add(this->label_blacktime);
@@ -577,209 +772,25 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->board_panel->Size = System::Drawing::Size(700, 469);
 			this->board_panel->TabIndex = 0;
 			// 
-			// white_rookA
+			// pb_A2
 			// 
-			this->white_rookA->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_rookA.Image")));
-			this->white_rookA->Location = System::Drawing::Point(127, 411);
-			this->white_rookA->Name = L"white_rookA";
-			this->white_rookA->Size = System::Drawing::Size(45, 49);
-			this->white_rookA->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_rookA->TabIndex = 22;
-			this->white_rookA->TabStop = false;
+			this->pb_A2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A2.Image")));
+			this->pb_A2->Location = System::Drawing::Point(127, 352);
+			this->pb_A2->Name = L"pb_A2";
+			this->pb_A2->Size = System::Drawing::Size(48, 48);
+			this->pb_A2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_A2->TabIndex = 40;
+			this->pb_A2->TabStop = false;
 			// 
-			// white_bishopC
+			// pb_H8
 			// 
-			this->white_bishopC->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_bishopC.Image")));
-			this->white_bishopC->Location = System::Drawing::Point(238, 411);
-			this->white_bishopC->Name = L"white_bishopC";
-			this->white_bishopC->Size = System::Drawing::Size(49, 49);
-			this->white_bishopC->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_bishopC->TabIndex = 21;
-			this->white_bishopC->TabStop = false;
-			// 
-			// white_pawnB
-			// 
-			this->white_pawnB->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnB.Image")));
-			this->white_pawnB->Location = System::Drawing::Point(183, 352);
-			this->white_pawnB->Name = L"white_pawnB";
-			this->white_pawnB->Size = System::Drawing::Size(45, 49);
-			this->white_pawnB->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnB->TabIndex = 20;
-			this->white_pawnB->TabStop = false;
-			// 
-			// white_pawnD
-			// 
-			this->white_pawnD->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnD.Image")));
-			this->white_pawnD->Location = System::Drawing::Point(297, 352);
-			this->white_pawnD->Name = L"white_pawnD";
-			this->white_pawnD->Size = System::Drawing::Size(45, 49);
-			this->white_pawnD->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnD->TabIndex = 19;
-			this->white_pawnD->TabStop = false;
-			// 
-			// white_rookH
-			// 
-			this->white_rookH->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_rookH.Image")));
-			this->white_rookH->Location = System::Drawing::Point(521, 411);
-			this->white_rookH->Name = L"white_rookH";
-			this->white_rookH->Size = System::Drawing::Size(45, 48);
-			this->white_rookH->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_rookH->TabIndex = 18;
-			this->white_rookH->TabStop = false;
-			// 
-			// white_pawnF
-			// 
-			this->white_pawnF->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnF.Image")));
-			this->white_pawnF->Location = System::Drawing::Point(410, 352);
-			this->white_pawnF->Name = L"white_pawnF";
-			this->white_pawnF->Size = System::Drawing::Size(45, 49);
-			this->white_pawnF->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnF->TabIndex = 17;
-			this->white_pawnF->TabStop = false;
-			// 
-			// white_pawnH
-			// 
-			this->white_pawnH->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnH.Image")));
-			this->white_pawnH->Location = System::Drawing::Point(521, 352);
-			this->white_pawnH->Name = L"white_pawnH";
-			this->white_pawnH->Size = System::Drawing::Size(45, 49);
-			this->white_pawnH->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnH->TabIndex = 16;
-			this->white_pawnH->TabStop = false;
-			// 
-			// white_knightG
-			// 
-			this->white_knightG->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_knightG.Image")));
-			this->white_knightG->Location = System::Drawing::Point(466, 411);
-			this->white_knightG->Name = L"white_knightG";
-			this->white_knightG->Size = System::Drawing::Size(49, 48);
-			this->white_knightG->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_knightG->TabIndex = 15;
-			this->white_knightG->TabStop = false;
-			// 
-			// white_bishopF
-			// 
-			this->white_bishopF->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_bishopF.Image")));
-			this->white_bishopF->Location = System::Drawing::Point(410, 411);
-			this->white_bishopF->Name = L"white_bishopF";
-			this->white_bishopF->Size = System::Drawing::Size(49, 49);
-			this->white_bishopF->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_bishopF->TabIndex = 14;
-			this->white_bishopF->TabStop = false;
-			// 
-			// white_king
-			// 
-			this->white_king->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_king.Image")));
-			this->white_king->Location = System::Drawing::Point(354, 411);
-			this->white_king->Name = L"white_king";
-			this->white_king->Size = System::Drawing::Size(47, 48);
-			this->white_king->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_king->TabIndex = 13;
-			this->white_king->TabStop = false;
-			// 
-			// white_queen
-			// 
-			this->white_queen->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_queen.Image")));
-			this->white_queen->Location = System::Drawing::Point(297, 411);
-			this->white_queen->Name = L"white_queen";
-			this->white_queen->Size = System::Drawing::Size(50, 49);
-			this->white_queen->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_queen->TabIndex = 12;
-			this->white_queen->TabStop = false;
-			// 
-			// white_knightB
-			// 
-			this->white_knightB->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_knightB.Image")));
-			this->white_knightB->Location = System::Drawing::Point(183, 411);
-			this->white_knightB->Name = L"white_knightB";
-			this->white_knightB->Size = System::Drawing::Size(48, 48);
-			this->white_knightB->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_knightB->TabIndex = 11;
-			this->white_knightB->TabStop = false;
-			// 
-			// white_pawnG
-			// 
-			this->white_pawnG->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnG.Image")));
-			this->white_pawnG->Location = System::Drawing::Point(470, 352);
-			this->white_pawnG->Name = L"white_pawnG";
-			this->white_pawnG->Size = System::Drawing::Size(45, 49);
-			this->white_pawnG->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnG->TabIndex = 10;
-			this->white_pawnG->TabStop = false;
-			// 
-			// white_pawnE
-			// 
-			this->white_pawnE->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnE.Image")));
-			this->white_pawnE->Location = System::Drawing::Point(354, 352);
-			this->white_pawnE->Name = L"white_pawnE";
-			this->white_pawnE->Size = System::Drawing::Size(45, 49);
-			this->white_pawnE->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnE->TabIndex = 9;
-			this->white_pawnE->TabStop = false;
-			// 
-			// white_pawnC
-			// 
-			this->white_pawnC->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnC.Image")));
-			this->white_pawnC->Location = System::Drawing::Point(238, 352);
-			this->white_pawnC->Name = L"white_pawnC";
-			this->white_pawnC->Size = System::Drawing::Size(45, 49);
-			this->white_pawnC->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnC->TabIndex = 8;
-			this->white_pawnC->TabStop = false;
-			// 
-			// time_white
-			// 
-			this->time_white->AutoSize = true;
-			this->time_white->BackColor = System::Drawing::Color::Gray;
-			this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->time_white->Location = System::Drawing::Point(601, 296);
-			this->time_white->Name = L"time_white";
-			this->time_white->Size = System::Drawing::Size(0, 50);
-			this->time_white->TabIndex = 4;
-			this->time_white->Visible = false;
-			// 
-			// label_whitetime
-			// 
-			this->label_whitetime->AutoSize = true;
-			this->label_whitetime->BackColor = System::Drawing::Color::Gray;
-			this->label_whitetime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label_whitetime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->label_whitetime->Location = System::Drawing::Point(602, 250);
-			this->label_whitetime->Name = L"label_whitetime";
-			this->label_whitetime->Size = System::Drawing::Size(94, 43);
-			this->label_whitetime->TabIndex = 3;
-			this->label_whitetime->Text = L" White";
-			this->label_whitetime->Visible = false;
-			// 
-			// label_blacktime
-			// 
-			this->label_blacktime->AutoSize = true;
-			this->label_blacktime->BackColor = System::Drawing::Color::Gray;
-			this->label_blacktime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label_blacktime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->label_blacktime->Location = System::Drawing::Point(602, 12);
-			this->label_blacktime->Name = L"label_blacktime";
-			this->label_blacktime->Size = System::Drawing::Size(80, 43);
-			this->label_blacktime->TabIndex = 2;
-			this->label_blacktime->Text = L"Black";
-			this->label_blacktime->Visible = false;
-			// 
-			// time_black
-			// 
-			this->time_black->AutoSize = true;
-			this->time_black->BackColor = System::Drawing::Color::Gray;
-			this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(238)));
-			this->time_black->Location = System::Drawing::Point(601, 43);
-			this->time_black->Name = L"time_black";
-			this->time_black->Size = System::Drawing::Size(0, 50);
-			this->time_black->TabIndex = 5;
-			this->time_black->Visible = false;
+			this->pb_H8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H8.Image")));
+			this->pb_H8->Location = System::Drawing::Point(521, 12);
+			this->pb_H8->Name = L"pb_H8";
+			this->pb_H8->Size = System::Drawing::Size(45, 48);
+			this->pb_H8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_H8->TabIndex = 39;
+			this->pb_H8->TabStop = false;
 			// 
 			// timeset_panel
 			// 
@@ -791,7 +802,7 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->timeset_panel->Controls->Add(this->label_minperside);
 			this->timeset_panel->Controls->Add(this->trackbar_minperside);
 			this->timeset_panel->Controls->Add(this->minperside_label);
-			this->timeset_panel->Location = System::Drawing::Point(204, 122);
+			this->timeset_panel->Location = System::Drawing::Point(677, 112);
 			this->timeset_panel->Name = L"timeset_panel";
 			this->timeset_panel->Size = System::Drawing::Size(330, 232);
 			this->timeset_panel->TabIndex = 6;
@@ -944,6 +955,375 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->minperside_label->TabIndex = 9;
 			this->minperside_label->Text = L"Minutes per side:";
 			// 
+			// pb_G8
+			// 
+			this->pb_G8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G8.Image")));
+			this->pb_G8->Location = System::Drawing::Point(466, 12);
+			this->pb_G8->Name = L"pb_G8";
+			this->pb_G8->Size = System::Drawing::Size(48, 48);
+			this->pb_G8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_G8->TabIndex = 38;
+			this->pb_G8->TabStop = false;
+			// 
+			// pb_F8
+			// 
+			this->pb_F8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F8.Image")));
+			this->pb_F8->Location = System::Drawing::Point(410, 12);
+			this->pb_F8->Name = L"pb_F8";
+			this->pb_F8->Size = System::Drawing::Size(48, 48);
+			this->pb_F8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_F8->TabIndex = 37;
+			this->pb_F8->TabStop = false;
+			// 
+			// pb_E8
+			// 
+			this->pb_E8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E8.Image")));
+			this->pb_E8->Location = System::Drawing::Point(356, 12);
+			this->pb_E8->Name = L"pb_E8";
+			this->pb_E8->Size = System::Drawing::Size(48, 48);
+			this->pb_E8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_E8->TabIndex = 36;
+			this->pb_E8->TabStop = false;
+			// 
+			// pb_D8
+			// 
+			this->pb_D8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D8.Image")));
+			this->pb_D8->Location = System::Drawing::Point(297, 12);
+			this->pb_D8->Name = L"pb_D8";
+			this->pb_D8->Size = System::Drawing::Size(48, 48);
+			this->pb_D8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_D8->TabIndex = 35;
+			this->pb_D8->TabStop = false;
+			// 
+			// pb_C8
+			// 
+			this->pb_C8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C8.Image")));
+			this->pb_C8->Location = System::Drawing::Point(242, 12);
+			this->pb_C8->Name = L"pb_C8";
+			this->pb_C8->Size = System::Drawing::Size(48, 48);
+			this->pb_C8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_C8->TabIndex = 34;
+			this->pb_C8->TabStop = false;
+			// 
+			// pb_B8
+			// 
+			this->pb_B8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B8.Image")));
+			this->pb_B8->Location = System::Drawing::Point(183, 12);
+			this->pb_B8->Name = L"pb_B8";
+			this->pb_B8->Size = System::Drawing::Size(48, 48);
+			this->pb_B8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_B8->TabIndex = 33;
+			this->pb_B8->TabStop = false;
+			// 
+			// pb_A8
+			// 
+			this->pb_A8->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A8.Image")));
+			this->pb_A8->Location = System::Drawing::Point(123, 12);
+			this->pb_A8->Name = L"pb_A8";
+			this->pb_A8->Size = System::Drawing::Size(48, 48);
+			this->pb_A8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_A8->TabIndex = 32;
+			this->pb_A8->TabStop = false;
+			// 
+			// pb_B7
+			// 
+			this->pb_B7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B7.Image")));
+			this->pb_B7->Location = System::Drawing::Point(183, 67);
+			this->pb_B7->Name = L"pb_B7";
+			this->pb_B7->Size = System::Drawing::Size(48, 48);
+			this->pb_B7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_B7->TabIndex = 31;
+			this->pb_B7->TabStop = false;
+			// 
+			// pb_H7
+			// 
+			this->pb_H7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H7.Image")));
+			this->pb_H7->Location = System::Drawing::Point(521, 67);
+			this->pb_H7->Name = L"pb_H7";
+			this->pb_H7->Size = System::Drawing::Size(45, 48);
+			this->pb_H7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_H7->TabIndex = 30;
+			this->pb_H7->TabStop = false;
+			// 
+			// pb_F7
+			// 
+			this->pb_F7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F7.Image")));
+			this->pb_F7->Location = System::Drawing::Point(410, 67);
+			this->pb_F7->Name = L"pb_F7";
+			this->pb_F7->Size = System::Drawing::Size(48, 48);
+			this->pb_F7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_F7->TabIndex = 29;
+			this->pb_F7->TabStop = false;
+			// 
+			// pb_D7
+			// 
+			this->pb_D7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D7.Image")));
+			this->pb_D7->Location = System::Drawing::Point(297, 67);
+			this->pb_D7->Name = L"pb_D7";
+			this->pb_D7->Size = System::Drawing::Size(48, 48);
+			this->pb_D7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_D7->TabIndex = 28;
+			this->pb_D7->TabStop = false;
+			// 
+			// pb_G7
+			// 
+			this->pb_G7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G7.Image")));
+			this->pb_G7->Location = System::Drawing::Point(470, 67);
+			this->pb_G7->Name = L"pb_G7";
+			this->pb_G7->Size = System::Drawing::Size(48, 48);
+			this->pb_G7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_G7->TabIndex = 27;
+			this->pb_G7->TabStop = false;
+			// 
+			// pb_E7
+			// 
+			this->pb_E7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E7.Image")));
+			this->pb_E7->Location = System::Drawing::Point(356, 67);
+			this->pb_E7->Name = L"pb_E7";
+			this->pb_E7->Size = System::Drawing::Size(48, 48);
+			this->pb_E7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_E7->TabIndex = 26;
+			this->pb_E7->TabStop = false;
+			// 
+			// pb_C7
+			// 
+			this->pb_C7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C7.Image")));
+			this->pb_C7->Location = System::Drawing::Point(238, 67);
+			this->pb_C7->Name = L"pb_C7";
+			this->pb_C7->Size = System::Drawing::Size(48, 48);
+			this->pb_C7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_C7->TabIndex = 25;
+			this->pb_C7->TabStop = false;
+			// 
+			// pb_A7
+			// 
+			this->pb_A7->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A7.Image")));
+			this->pb_A7->Location = System::Drawing::Point(123, 67);
+			this->pb_A7->Name = L"pb_A7";
+			this->pb_A7->Size = System::Drawing::Size(48, 48);
+			this->pb_A7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_A7->TabIndex = 24;
+			this->pb_A7->TabStop = false;
+			// 
+			// pb_A1
+			// 
+			this->pb_A1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A1.Image")));
+			this->pb_A1->Location = System::Drawing::Point(127, 411);
+			this->pb_A1->Name = L"pb_A1";
+			this->pb_A1->Size = System::Drawing::Size(48, 48);
+			this->pb_A1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_A1->TabIndex = 22;
+			this->pb_A1->TabStop = false;
+			// 
+			// pb_C
+			// 
+			this->pb_C->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C.Image")));
+			this->pb_C->Location = System::Drawing::Point(238, 411);
+			this->pb_C->Name = L"pb_C";
+			this->pb_C->Size = System::Drawing::Size(48, 48);
+			this->pb_C->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_C->TabIndex = 21;
+			this->pb_C->TabStop = false;
+			// 
+			// pb_B2
+			// 
+			this->pb_B2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B2.Image")));
+			this->pb_B2->Location = System::Drawing::Point(183, 352);
+			this->pb_B2->Name = L"pb_B2";
+			this->pb_B2->Size = System::Drawing::Size(48, 48);
+			this->pb_B2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_B2->TabIndex = 20;
+			this->pb_B2->TabStop = false;
+			// 
+			// pb_D2
+			// 
+			this->pb_D2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D2.Image")));
+			this->pb_D2->Location = System::Drawing::Point(297, 352);
+			this->pb_D2->Name = L"pb_D2";
+			this->pb_D2->Size = System::Drawing::Size(48, 48);
+			this->pb_D2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_D2->TabIndex = 19;
+			this->pb_D2->TabStop = false;
+			// 
+			// pb_H1
+			// 
+			this->pb_H1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H1.Image")));
+			this->pb_H1->Location = System::Drawing::Point(521, 411);
+			this->pb_H1->Name = L"pb_H1";
+			this->pb_H1->Size = System::Drawing::Size(45, 48);
+			this->pb_H1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_H1->TabIndex = 18;
+			this->pb_H1->TabStop = false;
+			// 
+			// pb_F2
+			// 
+			this->pb_F2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F2.Image")));
+			this->pb_F2->Location = System::Drawing::Point(410, 352);
+			this->pb_F2->Name = L"pb_F2";
+			this->pb_F2->Size = System::Drawing::Size(48, 48);
+			this->pb_F2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_F2->TabIndex = 17;
+			this->pb_F2->TabStop = false;
+			// 
+			// pb_H2
+			// 
+			this->pb_H2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H2.Image")));
+			this->pb_H2->Location = System::Drawing::Point(521, 352);
+			this->pb_H2->Name = L"pb_H2";
+			this->pb_H2->Size = System::Drawing::Size(45, 48);
+			this->pb_H2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_H2->TabIndex = 16;
+			this->pb_H2->TabStop = false;
+			// 
+			// pb_G1
+			// 
+			this->pb_G1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G1.Image")));
+			this->pb_G1->Location = System::Drawing::Point(466, 411);
+			this->pb_G1->Name = L"pb_G1";
+			this->pb_G1->Size = System::Drawing::Size(48, 48);
+			this->pb_G1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_G1->TabIndex = 15;
+			this->pb_G1->TabStop = false;
+			// 
+			// pb_F1
+			// 
+			this->pb_F1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F1.Image")));
+			this->pb_F1->Location = System::Drawing::Point(410, 411);
+			this->pb_F1->Name = L"pb_F1";
+			this->pb_F1->Size = System::Drawing::Size(48, 48);
+			this->pb_F1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_F1->TabIndex = 14;
+			this->pb_F1->TabStop = false;
+			// 
+			// pb_E1
+			// 
+			this->pb_E1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E1.Image")));
+			this->pb_E1->Location = System::Drawing::Point(354, 411);
+			this->pb_E1->Name = L"pb_E1";
+			this->pb_E1->Size = System::Drawing::Size(48, 48);
+			this->pb_E1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_E1->TabIndex = 13;
+			this->pb_E1->TabStop = false;
+			// 
+			// pb_D1
+			// 
+			this->pb_D1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D1.Image")));
+			this->pb_D1->Location = System::Drawing::Point(297, 411);
+			this->pb_D1->Name = L"pb_D1";
+			this->pb_D1->Size = System::Drawing::Size(48, 48);
+			this->pb_D1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_D1->TabIndex = 12;
+			this->pb_D1->TabStop = false;
+			// 
+			// pb_B1
+			// 
+			this->pb_B1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B1.Image")));
+			this->pb_B1->Location = System::Drawing::Point(183, 411);
+			this->pb_B1->Name = L"pb_B1";
+			this->pb_B1->Size = System::Drawing::Size(48, 48);
+			this->pb_B1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_B1->TabIndex = 11;
+			this->pb_B1->TabStop = false;
+			// 
+			// pb_G2
+			// 
+			this->pb_G2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G2.Image")));
+			this->pb_G2->Location = System::Drawing::Point(470, 352);
+			this->pb_G2->Name = L"pb_G2";
+			this->pb_G2->Size = System::Drawing::Size(48, 48);
+			this->pb_G2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_G2->TabIndex = 10;
+			this->pb_G2->TabStop = false;
+			// 
+			// pb_E2
+			// 
+			this->pb_E2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E2.Image")));
+			this->pb_E2->Location = System::Drawing::Point(354, 352);
+			this->pb_E2->Name = L"pb_E2";
+			this->pb_E2->Size = System::Drawing::Size(48, 48);
+			this->pb_E2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_E2->TabIndex = 9;
+			this->pb_E2->TabStop = false;
+			// 
+			// pb_C2
+			// 
+			this->pb_C2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C2.Image")));
+			this->pb_C2->Location = System::Drawing::Point(238, 352);
+			this->pb_C2->Name = L"pb_C2";
+			this->pb_C2->Size = System::Drawing::Size(48, 48);
+			this->pb_C2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->pb_C2->TabIndex = 8;
+			this->pb_C2->TabStop = false;
+			// 
+			// time_white
+			// 
+			this->time_white->AutoSize = true;
+			this->time_white->BackColor = System::Drawing::Color::Gray;
+			this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->time_white->Location = System::Drawing::Point(601, 296);
+			this->time_white->Name = L"time_white";
+			this->time_white->Size = System::Drawing::Size(0, 50);
+			this->time_white->TabIndex = 4;
+			this->time_white->Visible = false;
+			// 
+			// label_whitetime
+			// 
+			this->label_whitetime->AutoSize = true;
+			this->label_whitetime->BackColor = System::Drawing::Color::Gray;
+			this->label_whitetime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->label_whitetime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->label_whitetime->Location = System::Drawing::Point(602, 250);
+			this->label_whitetime->Name = L"label_whitetime";
+			this->label_whitetime->Size = System::Drawing::Size(94, 43);
+			this->label_whitetime->TabIndex = 3;
+			this->label_whitetime->Text = L" White";
+			this->label_whitetime->Visible = false;
+			// 
+			// label_blacktime
+			// 
+			this->label_blacktime->AutoSize = true;
+			this->label_blacktime->BackColor = System::Drawing::Color::Gray;
+			this->label_blacktime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->label_blacktime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->label_blacktime->Location = System::Drawing::Point(602, 12);
+			this->label_blacktime->Name = L"label_blacktime";
+			this->label_blacktime->Size = System::Drawing::Size(80, 43);
+			this->label_blacktime->TabIndex = 2;
+			this->label_blacktime->Text = L"Black";
+			this->label_blacktime->Visible = false;
+			// 
+			// time_black
+			// 
+			this->time_black->AutoSize = true;
+			this->time_black->BackColor = System::Drawing::Color::Gray;
+			this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			this->time_black->Location = System::Drawing::Point(601, 43);
+			this->time_black->Name = L"time_black";
+			this->time_black->Size = System::Drawing::Size(0, 50);
+			this->time_black->TabIndex = 5;
+			this->time_black->Visible = false;
+			// 
+			// picturebox_board
+			// 
+			this->picturebox_board->BackColor = System::Drawing::Color::Gray;
+			this->picturebox_board->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
+			this->picturebox_board->Location = System::Drawing::Point(0, 0);
+			this->picturebox_board->Name = L"picturebox_board";
+			this->picturebox_board->Size = System::Drawing::Size(700, 469);
+			this->picturebox_board->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->picturebox_board->TabIndex = 6;
+			this->picturebox_board->TabStop = false;
+			this->picturebox_board->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseDown_1);
+			this->picturebox_board->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseMove_1);
+			this->picturebox_board->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseUp_1);
+			// 
 			// chess_menu
 			// 
 			this->chess_menu->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(35)), static_cast<System::Int32>(static_cast<System::Byte>(35)),
@@ -979,7 +1359,7 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(238)));
 			this->flipBoardToolStripMenuItem1->ForeColor = System::Drawing::Color::White;
 			this->flipBoardToolStripMenuItem1->Name = L"flipBoardToolStripMenuItem1";
-			this->flipBoardToolStripMenuItem1->Size = System::Drawing::Size(224, 34);
+			this->flipBoardToolStripMenuItem1->Size = System::Drawing::Size(183, 34);
 			this->flipBoardToolStripMenuItem1->Text = L"Flip Board";
 			this->flipBoardToolStripMenuItem1->Click += gcnew System::EventHandler(this, &BoardForm::flipBoardToolStripMenuItem1_Click);
 			// 
@@ -990,7 +1370,7 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 				static_cast<System::Byte>(238)));
 			this->setTimeToolStripMenuItem->ForeColor = System::Drawing::Color::White;
 			this->setTimeToolStripMenuItem->Name = L"setTimeToolStripMenuItem";
-			this->setTimeToolStripMenuItem->Size = System::Drawing::Size(224, 34);
+			this->setTimeToolStripMenuItem->Size = System::Drawing::Size(183, 34);
 			this->setTimeToolStripMenuItem->Text = L"Set time";
 			this->setTimeToolStripMenuItem->Click += gcnew System::EventHandler(this, &BoardForm::setTimeToolStripMenuItem_Click);
 			// 
@@ -1002,7 +1382,7 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 				static_cast<System::Byte>(238)));
 			this->restartToolStripMenuItem1->ForeColor = System::Drawing::Color::White;
 			this->restartToolStripMenuItem1->Name = L"restartToolStripMenuItem1";
-			this->restartToolStripMenuItem1->Size = System::Drawing::Size(224, 34);
+			this->restartToolStripMenuItem1->Size = System::Drawing::Size(183, 34);
 			this->restartToolStripMenuItem1->Text = L"Restart";
 			this->restartToolStripMenuItem1->Click += gcnew System::EventHandler(this, &BoardForm::restartToolStripMenuItem1_Click);
 			// 
@@ -1013,7 +1393,7 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 				static_cast<System::Byte>(238)));
 			this->exitToolStripMenuItem->ForeColor = System::Drawing::Color::White;
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(224, 34);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(183, 34);
 			this->exitToolStripMenuItem->Text = L"Exit";
 			this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &BoardForm::exitToolStripMenuItem_Click);
 			// 
@@ -1027,190 +1407,293 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->menu_timer_white->Interval = 1000;
 			this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
 			// 
-			// black_pawnA
+			// pb_B3
 			// 
-			this->black_pawnA->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnA.Image")));
-			this->black_pawnA->Location = System::Drawing::Point(123, 67);
-			this->black_pawnA->Name = L"black_pawnA";
-			this->black_pawnA->Size = System::Drawing::Size(45, 49);
-			this->black_pawnA->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnA->TabIndex = 24;
-			this->black_pawnA->TabStop = false;
+			this->pb_B3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B3.Image")));
+			this->pb_B3->Location = System::Drawing::Point(183, 296);
+			this->pb_B3->Name = L"pb_B3";
+			this->pb_B3->Size = System::Drawing::Size(48, 48);
+			this->pb_B3->TabIndex = 41;
+			this->pb_B3->TabStop = false;
 			// 
-			// black_pawnC
+			// pb_D3
 			// 
-			this->black_pawnC->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnC.Image")));
-			this->black_pawnC->Location = System::Drawing::Point(238, 67);
-			this->black_pawnC->Name = L"black_pawnC";
-			this->black_pawnC->Size = System::Drawing::Size(45, 49);
-			this->black_pawnC->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnC->TabIndex = 25;
-			this->black_pawnC->TabStop = false;
+			this->pb_D3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D3.Image")));
+			this->pb_D3->Location = System::Drawing::Point(297, 296);
+			this->pb_D3->Name = L"pb_D3";
+			this->pb_D3->Size = System::Drawing::Size(48, 48);
+			this->pb_D3->TabIndex = 42;
+			this->pb_D3->TabStop = false;
 			// 
-			// black_pawnE
+			// pb_E3
 			// 
-			this->black_pawnE->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnE.Image")));
-			this->black_pawnE->Location = System::Drawing::Point(356, 67);
-			this->black_pawnE->Name = L"black_pawnE";
-			this->black_pawnE->Size = System::Drawing::Size(45, 49);
-			this->black_pawnE->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnE->TabIndex = 26;
-			this->black_pawnE->TabStop = false;
+			this->pb_E3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E3.Image")));
+			this->pb_E3->Location = System::Drawing::Point(354, 296);
+			this->pb_E3->Name = L"pb_E3";
+			this->pb_E3->Size = System::Drawing::Size(48, 48);
+			this->pb_E3->TabIndex = 43;
+			this->pb_E3->TabStop = false;
 			// 
-			// black_pawnG
+			// pb_G3
 			// 
-			this->black_pawnG->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnG.Image")));
-			this->black_pawnG->Location = System::Drawing::Point(470, 67);
-			this->black_pawnG->Name = L"black_pawnG";
-			this->black_pawnG->Size = System::Drawing::Size(45, 49);
-			this->black_pawnG->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnG->TabIndex = 27;
-			this->black_pawnG->TabStop = false;
+			this->pb_G3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G3.Image")));
+			this->pb_G3->Location = System::Drawing::Point(470, 296);
+			this->pb_G3->Name = L"pb_G3";
+			this->pb_G3->Size = System::Drawing::Size(48, 48);
+			this->pb_G3->TabIndex = 44;
+			this->pb_G3->TabStop = false;
 			// 
-			// black_pawnD
+			// pb_H4
 			// 
-			this->black_pawnD->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnD.Image")));
-			this->black_pawnD->Location = System::Drawing::Point(297, 67);
-			this->black_pawnD->Name = L"black_pawnD";
-			this->black_pawnD->Size = System::Drawing::Size(45, 49);
-			this->black_pawnD->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnD->TabIndex = 28;
-			this->black_pawnD->TabStop = false;
+			this->pb_H4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H4.Image")));
+			this->pb_H4->Location = System::Drawing::Point(521, 237);
+			this->pb_H4->Name = L"pb_H4";
+			this->pb_H4->Size = System::Drawing::Size(45, 48);
+			this->pb_H4->TabIndex = 45;
+			this->pb_H4->TabStop = false;
 			// 
-			// black_pawnF
+			// pb_H6
 			// 
-			this->black_pawnF->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnF.Image")));
-			this->black_pawnF->Location = System::Drawing::Point(410, 67);
-			this->black_pawnF->Name = L"black_pawnF";
-			this->black_pawnF->Size = System::Drawing::Size(45, 49);
-			this->black_pawnF->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnF->TabIndex = 29;
-			this->black_pawnF->TabStop = false;
+			this->pb_H6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H6.Image")));
+			this->pb_H6->Location = System::Drawing::Point(521, 124);
+			this->pb_H6->Name = L"pb_H6";
+			this->pb_H6->Size = System::Drawing::Size(45, 48);
+			this->pb_H6->TabIndex = 46;
+			this->pb_H6->TabStop = false;
 			// 
-			// black_pawnH
+			// pb_F4
 			// 
-			this->black_pawnH->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnH.Image")));
-			this->black_pawnH->Location = System::Drawing::Point(521, 67);
-			this->black_pawnH->Name = L"black_pawnH";
-			this->black_pawnH->Size = System::Drawing::Size(45, 49);
-			this->black_pawnH->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnH->TabIndex = 30;
-			this->black_pawnH->TabStop = false;
+			this->pb_F4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F4.Image")));
+			this->pb_F4->Location = System::Drawing::Point(411, 237);
+			this->pb_F4->Name = L"pb_F4";
+			this->pb_F4->Size = System::Drawing::Size(48, 48);
+			this->pb_F4->TabIndex = 47;
+			this->pb_F4->TabStop = false;
 			// 
-			// black_pawnB
+			// pb_D4
 			// 
-			this->black_pawnB->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_pawnB.Image")));
-			this->black_pawnB->Location = System::Drawing::Point(183, 67);
-			this->black_pawnB->Name = L"black_pawnB";
-			this->black_pawnB->Size = System::Drawing::Size(45, 49);
-			this->black_pawnB->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_pawnB->TabIndex = 31;
-			this->black_pawnB->TabStop = false;
+			this->pb_D4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D4.Image")));
+			this->pb_D4->Location = System::Drawing::Point(297, 237);
+			this->pb_D4->Name = L"pb_D4";
+			this->pb_D4->Size = System::Drawing::Size(48, 48);
+			this->pb_D4->TabIndex = 48;
+			this->pb_D4->TabStop = false;
 			// 
-			// black_rookA
+			// pb_B4
 			// 
-			this->black_rookA->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_rookA.Image")));
-			this->black_rookA->Location = System::Drawing::Point(123, 12);
-			this->black_rookA->Name = L"black_rookA";
-			this->black_rookA->Size = System::Drawing::Size(45, 49);
-			this->black_rookA->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_rookA->TabIndex = 32;
-			this->black_rookA->TabStop = false;
+			this->pb_B4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B4.Image")));
+			this->pb_B4->Location = System::Drawing::Point(183, 237);
+			this->pb_B4->Name = L"pb_B4";
+			this->pb_B4->Size = System::Drawing::Size(48, 48);
+			this->pb_B4->TabIndex = 49;
+			this->pb_B4->TabStop = false;
 			// 
-			// black_knightB
+			// pb_A3
 			// 
-			this->black_knightB->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_knightB.Image")));
-			this->black_knightB->Location = System::Drawing::Point(183, 12);
-			this->black_knightB->Name = L"black_knightB";
-			this->black_knightB->Size = System::Drawing::Size(48, 48);
-			this->black_knightB->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_knightB->TabIndex = 33;
-			this->black_knightB->TabStop = false;
+			this->pb_A3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A3.Image")));
+			this->pb_A3->Location = System::Drawing::Point(124, 296);
+			this->pb_A3->Name = L"pb_A3";
+			this->pb_A3->Size = System::Drawing::Size(48, 48);
+			this->pb_A3->TabIndex = 50;
+			this->pb_A3->TabStop = false;
 			// 
-			// black_bishopC
+			// pb_A5
 			// 
-			this->black_bishopC->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_bishopC.Image")));
-			this->black_bishopC->Location = System::Drawing::Point(242, 12);
-			this->black_bishopC->Name = L"black_bishopC";
-			this->black_bishopC->Size = System::Drawing::Size(49, 49);
-			this->black_bishopC->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_bishopC->TabIndex = 34;
-			this->black_bishopC->TabStop = false;
+			this->pb_A5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A5.Image")));
+			this->pb_A5->Location = System::Drawing::Point(124, 183);
+			this->pb_A5->Name = L"pb_A5";
+			this->pb_A5->Size = System::Drawing::Size(48, 48);
+			this->pb_A5->TabIndex = 51;
+			this->pb_A5->TabStop = false;
 			// 
-			// black_queen
+			// pb_B6
 			// 
-			this->black_queen->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_queen.Image")));
-			this->black_queen->Location = System::Drawing::Point(297, 12);
-			this->black_queen->Name = L"black_queen";
-			this->black_queen->Size = System::Drawing::Size(50, 49);
-			this->black_queen->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_queen->TabIndex = 35;
-			this->black_queen->TabStop = false;
+			this->pb_B6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B6.Image")));
+			this->pb_B6->Location = System::Drawing::Point(183, 124);
+			this->pb_B6->Name = L"pb_B6";
+			this->pb_B6->Size = System::Drawing::Size(48, 48);
+			this->pb_B6->TabIndex = 52;
+			this->pb_B6->TabStop = false;
 			// 
-			// black_king
+			// pb_C5
 			// 
-			this->black_king->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_king.Image")));
-			this->black_king->Location = System::Drawing::Point(356, 12);
-			this->black_king->Name = L"black_king";
-			this->black_king->Size = System::Drawing::Size(47, 48);
-			this->black_king->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_king->TabIndex = 36;
-			this->black_king->TabStop = false;
+			this->pb_C5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C5.Image")));
+			this->pb_C5->Location = System::Drawing::Point(243, 183);
+			this->pb_C5->Name = L"pb_C5";
+			this->pb_C5->Size = System::Drawing::Size(48, 48);
+			this->pb_C5->TabIndex = 53;
+			this->pb_C5->TabStop = false;
 			// 
-			// black_bishopF
+			// pb_E5
 			// 
-			this->black_bishopF->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_bishopF.Image")));
-			this->black_bishopF->Location = System::Drawing::Point(410, 12);
-			this->black_bishopF->Name = L"black_bishopF";
-			this->black_bishopF->Size = System::Drawing::Size(49, 49);
-			this->black_bishopF->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_bishopF->TabIndex = 37;
-			this->black_bishopF->TabStop = false;
+			this->pb_E5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E5.Image")));
+			this->pb_E5->Location = System::Drawing::Point(353, 183);
+			this->pb_E5->Name = L"pb_E5";
+			this->pb_E5->Size = System::Drawing::Size(48, 48);
+			this->pb_E5->TabIndex = 54;
+			this->pb_E5->TabStop = false;
 			// 
-			// black_knightG
+			// pb_D6
 			// 
-			this->black_knightG->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_knightG.Image")));
-			this->black_knightG->Location = System::Drawing::Point(466, 12);
-			this->black_knightG->Name = L"black_knightG";
-			this->black_knightG->Size = System::Drawing::Size(49, 48);
-			this->black_knightG->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_knightG->TabIndex = 38;
-			this->black_knightG->TabStop = false;
+			this->pb_D6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D6.Image")));
+			this->pb_D6->Location = System::Drawing::Point(297, 124);
+			this->pb_D6->Name = L"pb_D6";
+			this->pb_D6->Size = System::Drawing::Size(48, 48);
+			this->pb_D6->TabIndex = 55;
+			this->pb_D6->TabStop = false;
 			// 
-			// black_rookH
+			// pb_F6
 			// 
-			this->black_rookH->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"black_rookH.Image")));
-			this->black_rookH->Location = System::Drawing::Point(521, 12);
-			this->black_rookH->Name = L"black_rookH";
-			this->black_rookH->Size = System::Drawing::Size(45, 48);
-			this->black_rookH->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->black_rookH->TabIndex = 39;
-			this->black_rookH->TabStop = false;
+			this->pb_F6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F6.Image")));
+			this->pb_F6->Location = System::Drawing::Point(411, 124);
+			this->pb_F6->Name = L"pb_F6";
+			this->pb_F6->Size = System::Drawing::Size(48, 48);
+			this->pb_F6->TabIndex = 56;
+			this->pb_F6->TabStop = false;
 			// 
-			// picturebox_board
+			// pb_G5
 			// 
-			this->picturebox_board->BackColor = System::Drawing::Color::Gray;
-			this->picturebox_board->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
-			this->picturebox_board->Location = System::Drawing::Point(0, 0);
-			this->picturebox_board->Name = L"picturebox_board";
-			this->picturebox_board->Size = System::Drawing::Size(700, 469);
-			this->picturebox_board->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->picturebox_board->TabIndex = 6;
-			this->picturebox_board->TabStop = false;
-			this->picturebox_board->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseDown_1);
-			this->picturebox_board->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseMove_1);
-			this->picturebox_board->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseUp_1);
+			this->pb_G5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G5.Image")));
+			this->pb_G5->Location = System::Drawing::Point(467, 183);
+			this->pb_G5->Name = L"pb_G5";
+			this->pb_G5->Size = System::Drawing::Size(48, 48);
+			this->pb_G5->TabIndex = 57;
+			this->pb_G5->TabStop = false;
 			// 
-			// white_pawnA
+			// pb_C3
 			// 
-			this->white_pawnA->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"white_pawnA.Image")));
-			this->white_pawnA->Location = System::Drawing::Point(127, 352);
-			this->white_pawnA->Name = L"white_pawnA";
-			this->white_pawnA->Size = System::Drawing::Size(45, 49);
-			this->white_pawnA->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-			this->white_pawnA->TabIndex = 40;
-			this->white_pawnA->TabStop = false;
+			this->pb_C3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C3.Image")));
+			this->pb_C3->Location = System::Drawing::Point(242, 296);
+			this->pb_C3->Name = L"pb_C3";
+			this->pb_C3->Size = System::Drawing::Size(48, 48);
+			this->pb_C3->TabIndex = 58;
+			this->pb_C3->TabStop = false;
+			// 
+			// pb_F3
+			// 
+			this->pb_F3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F3.Image")));
+			this->pb_F3->Location = System::Drawing::Point(408, 296);
+			this->pb_F3->Name = L"pb_F3";
+			this->pb_F3->Size = System::Drawing::Size(48, 48);
+			this->pb_F3->TabIndex = 59;
+			this->pb_F3->TabStop = false;
+			// 
+			// pb_E4
+			// 
+			this->pb_E4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E4.Image")));
+			this->pb_E4->Location = System::Drawing::Point(354, 237);
+			this->pb_E4->Name = L"pb_E4";
+			this->pb_E4->Size = System::Drawing::Size(48, 48);
+			this->pb_E4->TabIndex = 60;
+			this->pb_E4->TabStop = false;
+			// 
+			// pb_C4
+			// 
+			this->pb_C4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C4.Image")));
+			this->pb_C4->Location = System::Drawing::Point(239, 237);
+			this->pb_C4->Name = L"pb_C4";
+			this->pb_C4->Size = System::Drawing::Size(48, 48);
+			this->pb_C4->TabIndex = 61;
+			this->pb_C4->TabStop = false;
+			// 
+			// pb_A4
+			// 
+			this->pb_A4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_A4.Image")));
+			this->pb_A4->Location = System::Drawing::Point(124, 237);
+			this->pb_A4->Name = L"pb_A4";
+			this->pb_A4->Size = System::Drawing::Size(48, 48);
+			this->pb_A4->TabIndex = 62;
+			this->pb_A4->TabStop = false;
+			// 
+			// pb_a6
+			// 
+			this->pb_a6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_a6.Image")));
+			this->pb_a6->Location = System::Drawing::Point(124, 124);
+			this->pb_a6->Name = L"pb_a6";
+			this->pb_a6->Size = System::Drawing::Size(48, 48);
+			this->pb_a6->TabIndex = 63;
+			this->pb_a6->TabStop = false;
+			// 
+			// pb_D5
+			// 
+			this->pb_D5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_D5.Image")));
+			this->pb_D5->Location = System::Drawing::Point(297, 183);
+			this->pb_D5->Name = L"pb_D5";
+			this->pb_D5->Size = System::Drawing::Size(48, 48);
+			this->pb_D5->TabIndex = 64;
+			this->pb_D5->TabStop = false;
+			// 
+			// pb_E6
+			// 
+			this->pb_E6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_E6.Image")));
+			this->pb_E6->Location = System::Drawing::Point(353, 124);
+			this->pb_E6->Name = L"pb_E6";
+			this->pb_E6->Size = System::Drawing::Size(48, 48);
+			this->pb_E6->TabIndex = 65;
+			this->pb_E6->TabStop = false;
+			// 
+			// pb_F5
+			// 
+			this->pb_F5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_F5.Image")));
+			this->pb_F5->Location = System::Drawing::Point(408, 183);
+			this->pb_F5->Name = L"pb_F5";
+			this->pb_F5->Size = System::Drawing::Size(48, 48);
+			this->pb_F5->TabIndex = 66;
+			this->pb_F5->TabStop = false;
+			// 
+			// pb_H5
+			// 
+			this->pb_H5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H5.Image")));
+			this->pb_H5->Location = System::Drawing::Point(521, 183);
+			this->pb_H5->Name = L"pb_H5";
+			this->pb_H5->Size = System::Drawing::Size(45, 48);
+			this->pb_H5->TabIndex = 67;
+			this->pb_H5->TabStop = false;
+			// 
+			// pb_G6
+			// 
+			this->pb_G6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G6.Image")));
+			this->pb_G6->Location = System::Drawing::Point(467, 124);
+			this->pb_G6->Name = L"pb_G6";
+			this->pb_G6->Size = System::Drawing::Size(48, 48);
+			this->pb_G6->TabIndex = 68;
+			this->pb_G6->TabStop = false;
+			// 
+			// pb_G4
+			// 
+			this->pb_G4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_G4.Image")));
+			this->pb_G4->Location = System::Drawing::Point(470, 237);
+			this->pb_G4->Name = L"pb_G4";
+			this->pb_G4->Size = System::Drawing::Size(48, 48);
+			this->pb_G4->TabIndex = 69;
+			this->pb_G4->TabStop = false;
+			// 
+			// pb_H3
+			// 
+			this->pb_H3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_H3.Image")));
+			this->pb_H3->Location = System::Drawing::Point(521, 296);
+			this->pb_H3->Name = L"pb_H3";
+			this->pb_H3->Size = System::Drawing::Size(45, 48);
+			this->pb_H3->TabIndex = 70;
+			this->pb_H3->TabStop = false;
+			// 
+			// pb_C6
+			// 
+			this->pb_C6->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_C6.Image")));
+			this->pb_C6->Location = System::Drawing::Point(239, 124);
+			this->pb_C6->Name = L"pb_C6";
+			this->pb_C6->Size = System::Drawing::Size(48, 48);
+			this->pb_C6->TabIndex = 71;
+			this->pb_C6->TabStop = false;
+			// 
+			// pb_B5
+			// 
+			this->pb_B5->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pb_B5.Image")));
+			this->pb_B5->Location = System::Drawing::Point(183, 183);
+			this->pb_B5->Name = L"pb_B5";
+			this->pb_B5->Size = System::Drawing::Size(48, 48);
+			this->pb_B5->TabIndex = 72;
+			this->pb_B5->TabStop = false;
 			// 
 			// BoardForm
 			// 
@@ -1233,21 +1716,8 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->Text = L"BoardForm";
 			this->board_panel->ResumeLayout(false);
 			this->board_panel->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_rookA))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_bishopC))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnB))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnD))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_rookH))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnF))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnH))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_knightG))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_bishopF))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_king))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_queen))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_knightB))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnG))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnE))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnC))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H8))->EndInit();
 			this->timeset_panel->ResumeLayout(false);
 			this->timeset_panel->PerformLayout();
 			this->increment_panel->ResumeLayout(false);
@@ -1256,31 +1726,77 @@ private: System::Windows::Forms::PictureBox^ picturebox_board;
 			this->timeroptions_panel->ResumeLayout(false);
 			this->timeroptions_panel->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_minperside))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picturebox_board))->EndInit();
 			this->chess_menu->ResumeLayout(false);
 			this->chess_menu->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnA))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnC))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnE))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnG))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnD))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnF))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnH))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_pawnB))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_rookA))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_knightB))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_bishopC))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_queen))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_king))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_bishopF))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_knightG))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->black_rookH))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picturebox_board))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->white_pawnA))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_A4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_a6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_D5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_E6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_F5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_G4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_H3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_C6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pb_B5))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+	//chess board init
 	
 		//flip board
 	   Point start_black = Point(602, 12);
