@@ -1,4 +1,8 @@
 ﻿#pragma once
+#include <vector>
+#include "InitializeChessBoard.h"
+
+
 
 namespace ChessGameEngine {
 
@@ -14,13 +18,15 @@ namespace ChessGameEngine {
 	/// </summary>
 	public ref class BoardForm : public System::Windows::Forms::Form
 	{
+	private:
+		
 	public:
 		BoardForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			ChessBoard chessboard;
+			auto board = chessboard.getBoard();
+			
 		}
 
 	protected:
@@ -35,7 +41,6 @@ namespace ChessGameEngine {
 			}
 		}
 	private: System::Windows::Forms::Panel^ board_panel;
-
 
 
 

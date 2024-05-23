@@ -1,24 +1,23 @@
 #pragma once
-
 #include <vector>
 
-// enum representing piece types
-enum Piece { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
-
-// enum representing piece color or square color
-enum Color { NONE, WHITE, BLACK };
-
-// enum representing square color
-enum SquareColor { WHITE_SQUARE, BLACK_SQUARE };
-
-//square on the board
-struct ChessPiece {
-    Piece piece;
-    Color color;
-    SquareColor square_color;
-};
-
 class ChessBoard {
+private:
+    // enum representing piece types
+    enum Piece { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
+
+    // enum representing piece color or square color
+    enum Color { NONE, WHITE, BLACK };
+
+    // enum representing square color
+    enum SquareColor { WHITE_SQUARE, BLACK_SQUARE };
+
+    //square on the board
+    struct ChessPiece {
+        Piece piece;
+        Color color;
+        SquareColor square_color;
+    };
 public:
     ChessBoard() {
         board.resize(8, std::vector<ChessPiece>(8));
