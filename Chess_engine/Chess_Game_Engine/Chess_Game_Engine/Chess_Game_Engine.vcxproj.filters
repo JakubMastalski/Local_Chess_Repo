@@ -24,12 +24,18 @@
     <ClCompile Include="ChessTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="custom_picturebox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InitializeChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="custom_picturebox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
