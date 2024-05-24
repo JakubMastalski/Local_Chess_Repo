@@ -21,12 +21,15 @@
     <ClCompile Include="BoardForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyForm.cpp">
+    <ClCompile Include="ChessTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InitializeChessBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

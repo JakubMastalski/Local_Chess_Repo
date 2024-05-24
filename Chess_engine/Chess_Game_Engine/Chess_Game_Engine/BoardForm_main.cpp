@@ -1,6 +1,5 @@
 #include "BoardForm.h"
 
-
 using namespace System;
 using namespace System::Windows::Forms;
 
