@@ -13,6 +13,7 @@ namespace ChessGameEngine {
 	BoardForm::BoardForm(void)
 	{
 		InitializeComponent();
+		
 		start_black = Point(602, 12);
 		start_white = Point(602, 250);
 		on_move = true;
