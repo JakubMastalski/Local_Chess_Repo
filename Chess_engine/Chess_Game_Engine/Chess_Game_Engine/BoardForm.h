@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <vector>
+#include "custom_picturebox.h"
+
 
 
 
@@ -66,6 +68,8 @@ namespace ChessGameEngine {
 
 		bool dragging;
 		Point scope;
+	private:
+		array<array<custom_picturebox^>^>^ pictureBoxes;
 
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
