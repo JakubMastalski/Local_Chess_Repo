@@ -79,21 +79,97 @@ public:
                 // Et the color of the square to add good pb
                 SquareColor squareColor = (row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE;
 
+                
+                    if (WHITE_SQUARE)
+                    {
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg";
+                    }
+                    else
+                    {
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
+                    }
+
                 // Set the square on the board
                 Piece piece;
                 PieceColor color;
+               
                 if (row == 1 || row == 6)
                 {
                     piece = PAWN;
+
                     color = (row == 1) ? WHITE : BLACK;
-            
+                    if (WHITE)
+                    {
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.jpg";
+                    }
+                    else
+                    {
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.jpg";
+                    }
 
                 }
-                else
+                if (row == 0)
+                    color = WHITE;
                 {
-                    piece = EMPTY;
-                    color = NONE;
+                    switch (col)
+                    {
+                    case 0:
+                    case 7:
+                        piece = Piece::ROOK;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.jpg";
+                        break;
+                    case 1:
+                    case 6:
+                        piece = Piece::KNIGHT;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.jpg";
+                        break;
+                    case 2:
+                    case 5:
+                        piece = Piece::BISHOP;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.jpg";
+                        break;
+                    case 3:
+                        piece = (color == PieceColor::WHITE) ? Piece::QUEEN : Piece::KING;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.jpg";
+                        break;
+                    case 4:
+                        piece = (color == PieceColor::WHITE) ? Piece::KING : Piece::QUEEN;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.jpg";
+                        break;
+                    }
                 }
+                if(row == 7)
+                {
+                    color = PieceColor::BLACK;
+                    switch (col)
+                    {
+                    case 0:
+                    case 7:
+                        piece = Piece::ROOK;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.jpg";
+                        break;
+                    case 1:
+                    case 6:
+                        piece = Piece::KNIGHT;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.jpg";
+                        break;
+                    case 2:
+                    case 5:
+                        piece = Piece::BISHOP;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.jpg";
+                        break;
+                    case 3:
+                        piece = Piece::QUEEN;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.jpg";
+                        break;
+                    case 4:
+                        piece = Piece::KING;
+                        this->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.jpg";
+                        break;
+                    }
+                }
+
+
                 pictureBox->Tag = gcnew Tuple<int, int, int>((int)piece, (int)color, (int)squareColor);
 
                 pictureBoxes[row][col] = pictureBox;

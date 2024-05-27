@@ -407,8 +407,10 @@ namespace ChessGameEngine {
 		this->picturebox_board->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
 		this->picturebox_board->TabIndex = 6;
 		this->picturebox_board->TabStop = false;
+		this->picturebox_board->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseDown_1);
+		this->picturebox_board->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseMove_1);
+		this->picturebox_board->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseUp_1);
 		//
-		this->pictureBoxes[0][0]->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\king_alfa.png";
 		this->pictureBoxes[0][0]->Location = System::Drawing::Point(250,250);
 		this->pictureBoxes[0][0]->Name = L"custom_pb1222222";
 		// 

@@ -4,9 +4,6 @@
 
 
 
-
-
-
 namespace ChessGameEngine {
 
 
