@@ -1,32 +1,7 @@
-#include "string"
-
 
 using namespace System;
 using namespace System::Drawing;
 using namespace System::Windows::Forms;
-
-//file path
-/*
-
-std::string white_pawn = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.jpg";
-std::string black_pawn = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.jpg";
-std::string white_bishop = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.jpg";
-std::string black_bishop = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.jpg";
-std::string white_knight = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.jpg";
-std::string black_knight = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.jpg";
-std::string white_rook = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.jpg";
-std::string black_rook = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.jpg";
-std::string white_queen = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.jpg";
-std::string black_queen = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.jpg";
-std::string white_king = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.jpg";
-std::string black_king = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.jpg";
-std::string white_kingchecked = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_kingchecked.jpg";
-std::string black_kingchecked = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_kingchecked.jpg";
-std::string white_sqr = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg";
-std::string black_sqr = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
-std::string on_move = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\on_move.jpg";
-*/
-
 
 
 // enum representing piece types
@@ -111,16 +86,34 @@ public:
                     case 0:
                     case 7:
                         piece = Piece::ROOK;
-                        pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.jpg" :
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.jpg";
+                        if (squareColor == WHITE_SQUARE)
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.jpg";
+                        }
+                        else
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook2.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook2.jpg";
+                        }
                         break;
                     case 1:
                     case 6:
                         piece = Piece::KNIGHT;
-                        pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.jpg" :
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.jpg";
+                        if (squareColor == WHITE_SQUARE)
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.jpg";
+                        }
+                        else
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight2.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight2.jpg";
+                        }
                         break;
                     case 2:
                     case 5:
@@ -139,16 +132,36 @@ public:
                         }
                         break;
                     case 3:
+
                         piece = Piece::QUEEN;
-                        pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.jpg" :
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.jpg";
+                        if (squareColor == WHITE_SQUARE)
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.jpg";
+                        }
+                        else
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen2.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen2.jpg";
+                        }
                         break;
                     case 4:
                         piece = Piece::KING;
-                        pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.jpg" :
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.jpg";
+                        if (squareColor == WHITE_SQUARE)
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.jpg";
+                            break;
+                        }
+                        else
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king2.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king2.jpg";
+                        }
                         break;
                     }
                 }
