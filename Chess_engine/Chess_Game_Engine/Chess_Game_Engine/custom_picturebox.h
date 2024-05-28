@@ -96,15 +96,25 @@ public:
                 if (row == 1 || row == 6)
                 {
                     piece = Piece::PAWN;
-                    color = (row == 1) ? PieceColor::WHITE : PieceColor::BLACK;
-                    pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
-                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.jpg" :
-                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.jpg";
+                    if (squareColor == WHITE_SQUARE)
+                    {
+                        color = (row == 1) ? PieceColor::BLACK : PieceColor::WHITE;
+                        pictureBox->ImageLocation = (color == PieceColor::BLACK) ?
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.jpg" :
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.jpg";
+                    }
+                    else
+                    {
+                        color = (row == 1) ? PieceColor::BLACK : PieceColor::WHITE;
+                        pictureBox->ImageLocation = (color == PieceColor::BLACK) ?
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn2.jpg" :
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn2.jpg";
+                    }
                 }
 
                 if (row == 0 || row == 7)
                 {
-                    color = (row == 0) ? PieceColor::WHITE : PieceColor::BLACK;
+                    color = (row == 0) ? PieceColor::BLACK : PieceColor::WHITE;
                     switch (col)
                     {
                     case 0:
@@ -190,7 +200,6 @@ public:
      
 
                 pictureBox->Tag = gcnew Tuple<int, int, int>((int)piece, (int)color, (int)squareColor);
-
                 pictureBoxes[row][col] = pictureBox;
                 
             }
