@@ -1,7 +1,6 @@
 #include "string"
 
 
-
 using namespace System;
 using namespace System::Drawing;
 using namespace System::Windows::Forms;
@@ -67,6 +66,7 @@ public:
     void InitializeBoard()
     {
         // Custom PictureBox list
+        int squareSize = 460 / 8;
         this->pictureBoxes = gcnew array<array<custom_picturebox^>^>(8);
         for (int row = 0; row < 8; row++)
         {
@@ -75,15 +75,16 @@ public:
             {
                 custom_picturebox^ pictureBox = gcnew custom_picturebox();
 
+                pictureBox->Location = System::Drawing::Point(col * squareSize, row * squareSize);
                 // Set the color of the square
                 SquareColor squareColor = (row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE;
 
                 // Set the image location based on the square color
-                if (squareColor == WHITE_SQUARE)
+                if (row > 1 && row < 6 && squareColor == WHITE_SQUARE)
                 {
                     pictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg";
                 }
-                else
+                else if(row > 1 && row < 6)
                 {
                     pictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
                 }
@@ -124,9 +125,18 @@ public:
                     case 2:
                     case 5:
                         piece = Piece::BISHOP;
-                        pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.jpg" :
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.jpg";
+                        if (squareColor == WHITE_SQUARE)
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.jpg";
+                        }
+                        else
+                        {
+                            pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop2.jpg" :
+                                "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop2.jpg";
+                        }
                         break;
                     case 3:
                         piece = Piece::QUEEN;
@@ -142,11 +152,12 @@ public:
                         break;
                     }
                 }
+     
 
                 pictureBox->Tag = gcnew Tuple<int, int, int>((int)piece, (int)color, (int)squareColor);
 
                 pictureBoxes[row][col] = pictureBox;
-                this->Controls->Add(pictureBox);
+                
             }
         }
     }

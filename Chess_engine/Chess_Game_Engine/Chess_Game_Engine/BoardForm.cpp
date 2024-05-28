@@ -38,7 +38,13 @@ namespace ChessGameEngine {
 		pictureBoxInstance->InitializeBoard(); // Inicjalizacja planszy w pictureBoxInstance
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Ustawienie pictureBoxes na tablicê utworzon¹ w pictureBoxInstance
 		// Dodanie pictureBoxInstance do kontrolki formularza
-		this->Controls->Add(pictureBoxes[0][0]);
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				this->Controls->Add(pictureBoxes[i][j]);
+			}
+		}
 
 
 
@@ -410,9 +416,10 @@ namespace ChessGameEngine {
 		this->picturebox_board->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseDown_1);
 		this->picturebox_board->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseMove_1);
 		this->picturebox_board->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseUp_1);
-		//
-		this->pictureBoxes[0][0]->Location = System::Drawing::Point(250,250);
-		this->pictureBoxes[0][0]->Name = L"custom_pb1222222";
+		//PB TESTOWE CUSTOM
+
+		
+
 		// 
 		// grid_panel
 		// 
