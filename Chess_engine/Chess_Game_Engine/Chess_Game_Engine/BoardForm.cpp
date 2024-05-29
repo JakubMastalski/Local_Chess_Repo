@@ -28,6 +28,7 @@ namespace ChessGameEngine {
 	{
 		if (components)
 		{
+			delete pictureBoxes;
 			delete components;
 		}
 	}
@@ -45,9 +46,13 @@ namespace ChessGameEngine {
 			for (int j = 0; j < 8; j++)
 			{
 				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 			}
 		}
 
+		
 
 
 
@@ -404,6 +409,78 @@ namespace ChessGameEngine {
 		this->menu_timer_white->Interval = 1000;
 		this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
 		//PB TESTOWE CUSTOM
+		pictureBoxes[0][0]->Name = "pb_h8";
+		pictureBoxes[0][1]->Name = "pb_h7";
+		pictureBoxes[0][2]->Name = "pb_h6";
+		pictureBoxes[0][3]->Name = "pb_d5";
+		pictureBoxes[0][4]->Name = "pb_h4";
+		pictureBoxes[0][5]->Name = "pb_h3";
+		pictureBoxes[0][6]->Name = "pb_h2";
+		pictureBoxes[0][7]->Name = "pb_h1";
+
+		pictureBoxes[1][0]->Name = "pb_g8";
+		pictureBoxes[1][1]->Name = "pb_g7";
+		pictureBoxes[1][2]->Name = "pb_g6";
+		pictureBoxes[1][3]->Name = "pb_g5";
+		pictureBoxes[1][4]->Name = "pb_g4";
+		pictureBoxes[1][5]->Name = "pb_g3";
+		pictureBoxes[1][6]->Name = "pb_g2";
+		pictureBoxes[1][7]->Name = "pb_g1";
+
+		pictureBoxes[2][0]->Name = "pb_f8";
+		pictureBoxes[2][1]->Name = "pb_f7";
+		pictureBoxes[2][2]->Name = "pb_f6";
+		pictureBoxes[2][3]->Name = "pb_f5";
+		pictureBoxes[2][4]->Name = "pb_f4";
+		pictureBoxes[2][5]->Name = "pb_f3";
+		pictureBoxes[2][6]->Name = "pb_f2";
+		pictureBoxes[2][7]->Name = "pb_f1";
+
+		pictureBoxes[3][0]->Name = "pb_e8";
+		pictureBoxes[3][1]->Name = "pb_e7";
+		pictureBoxes[3][2]->Name = "pb_e6";
+		pictureBoxes[3][3]->Name = "pb_e5";
+		pictureBoxes[3][4]->Name = "pb_e4";
+		pictureBoxes[3][5]->Name = "pb_e3";
+		pictureBoxes[3][6]->Name = "pb_e2";
+		pictureBoxes[3][7]->Name = "pb_e1";
+
+		pictureBoxes[4][0]->Name = "pb_d8";
+		pictureBoxes[4][1]->Name = "pb_d7";
+		pictureBoxes[4][2]->Name = "pb_d6";
+		pictureBoxes[4][3]->Name = "pb_d5";
+		pictureBoxes[4][4]->Name = "pb_d4";
+		pictureBoxes[4][5]->Name = "pb_d3";
+		pictureBoxes[4][6]->Name = "pb_d2";
+		pictureBoxes[4][7]->Name = "pb_d1";
+
+		pictureBoxes[5][0]->Name = "pb_c8";
+		pictureBoxes[5][1]->Name = "pb_c7";
+		pictureBoxes[5][2]->Name = "pb_c6";
+		pictureBoxes[5][3]->Name = "pb_c5";
+		pictureBoxes[5][4]->Name = "pb_c4";
+		pictureBoxes[5][5]->Name = "pb_c3";
+		pictureBoxes[5][6]->Name = "pb_c2";
+		pictureBoxes[5][7]->Name = "pb_c1";
+
+		pictureBoxes[6][0]->Name = "pb_b8";
+		pictureBoxes[6][1]->Name = "pb_b7";
+		pictureBoxes[6][2]->Name = "pb_b6";
+		pictureBoxes[6][3]->Name = "pb_b5";
+		pictureBoxes[6][4]->Name = "pb_b4";
+		pictureBoxes[6][5]->Name = "pb_b3";
+		pictureBoxes[6][6]->Name = "pb_b2";
+		pictureBoxes[6][7]->Name = "pb_b1";
+
+		pictureBoxes[7][0]->Name = "pb_a8";
+		pictureBoxes[7][1]->Name = "pb_a7";
+		pictureBoxes[7][2]->Name = "pb_a6";
+		pictureBoxes[7][3]->Name = "pb_a5";
+		pictureBoxes[7][4]->Name = "pb_a4";
+		pictureBoxes[7][5]->Name = "pb_a3";
+		pictureBoxes[7][6]->Name = "pb_a2";
+		pictureBoxes[7][7]->Name = "pb_a1";
+		
 		// 
 		// grid_panel
 		// 
@@ -724,20 +801,34 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 }
 	   //draging form
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
-		dragging = true;
-		scope.X = e->X;
-		scope.Y = e->Y;
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			PictureBox^ pictureBox = dynamic_cast<PictureBox^>(sender);
+			if (pictureBox != nullptr) {
+				// Rozpocznij przeci¹ganie obrazka
+				pictureBox->Capture = true;
+				pictureBox->Tag = "Dragging"; // Oznacz, ¿e obrazek jest przeci¹gany
+			}
+		}
    }
 	void BoardForm::grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
-		if (dragging)
-		{
-			Point current_location = PointToScreen(Point(e->X, e->Y));
-			Location = Point(current_location.X - scope.X, current_location.Y - scope.Y);
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			PictureBox^ pictureBox = dynamic_cast<PictureBox^>(sender);
+			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
+				// Przesuñ obrazek wraz z mysz¹
+				pictureBox->Left = e->X + pictureBox->Left - pictureBox->Width / 2;
+				pictureBox->Top = e->Y + pictureBox->Top - pictureBox->Height / 2;
+			}
 		}
-
 	}
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		dragging = false;
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			PictureBox^ pictureBox = dynamic_cast<PictureBox^>(sender);
+			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
+				// Zakoñcz przeci¹ganie obrazka
+				pictureBox->Capture = false;
+				pictureBox->Tag = ""; // Wyczyœæ tag przeci¹gania
+			}
+		}
 	}
 };
 
