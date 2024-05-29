@@ -93,16 +93,12 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 
 	   //close app
 	private: System::Void exitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-
 	private: System::Void close_timepanel_Click(System::Object^ sender, System::EventArgs^ e);
+		   //draging form
+	private: System::Void grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private: System::Void grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private: System::Void grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 
-	  //drag form
-	private: System::Void picturebox_board_MouseDown_1(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-		//get curent mouse pos
-	private: System::Void picturebox_board_MouseMove_1(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-		 //disable draging
-    private: System::Void picturebox_board_MouseUp_1(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) ;
-
-
+	
 };
 }

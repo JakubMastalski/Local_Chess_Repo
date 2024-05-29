@@ -33,16 +33,18 @@ namespace ChessGameEngine {
 	}
 	void BoardForm::InitializeComponent(void)
 	{
+		//init grid panel
+		this->grid_panel = (gcnew System::Windows::Forms::Panel());
 		//array of board classes objects
 		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
-		pictureBoxInstance->InitializeBoard(); // Inicjalizacja planszy w pictureBoxInstance
-		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Ustawienie pictureBoxes na tablicê utworzon¹ w pictureBoxInstance
-		// Dodanie pictureBoxInstance do kontrolki formularza
+		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
+		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
+		//add picture boxed to form
 		for (int i = 0; i < 8; i++)
 		{
 			for (int j = 0; j < 8; j++)
 			{
-				this->Controls->Add(pictureBoxes[i][j]);
+				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
 			}
 		}
 
@@ -77,7 +79,6 @@ namespace ChessGameEngine {
 		this->menu_timer_black = (gcnew System::Windows::Forms::Timer(this->components));
 		this->menu_timer_white = (gcnew System::Windows::Forms::Timer(this->components));
 		this->picturebox_board = (gcnew System::Windows::Forms::PictureBox());
-		this->grid_panel = (gcnew System::Windows::Forms::Panel());
 		this->board_panel->SuspendLayout();
 		this->timeset_panel->SuspendLayout();
 		this->increment_panel->SuspendLayout();
@@ -401,34 +402,21 @@ namespace ChessGameEngine {
 		// 
 		this->menu_timer_white->Interval = 1000;
 		this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
-		// 
-		// picturebox_board
-		// 
-		this->picturebox_board->BackColor = System::Drawing::Color::Gray;
-		this->picturebox_board->Dock = System::Windows::Forms::DockStyle::Fill;
-		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
-		this->picturebox_board->Location = System::Drawing::Point(0, 0);
-		this->picturebox_board->Name = L"picturebox_board";
-		this->picturebox_board->Size = System::Drawing::Size(700, 469);
-		this->picturebox_board->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
-		this->picturebox_board->TabIndex = 6;
-		this->picturebox_board->TabStop = false;
-		this->picturebox_board->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseDown_1);
-		this->picturebox_board->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseMove_1);
-		this->picturebox_board->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_board_MouseUp_1);
 		//PB TESTOWE CUSTOM
-
-		
-
 		// 
 		// grid_panel
 		// 
-		this->grid_panel->BackColor = System::Drawing::Color::DimGray;
+		this->grid_panel->BackColor = System::Drawing::Color::Transparent;
 		this->grid_panel->Location = System::Drawing::Point(121, 5);
 		this->grid_panel->Name = L"grid_panel";
 		this->grid_panel->Size = System::Drawing::Size(460, 460);
+		this->grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
+		this->grid_panel->Controls->Add(picturebox_board);
 		this->grid_panel->TabIndex = 47;
-		this->grid_panel->Visible = false;
+		this->grid_panel->Visible = true;
+		this->grid_panel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+		this->grid_panel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+		this->grid_panel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 		// 
 		// BoardForm
 		// 
@@ -706,24 +694,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	timeset_panel->Visible = false;
 	timeset_panel->Enabled = false;
 }
-	   //drag form
-	   bool dragging = false;
-	   Point scope;
-	   void BoardForm::picturebox_board_MouseDown_1(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	dragging = true;
-	scope.X = e->X;
-	scope.Y = e->Y;
-}
-     void BoardForm::picturebox_board_MouseMove_1(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	    if (dragging)
-	    {
-		Point current_scope = PointToScreen(Point(e->X, e->Y));
-		Location = Point(current_scope.X - scope.X, current_scope.Y - scope.Y);
-	    }
-}
-	   void BoardForm::picturebox_board_MouseUp_1(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	dragging = false;
-}
+	   //draging form
+    void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
+		dragging = true;
+		scope.X = e->X;
+		scope.Y = e->Y;
+   }
+	void BoardForm::grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
+		if (dragging)
+		{
+			Point current_location = PointToScreen(Point(e->X, e->Y));
+			Location = Point(current_location.X - scope.X, current_location.Y - scope.Y);
+		}
+
+	}
+	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		dragging = false;
+	}
 };
 
 
