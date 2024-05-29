@@ -113,11 +113,12 @@ namespace ChessGameEngine {
 		this->timeset_panel->Controls->Add(this->label_minperside);
 		this->timeset_panel->Controls->Add(this->trackbar_minperside);
 		this->timeset_panel->Controls->Add(this->minperside_label);
-		this->timeset_panel->Location = System::Drawing::Point(677, 112);
+		this->timeset_panel->Location = System::Drawing::Point(200, 100);
 		this->timeset_panel->Name = L"timeset_panel";
 		this->timeset_panel->Size = System::Drawing::Size(330, 232);
 		this->timeset_panel->TabIndex = 6;
 		this->timeset_panel->Visible = false;
+		this->timeset_panel->BringToFront();
 		// 
 		// increment_panel
 		// 
@@ -269,7 +270,7 @@ namespace ChessGameEngine {
 		// time_white
 		// 
 		this->time_white->AutoSize = true;
-		this->time_white->BackColor = System::Drawing::Color::Gray;
+		this->time_white->BackColor = System::Drawing::Color::Transparent;
 		this->time_white->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 		this->time_white->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 			static_cast<System::Byte>(238)));
@@ -282,7 +283,7 @@ namespace ChessGameEngine {
 		// label_whitetime
 		// 
 		this->label_whitetime->AutoSize = true;
-		this->label_whitetime->BackColor = System::Drawing::Color::Gray;
+		this->label_whitetime->BackColor = System::Drawing::Color::Transparent;
 		this->label_whitetime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 		this->label_whitetime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 			static_cast<System::Byte>(238)));
@@ -296,7 +297,7 @@ namespace ChessGameEngine {
 		// label_blacktime
 		// 
 		this->label_blacktime->AutoSize = true;
-		this->label_blacktime->BackColor = System::Drawing::Color::Gray;
+		this->label_blacktime->BackColor = System::Drawing::Color::Transparent;
 		this->label_blacktime->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 		this->label_blacktime->Font = (gcnew System::Drawing::Font(L"Sitka Banner", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 			static_cast<System::Byte>(238)));
@@ -310,7 +311,7 @@ namespace ChessGameEngine {
 		// time_black
 		// 
 		this->time_black->AutoSize = true;
-		this->time_black->BackColor = System::Drawing::Color::Gray;
+		this->time_black->BackColor = System::Drawing::Color::Transparent;
 		this->time_black->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 		this->time_black->Font = (gcnew System::Drawing::Font(L"Segoe UI", 22.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 			static_cast<System::Byte>(238)));
@@ -461,8 +462,23 @@ namespace ChessGameEngine {
 	
 
 void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->grid_panel->Controls->Clear();
+	//init grid panel
+
 	if (this->picturebox_board->ImageLocation == L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg")
 	{
+		//array of board classes objects
+		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
+		pictureBoxInstance->FlipBoard(); // init board in pb_instance
+		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes();
+		//add picture boxed to form
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+			}
+		}
 		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg";
 		picturebox_board->Refresh();
 		label_blacktime->Location = start_white;
@@ -470,6 +486,18 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 	}
 	else
 	{
+		//array of board classes objects
+		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
+		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
+		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes();
+		//add picture boxed to form
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+			}
+		}
 		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
 		picturebox_board->Refresh();
 		label_blacktime->Location = start_black;
