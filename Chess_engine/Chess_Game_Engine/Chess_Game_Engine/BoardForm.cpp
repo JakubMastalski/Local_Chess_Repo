@@ -41,7 +41,7 @@ namespace ChessGameEngine {
 		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
 		//add picture boxed to form
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < 8; j++)
 			{
@@ -52,9 +52,17 @@ namespace ChessGameEngine {
 			}
 		}
 
-		
-
-
+		// Inicjowanie zdarzeñ myszy dla pól na ostatnim rzêdzie (indeksy 6 i 7)
+		for (int i = 6; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+			}
+		}
 
 		this->components = (gcnew System::ComponentModel::Container());
 		this->board_panel = (gcnew System::Windows::Forms::Panel());
@@ -436,33 +444,6 @@ namespace ChessGameEngine {
 		pictureBoxes[2][6]->Name = "pb_f2";
 		pictureBoxes[2][7]->Name = "pb_f1";
 
-		pictureBoxes[3][0]->Name = "pb_e8";
-		pictureBoxes[3][1]->Name = "pb_e7";
-		pictureBoxes[3][2]->Name = "pb_e6";
-		pictureBoxes[3][3]->Name = "pb_e5";
-		pictureBoxes[3][4]->Name = "pb_e4";
-		pictureBoxes[3][5]->Name = "pb_e3";
-		pictureBoxes[3][6]->Name = "pb_e2";
-		pictureBoxes[3][7]->Name = "pb_e1";
-
-		pictureBoxes[4][0]->Name = "pb_d8";
-		pictureBoxes[4][1]->Name = "pb_d7";
-		pictureBoxes[4][2]->Name = "pb_d6";
-		pictureBoxes[4][3]->Name = "pb_d5";
-		pictureBoxes[4][4]->Name = "pb_d4";
-		pictureBoxes[4][5]->Name = "pb_d3";
-		pictureBoxes[4][6]->Name = "pb_d2";
-		pictureBoxes[4][7]->Name = "pb_d1";
-
-		pictureBoxes[5][0]->Name = "pb_c8";
-		pictureBoxes[5][1]->Name = "pb_c7";
-		pictureBoxes[5][2]->Name = "pb_c6";
-		pictureBoxes[5][3]->Name = "pb_c5";
-		pictureBoxes[5][4]->Name = "pb_c4";
-		pictureBoxes[5][5]->Name = "pb_c3";
-		pictureBoxes[5][6]->Name = "pb_c2";
-		pictureBoxes[5][7]->Name = "pb_c1";
-
 		pictureBoxes[6][0]->Name = "pb_b8";
 		pictureBoxes[6][1]->Name = "pb_b7";
 		pictureBoxes[6][2]->Name = "pb_b6";
@@ -492,6 +473,7 @@ namespace ChessGameEngine {
 		this->grid_panel->Controls->Add(picturebox_board);
 		this->grid_panel->TabIndex = 47;
 		this->grid_panel->Visible = true;
+		this->grid_panel->BringToFront();
 		this->grid_panel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 		this->grid_panel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 		this->grid_panel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
@@ -802,7 +784,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   //draging form
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			PictureBox^ pictureBox = dynamic_cast<PictureBox^>(sender);
+			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr) {
 				// Rozpocznij przeci¹ganie obrazka
 				pictureBox->Capture = true;
@@ -812,7 +794,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
 	void BoardForm::grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			PictureBox^ pictureBox = dynamic_cast<PictureBox^>(sender);
+			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
 				// Przesuñ obrazek wraz z mysz¹
 				pictureBox->Left = e->X + pictureBox->Left - pictureBox->Width / 2;
@@ -822,7 +804,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			PictureBox^ pictureBox = dynamic_cast<PictureBox^>(sender);
+			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
 				// Zakoñcz przeci¹ganie obrazka
 				pictureBox->Capture = false;
