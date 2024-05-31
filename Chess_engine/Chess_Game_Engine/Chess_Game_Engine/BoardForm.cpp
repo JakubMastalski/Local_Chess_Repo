@@ -83,6 +83,7 @@ namespace ChessGameEngine {
 		this->label_whitetime = (gcnew System::Windows::Forms::Label());
 		this->label_blacktime = (gcnew System::Windows::Forms::Label());
 		this->time_black = (gcnew System::Windows::Forms::Label());
+		this->picturebox_bg = (gcnew System::Windows::Forms::PictureBox());
 		this->chess_menu = (gcnew System::Windows::Forms::MenuStrip());
 		this->flipBoardToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 		this->flipBoardToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -461,7 +462,15 @@ namespace ChessGameEngine {
 		pictureBoxes[7][5]->Name = "pb_a3";
 		pictureBoxes[7][6]->Name = "pb_a2";
 		pictureBoxes[7][7]->Name = "pb_a1";
-		
+        //picture box bg
+		//this->picturebox_bg->Location = System::Drawing::Point(0, 0); // Ustawienie lokalizacji
+		this->picturebox_bg->Size = System::Drawing::Size(460, 460); // Ustawienie rozmiaru
+		this->picturebox_bg->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
+		this->picturebox_bg->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+		this->picturebox_bg->Dock = System::Windows::Forms::DockStyle::Fill;
+		this->picturebox_bg->SendToBack();
+		this->picturebox_bg->TabIndex = 6;
+		this->picturebox_bg->TabStop = false;
 		// 
 		// grid_panel
 		// 
@@ -469,8 +478,8 @@ namespace ChessGameEngine {
 		this->grid_panel->Location = System::Drawing::Point(121, 5);
 		this->grid_panel->Name = L"grid_panel";
 		this->grid_panel->Size = System::Drawing::Size(460, 460);
+		this->grid_panel->Controls->Add(picturebox_bg);
 		this->grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
-		this->grid_panel->Controls->Add(picturebox_board);
 		this->grid_panel->TabIndex = 47;
 		this->grid_panel->Visible = true;
 		this->grid_panel->BringToFront();
@@ -512,6 +521,9 @@ namespace ChessGameEngine {
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picturebox_board))->EndInit();
 		this->ResumeLayout(false);
 		this->PerformLayout();
+		this->SetStyle(System::Windows::Forms::ControlStyles::UserPaint, true);
+		this->SetStyle(System::Windows::Forms::ControlStyles::AllPaintingInWmPaint, true);
+		this->SetStyle(System::Windows::Forms::ControlStyles::DoubleBuffer, true);
 	}
 #pragma endregion
 #pragma endregion
@@ -781,14 +793,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	timeset_panel->Visible = false;
 	timeset_panel->Enabled = false;
 }
-	   //draging form
+	   //draging pieces
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr) {
-				// Rozpocznij przeci¹ganie obrazka
 				pictureBox->Capture = true;
-				pictureBox->Tag = "Dragging"; // Oznacz, ¿e obrazek jest przeci¹gany
+				pictureBox->Tag = "Dragging"; 
+				
 			}
 		}
    }
@@ -796,7 +808,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
-				// Przesuñ obrazek wraz z mysz¹
+
 				pictureBox->Left = e->X + pictureBox->Left - pictureBox->Width / 2;
 				pictureBox->Top = e->Y + pictureBox->Top - pictureBox->Height / 2;
 			}
@@ -806,9 +818,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
-				// Zakoñcz przeci¹ganie obrazka
+
 				pictureBox->Capture = false;
-				pictureBox->Tag = ""; // Wyczyœæ tag przeci¹gania
+				pictureBox->Tag = ""; 
 			}
 		}
 	}

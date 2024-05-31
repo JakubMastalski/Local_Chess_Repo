@@ -48,6 +48,7 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::Label^ label_minperside;
 	private: System::Windows::Forms::Label^ label_incpersec;
 	private: System::Windows::Forms::Timer^ menu_timer_black;
+	private: System::Windows::Forms::PictureBox^ picturebox_bg;
 	private: System::Windows::Forms::Timer^ menu_timer_white;
 	private: System::Windows::Forms::Button^ close_timepanel;
 	private: System::Windows::Forms::Label^ label_whitetime;
