@@ -124,6 +124,7 @@
     <ClCompile Include="BoardForm_main.cpp" />
     <ClCompile Include="ChessTools.cpp" />
     <ClCompile Include="custom_picturebox.cpp" />
+    <ClCompile Include="Piece_Class.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardForm.h">
@@ -131,6 +132,7 @@
     </ClInclude>
     <ClInclude Include="custom_picturebox.h" />
     <ClInclude Include="InitializeChessBoard.h" />
+    <ClInclude Include="Piece_Class.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BoardForm.resx">

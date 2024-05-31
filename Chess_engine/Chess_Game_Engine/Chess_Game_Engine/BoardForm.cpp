@@ -64,6 +64,18 @@ namespace ChessGameEngine {
 			}
 		}
 
+		//init empty custom pb
+
+		for (int i = 2; i < 6; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+				pictureBoxes[i][j]->Visible = false;
+				pictureBoxes[i][j]->Enabled = false;
+			}
+		}
+
 		this->components = (gcnew System::ComponentModel::Container());
 		this->board_panel = (gcnew System::Windows::Forms::Panel());
 		this->timeset_panel = (gcnew System::Windows::Forms::Panel());
@@ -418,50 +430,7 @@ namespace ChessGameEngine {
 		this->menu_timer_white->Interval = 1000;
 		this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
 		//PB TESTOWE CUSTOM
-		pictureBoxes[0][0]->Name = "pb_h8";
-		pictureBoxes[0][1]->Name = "pb_h7";
-		pictureBoxes[0][2]->Name = "pb_h6";
-		pictureBoxes[0][3]->Name = "pb_d5";
-		pictureBoxes[0][4]->Name = "pb_h4";
-		pictureBoxes[0][5]->Name = "pb_h3";
-		pictureBoxes[0][6]->Name = "pb_h2";
-		pictureBoxes[0][7]->Name = "pb_h1";
-
-		pictureBoxes[1][0]->Name = "pb_g8";
-		pictureBoxes[1][1]->Name = "pb_g7";
-		pictureBoxes[1][2]->Name = "pb_g6";
-		pictureBoxes[1][3]->Name = "pb_g5";
-		pictureBoxes[1][4]->Name = "pb_g4";
-		pictureBoxes[1][5]->Name = "pb_g3";
-		pictureBoxes[1][6]->Name = "pb_g2";
-		pictureBoxes[1][7]->Name = "pb_g1";
-
-		pictureBoxes[2][0]->Name = "pb_f8";
-		pictureBoxes[2][1]->Name = "pb_f7";
-		pictureBoxes[2][2]->Name = "pb_f6";
-		pictureBoxes[2][3]->Name = "pb_f5";
-		pictureBoxes[2][4]->Name = "pb_f4";
-		pictureBoxes[2][5]->Name = "pb_f3";
-		pictureBoxes[2][6]->Name = "pb_f2";
-		pictureBoxes[2][7]->Name = "pb_f1";
-
-		pictureBoxes[6][0]->Name = "pb_b8";
-		pictureBoxes[6][1]->Name = "pb_b7";
-		pictureBoxes[6][2]->Name = "pb_b6";
-		pictureBoxes[6][3]->Name = "pb_b5";
-		pictureBoxes[6][4]->Name = "pb_b4";
-		pictureBoxes[6][5]->Name = "pb_b3";
-		pictureBoxes[6][6]->Name = "pb_b2";
-		pictureBoxes[6][7]->Name = "pb_b1";
-
-		pictureBoxes[7][0]->Name = "pb_a8";
-		pictureBoxes[7][1]->Name = "pb_a7";
-		pictureBoxes[7][2]->Name = "pb_a6";
-		pictureBoxes[7][3]->Name = "pb_a5";
-		pictureBoxes[7][4]->Name = "pb_a4";
-		pictureBoxes[7][5]->Name = "pb_a3";
-		pictureBoxes[7][6]->Name = "pb_a2";
-		pictureBoxes[7][7]->Name = "pb_a1";
+		
         //picture box bg
 		//this->picturebox_bg->Location = System::Drawing::Point(0, 0); // Ustawienie lokalizacji
 		this->picturebox_bg->Size = System::Drawing::Size(460, 460); // Ustawienie rozmiaru
@@ -800,19 +769,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			if (pictureBox != nullptr) {
 				pictureBox->Capture = true;
 				pictureBox->Tag = "Dragging"; 
-				
 			}
 		}
    }
 	void BoardForm::grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
+
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
-
+				
 				pictureBox->Left = e->X + pictureBox->Left - pictureBox->Width / 2;
 				pictureBox->Top = e->Y + pictureBox->Top - pictureBox->Height / 2;
 			}
 		}
+
 	}
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {

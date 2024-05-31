@@ -1,4 +1,5 @@
 
+
 using namespace System;
 using namespace System::Drawing;
 using namespace System::Windows::Forms;
@@ -31,8 +32,6 @@ enum Piece { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 // enum representing piece color or square color
 enum PieceColor { NONE, WHITE, BLACK };
 
-// enum representing square color
-enum SquareColor { WHITE_SQUARE, BLACK_SQUARE };
 
 
 ref class custom_picturebox :
@@ -49,7 +48,7 @@ public:
     };
 private:
     //square on the board
-
+private:
     Piece piece;
     PieceColor color;
 public:
@@ -75,13 +74,10 @@ public:
                 custom_picturebox^ pictureBox = gcnew custom_picturebox();
 
                 pictureBox->Location = System::Drawing::Point((col * squareSize)+6, (row * squareSize)+7);
-           
-
-                // Set the image location based on the square color
-             
-
+        
                 // Initialize the piece on the square
                 Piece piece = Piece::EMPTY;
+               
                 PieceColor color = PieceColor::NONE;
 
                 if (row == 1 || row == 6)
@@ -141,8 +137,14 @@ public:
                         break;
                     }
                 }
-     
-
+                else if(row > 1 && row < 6)
+                {
+                   
+                    pictureBox->ImageLocation = (row + col) % 2 == 0 ?
+                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg" :
+                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
+                }
+              
                 pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
                 pictureBox->pb_value = pbCounter++;
                 pictureBoxes[row][col] = pictureBox;
@@ -150,6 +152,8 @@ public:
                 
             }
         }
+       
+
     } 
 
     public:
@@ -170,22 +174,6 @@ public:
                     custom_picturebox^ pictureBox = gcnew custom_picturebox();
 
                     pictureBox->Location = System::Drawing::Point((col * squareSize) + 6, (row * squareSize) + 7);
-                    // Set the color of the square
-                    SquareColor squareColor = (row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE;
-
-                    // Set the image location based on the square color
-                    if (row > 1 && row < 6 && squareColor == WHITE_SQUARE)
-                    {
-                        pictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg";
-                    }
-                    else if (row > 1 && row < 6)
-                    {
-                        pictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
-                    }
-
-                    // Initialize the piece on the square
-                    Piece piece = Piece::EMPTY;
-                    PieceColor color = PieceColor::NONE;
 
                     if (row == 1 || row == 6)
                     {
@@ -244,9 +232,16 @@ public:
                             break;
                         }
                     }
+                    else if (row > 1 && row < 6)
+                    {
+                        pictureBox->ImageLocation = (row + col) % 2 == 0 ?
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg" :
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
+                        Visible = false;
+                        Enabled = false;
+                    }
 
-
-                    pictureBox->Tag = gcnew Tuple<int, int, int>((int)piece, (int)color, (int)squareColor);
+                    pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
                     pictureBox->pb_value = pbCounter++;
                     pictureBoxes[row][col] = pictureBox;
                     board_initialized = true;
@@ -254,13 +249,21 @@ public:
                 }
             }
         }
+       
+       // Geter Piece piece
+       // Geter PieceColor color
         public:
-        void on_move(custom_picturebox^ Piece)
+
+        Piece check_piece(custom_picturebox^ pb_piece)
         {
-            ;
+            return pb_piece->piece;
         }
+        public:
 
-
+        PieceColor check_color(custom_picturebox^ pb_piececolor)
+        {
+            return pb_piececolor->color;
+        }
 
 private:
     int pb_value;
