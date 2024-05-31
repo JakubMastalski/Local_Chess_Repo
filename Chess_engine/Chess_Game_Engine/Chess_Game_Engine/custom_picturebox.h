@@ -26,6 +26,10 @@ std::string black_sqr = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_
 std::string on_move = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\on_move.jpg";
 */
 
+class Pawn
+{
+    int points;
+};
 // enum representing piece types
 enum Piece { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 
@@ -253,13 +257,11 @@ public:
        // Geter Piece piece
        // Geter PieceColor color
         public:
-
         Piece check_piece(custom_picturebox^ pb_piece)
         {
             return pb_piece->piece;
         }
         public:
-
         PieceColor check_color(custom_picturebox^ pb_piececolor)
         {
             return pb_piececolor->color;
