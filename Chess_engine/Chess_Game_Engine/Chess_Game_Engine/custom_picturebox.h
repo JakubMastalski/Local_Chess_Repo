@@ -25,8 +25,6 @@ std::string black_sqr = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_
 std::string on_move = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\on_move.jpg";
 */
 
-
-
 // enum representing piece types
 enum Piece { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 
@@ -54,7 +52,6 @@ private:
 
     Piece piece;
     PieceColor color;
-    SquareColor square_color;
 public:
     array<array<custom_picturebox^>^>^ GetPictureBoxes()
     {
@@ -78,18 +75,10 @@ public:
                 custom_picturebox^ pictureBox = gcnew custom_picturebox();
 
                 pictureBox->Location = System::Drawing::Point((col * squareSize)+6, (row * squareSize)+7);
-                // Set the color of the square
-                SquareColor squareColor = (row + col) % 2 == 0 ? WHITE_SQUARE : BLACK_SQUARE;
+           
 
                 // Set the image location based on the square color
-                if (row > 1 && row < 6 && squareColor == WHITE_SQUARE)
-                {
-                    pictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg";
-                }
-                else if(row > 1 && row < 6)
-                {
-                    pictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
-                }
+             
 
                 // Initialize the piece on the square
                 Piece piece = Piece::EMPTY;
@@ -154,7 +143,7 @@ public:
                 }
      
 
-                pictureBox->Tag = gcnew Tuple<int, int, int>((int)piece, (int)color, (int)squareColor);
+                pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
                 pictureBox->pb_value = pbCounter++;
                 pictureBoxes[row][col] = pictureBox;
                 board_initialized = true;
@@ -265,6 +254,13 @@ public:
                 }
             }
         }
+        public:
+        void on_move(custom_picturebox^ Piece)
+        {
+            ;
+        }
+
+
 
 private:
     int pb_value;
