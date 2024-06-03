@@ -763,11 +763,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	timeset_panel->Enabled = false;
 }
 	   //draging pieces
+	   Point start_location;
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr) {
 				pictureBox->Capture = true;
+
+				start_location = pictureBox->Location;
+
 				pictureBox->Tag = "Dragging"; 
 			}
 		}
@@ -788,7 +792,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
-
+			
 				pictureBox->Capture = false;
 				pictureBox->Tag = ""; 
 			}
