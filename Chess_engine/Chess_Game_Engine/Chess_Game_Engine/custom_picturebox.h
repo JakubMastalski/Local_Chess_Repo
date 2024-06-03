@@ -48,6 +48,7 @@ public:
         SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
         TabIndex = 6;
         TabStop = false;
+        this->BringToFront();
     };
 private:
     //square on the board
@@ -91,6 +92,7 @@ public:
                         pictureBox->ImageLocation = (color == PieceColor::BLACK) ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png";
+                       
                     
                 }
 
@@ -106,6 +108,7 @@ public:
                             pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png" :
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+                          
                         break;
                     case 1:
                     case 6:
@@ -114,6 +117,7 @@ public:
                         pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+                      
                         break;
                     case 2:
                     case 5:
@@ -122,6 +126,7 @@ public:
                         pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+                       
                             break;
                     case 3:
                         piece = Piece::QUEEN;
@@ -129,6 +134,7 @@ public:
                             pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png" :
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+                            
                      
                         break;
                     case 4:
@@ -137,6 +143,7 @@ public:
                             pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png" :
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+                           
                         break;
                     }
                 }
@@ -146,6 +153,7 @@ public:
                     pictureBox->ImageLocation = (row + col) % 2 == 0 ?
                         "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg" :
                         "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
+                   
                 }
               
                 pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
@@ -252,6 +260,19 @@ public:
                 }
             }
         }
+public:
+        void SwapImages(custom_picturebox^ pb1, custom_picturebox^ pb2)
+         {
+        // Zamieñ lokalizacje i przypisz ImageLocation
+        Point tempLocation = pb2->Location;
+        String^ tempImageLocation = pb2->ImageLocation;
+
+        pb2->Location = pb1->Location;
+        pb2->ImageLocation = pb1->ImageLocation;
+
+        pb1->Location = tempLocation;
+        pb1->ImageLocation = tempImageLocation;
+         }
        
        // Geter Piece piece
        // Geter PieceColor color
@@ -265,7 +286,6 @@ public:
         {
             return pb_piececolor->color;
         }
-
 private:
     int pb_value;
     bool board_initialized;

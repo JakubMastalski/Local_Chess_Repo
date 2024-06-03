@@ -66,6 +66,10 @@ namespace ChessGameEngine {
 
 		bool dragging;
 		Point scope;
+
+		String^ file_path;
+		custom_picturebox^ selectedPictureBox;
+		Point start_location;
 	private:
 		array<array<custom_picturebox^>^>^ pictureBoxes;
 

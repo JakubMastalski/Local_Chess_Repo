@@ -1,6 +1,5 @@
 #include "BoardForm.h"
 
-
 namespace ChessGameEngine {
 
 	using namespace System;
@@ -71,8 +70,12 @@ namespace ChessGameEngine {
 			for (int j = 0; j < 8; j++)
 			{
 				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-				pictureBoxes[i][j]->Visible = false;
-				pictureBoxes[i][j]->Enabled = false;
+				pictureBoxes[i][j]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png";
+				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				//pictureBoxes[i][j]->Visible = false;
+				//pictureBoxes[i][j]->Enabled = false;
 			}
 		}
 
@@ -763,38 +766,44 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	timeset_panel->Enabled = false;
 }
 	   //draging pieces
-	   Point start_location;
+
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
-			if (pictureBox != nullptr) {
-				pictureBox->Capture = true;
-
-				start_location = pictureBox->Location;
-
-				pictureBox->Tag = "Dragging"; 
+			selectedPictureBox = dynamic_cast<custom_picturebox^>(sender);
+			if (selectedPictureBox != nullptr) {
+				selectedPictureBox->Capture = true;
+				start_location = selectedPictureBox->Location;
+				file_path = selectedPictureBox->ImageLocation;
+				selectedPictureBox->Tag = "Dragging";
 			}
 		}
    }
 	void BoardForm::grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
-
-		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
-			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
-				
-				pictureBox->Left = e->X + pictureBox->Left - pictureBox->Width / 2;
-				pictureBox->Top = e->Y + pictureBox->Top - pictureBox->Height / 2;
-			}
+		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
+			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
+			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
+			selectedPictureBox->Location = new_location;
 		}
 
 	}
+	bool move_legal;
+
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			custom_picturebox^ pictureBox = dynamic_cast<custom_picturebox^>(sender);
-			if (pictureBox != nullptr && pictureBox->Tag == "Dragging") {
-			
-				pictureBox->Capture = false;
-				pictureBox->Tag = ""; 
+		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
+			selectedPictureBox->Capture = false;
+			selectedPictureBox->Tag = "";
+
+			// SprawdŸ, czy nad innym PictureBoxem
+			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
+			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+
+			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
+				// Usuñ targetPictureBox
+				file_path = targetPictureBox->ImageLocation;
+				targetPictureBox->ImageLocation = selectedPictureBox->ImageLocation;
+				selectedPictureBox->ImageLocation = file_path;
+
+			   selectedPictureBox->Location = start_location;
 			}
 		}
 	}
