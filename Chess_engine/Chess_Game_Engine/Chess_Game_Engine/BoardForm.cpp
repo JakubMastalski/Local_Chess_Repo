@@ -45,6 +45,7 @@ namespace ChessGameEngine {
 		for (int row = 2; row < 6; row++) {
 			for (int col = 0; col < 8; col++) {
 				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
+				pictureBoxes[row][col]->ImageLocation = "";
 				pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
@@ -778,11 +779,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			selectedPictureBox = dynamic_cast<custom_picturebox^>(sender);
-			if (selectedPictureBox != nullptr) {
-				selectedPictureBox->Capture = true;
-				start_location = selectedPictureBox->Location;
-				file_path = selectedPictureBox->ImageLocation;
-				selectedPictureBox->Tag = "Dragging";
+
+			if (selectedPictureBox->ImageLocation != "")
+			{
+				if (selectedPictureBox != nullptr) {
+					selectedPictureBox->Capture = true;
+					start_location = selectedPictureBox->Location;
+					file_path = selectedPictureBox->ImageLocation;
+					selectedPictureBox->Tag = "Dragging";
+				}
 			}
 		}
    }

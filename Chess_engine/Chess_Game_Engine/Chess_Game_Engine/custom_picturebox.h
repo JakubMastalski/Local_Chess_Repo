@@ -237,7 +237,8 @@ public:
                     }
                     else if (row > 1 && row < 6)
                     {
-                        pictureBox->ImageLocation = "";
+                        piece = Piece::EMPTY;
+                        color = PieceColor::NONE;
                     }
 
                     pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
