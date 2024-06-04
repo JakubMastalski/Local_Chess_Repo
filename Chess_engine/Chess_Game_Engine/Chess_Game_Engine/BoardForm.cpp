@@ -27,7 +27,6 @@ namespace ChessGameEngine {
 	{
 		if (components)
 		{
-			delete pictureBoxes;
 			delete components;
 		}
 	}
@@ -40,45 +39,54 @@ namespace ChessGameEngine {
 		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
 		//add picture boxed to form
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+	// Inicjalizacja czarnych pionków (rzêdy 6 i 7) i przypisanie im zdarzeñ myszy
+		// Inicjalizacja pustych pól planszy (rzêdy 2 do 5) i przypisanie im zdarzeñ myszy
+		for (int row = 2; row < 6; row++) {
+			for (int col = 0; col < 8; col++) {
+				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
+				pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				pictureBoxes[row][col]->Enabled = false;
+				pictureBoxes[row][col]->Visible = false;
 			}
 		}
 
-		// Inicjowanie zdarzeñ myszy dla pól na ostatnim rzêdzie (indeksy 6 i 7)
-		for (int i = 6; i < 8; i++)
+
+		for (int col = 0; col < 8; col++) {
+			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
+			pictureBoxes[6][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+			pictureBoxes[6][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+			pictureBoxes[6][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+
+			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
+			pictureBoxes[7][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+			pictureBoxes[7][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+			pictureBoxes[7][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+		}
+
+		// Inicjalizacja bia³ych pionków (rzêdy 0 i 1) i przypisanie im zdarzeñ myszy
+		for (int col = 0; col < 8; col++) {
+			this->grid_panel->Controls->Add(pictureBoxes[0][col]);
+			pictureBoxes[0][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+			pictureBoxes[0][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+			pictureBoxes[0][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+
+			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
+			pictureBoxes[1][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+			pictureBoxes[1][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+			pictureBoxes[1][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+		}
+
+
+		for (int i = 0; i < 8; i++)
 		{
 			for (int j = 0; j < 8; j++)
 			{
-				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				pictureBoxes[i][j]->BringToFront();
 			}
 		}
-
-		//init empty custom pb
-
-		for (int i = 2; i < 6; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-				pictureBoxes[i][j]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png";
-				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
-				//pictureBoxes[i][j]->Visible = false;
-				//pictureBoxes[i][j]->Enabled = false;
-			}
-		}
-
+	
 		this->components = (gcnew System::ComponentModel::Container());
 		this->board_panel = (gcnew System::Windows::Forms::Panel());
 		this->timeset_panel = (gcnew System::Windows::Forms::Panel());
@@ -435,7 +443,7 @@ namespace ChessGameEngine {
 		//PB TESTOWE CUSTOM
 		
         //picture box bg
-		//this->picturebox_bg->Location = System::Drawing::Point(0, 0); // Ustawienie lokalizacji
+		this->picturebox_bg->Location = System::Drawing::Point(0, 0); // Ustawienie lokalizacji
 		this->picturebox_bg->Size = System::Drawing::Size(460, 460); // Ustawienie rozmiaru
 		this->picturebox_bg->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
 		this->picturebox_bg->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
@@ -789,21 +797,29 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	bool move_legal;
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
+			selectedPictureBox->SendToBack();
 
 			// SprawdŸ, czy nad innym PictureBoxem
 			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+			targetPictureBox->BringToFront();
 
 			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
-				// Usuñ targetPictureBox
-				file_path = targetPictureBox->ImageLocation;
+				selectedPictureBox->SendToBack();
+				//check_move();
 				targetPictureBox->ImageLocation = selectedPictureBox->ImageLocation;
-				selectedPictureBox->ImageLocation = file_path;
+				selectedPictureBox->ImageLocation = "";
 
-			   selectedPictureBox->Location = start_location;
+				// Przywróæ pozycjê selectedPictureBox do pocz¹tkowej
+				selectedPictureBox->Location = start_location;
+			}
+			else
+			{
+				selectedPictureBox->Location = start_location;
 			}
 		}
 	}

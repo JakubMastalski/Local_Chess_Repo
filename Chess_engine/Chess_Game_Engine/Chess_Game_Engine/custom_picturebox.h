@@ -147,15 +147,7 @@ public:
                         break;
                     }
                 }
-                else if(row > 1 && row < 6)
-                {
-                   
-                    pictureBox->ImageLocation = (row + col) % 2 == 0 ?
-                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg" :
-                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
-                   
-                }
-              
+            
                 pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
                 pictureBox->pb_value = pbCounter++;
                 pictureBoxes[row][col] = pictureBox;
@@ -248,8 +240,6 @@ public:
                         pictureBox->ImageLocation = (row + col) % 2 == 0 ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
-                        Visible = false;
-                        Enabled = false;
                     }
 
                     pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
@@ -261,7 +251,7 @@ public:
             }
         }
 public:
-        void SwapImages(custom_picturebox^ pb1, custom_picturebox^ pb2)
+       static void SwapImages(custom_picturebox^ pb1, custom_picturebox^ pb2)
          {
         // Zamieñ lokalizacje i przypisz ImageLocation
         Point tempLocation = pb2->Location;
