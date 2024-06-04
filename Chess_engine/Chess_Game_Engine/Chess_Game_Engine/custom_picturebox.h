@@ -237,9 +237,7 @@ public:
                     }
                     else if (row > 1 && row < 6)
                     {
-                        pictureBox->ImageLocation = (row + col) % 2 == 0 ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_sqr.jpg" :
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_sqr.jpg";
+                        pictureBox->ImageLocation = "";
                     }
 
                     pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
