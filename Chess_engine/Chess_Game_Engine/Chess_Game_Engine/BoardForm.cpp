@@ -40,6 +40,7 @@ namespace ChessGameEngine {
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
 		//add picture boxed to form
 	// Inicjalizacja czarnych pionków (rzêdy 6 i 7) i przypisanie im zdarzeñ myszy
+	
 		// Inicjalizacja pustych pól planszy (rzêdy 2 do 5) i przypisanie im zdarzeñ myszy
 		for (int row = 2; row < 6; row++) {
 			for (int col = 0; col < 8; col++) {
@@ -47,11 +48,10 @@ namespace ChessGameEngine {
 				pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
-				pictureBoxes[row][col]->Enabled = false;
-				pictureBoxes[row][col]->Visible = false;
+				pictureBoxes[row][col]->Enabled = true;
+				//pictureBoxes[row][col]->Visible = true;;
 			}
 		}
-
 
 		for (int col = 0; col < 8; col++) {
 			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
@@ -77,8 +77,8 @@ namespace ChessGameEngine {
 			pictureBoxes[1][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 			pictureBoxes[1][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 		}
-
-
+		
+	
 		for (int i = 0; i < 8; i++)
 		{
 			for (int j = 0; j < 8; j++)
@@ -806,21 +806,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			// SprawdŸ, czy nad innym PictureBoxem
 			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-			targetPictureBox->BringToFront();
 
+			
 			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
+				targetPictureBox->BringToFront();
 				selectedPictureBox->SendToBack();
 				//check_move();
 				targetPictureBox->ImageLocation = selectedPictureBox->ImageLocation;
-				selectedPictureBox->ImageLocation = "";
+				//selectedPictureBox->ImageLocation = "";
 
 				// Przywróæ pozycjê selectedPictureBox do pocz¹tkowej
 				selectedPictureBox->Location = start_location;
 			}
-			else
-			{
+			else {
+				// Przywróæ pozycjê selectedPictureBox do pocz¹tkowej, jeœli nie nad innym PictureBoxem
 				selectedPictureBox->Location = start_location;
 			}
+			
 		}
 	}
 };
