@@ -798,27 +798,21 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
 			selectedPictureBox->Capture = false;
-			selectedPictureBox->Tag = "";
 			selectedPictureBox->SendToBack();
+			selectedPictureBox->Tag = "";
 			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 		
 			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
 				BoardForm::change_pb(selectedPictureBox, targetPictureBox);
 			}
-			else if (targetPictureBox == nullptr || targetPictureBox == selectedPictureBox ||
-				(selectedPictureBox->Location.X < 0 || selectedPictureBox->Location.X > grid_panel->Width ||
-					selectedPictureBox->Location.Y < 0 || selectedPictureBox->Location.Y > grid_panel->Height)) {
-
-				selectedPictureBox->Location = start_location;
-			}
 		}
 	}
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
+		picturebox_board->Refresh();
 		String^ pb_newfilepath = selected_pb->ImageLocation;
 		target_pb->BringToFront();
-
 		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
 		Piece piece1 = selected_pb->check_piece(selected_pb);
 
