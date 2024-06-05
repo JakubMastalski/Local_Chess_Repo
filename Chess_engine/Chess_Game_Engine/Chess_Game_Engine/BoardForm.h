@@ -103,7 +103,6 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: System::Void grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private: System::Void grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private: System::Void grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-
-	
+	private: void change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb);
 };
 }

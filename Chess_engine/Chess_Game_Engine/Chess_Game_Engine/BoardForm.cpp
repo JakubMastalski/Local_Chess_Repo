@@ -50,6 +50,7 @@ namespace ChessGameEngine {
 				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 				pictureBoxes[row][col]->Enabled = true;
+				pictureBoxes[row][col]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
 				//pictureBoxes[row][col]->Visible = true;;
 			}
 		}
@@ -807,28 +808,37 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 			selectedPictureBox->SendToBack();
-
-			// SprawdŸ, czy nad innym PictureBoxem
 			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-
-			
+		
 			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
-				targetPictureBox->BringToFront();
-				selectedPictureBox->SendToBack();
-				//check_move();
-				targetPictureBox->ImageLocation = selectedPictureBox->ImageLocation;
-				//selectedPictureBox->ImageLocation = "";
+				BoardForm::change_pb(selectedPictureBox, targetPictureBox);
+			}
+			else if (targetPictureBox == nullptr || targetPictureBox == selectedPictureBox ||
+				(selectedPictureBox->Location.X < 0 || selectedPictureBox->Location.X > grid_panel->Width ||
+					selectedPictureBox->Location.Y < 0 || selectedPictureBox->Location.Y > grid_panel->Height)) {
 
-				// Przywróæ pozycjê selectedPictureBox do pocz¹tkowej
 				selectedPictureBox->Location = start_location;
 			}
-			else {
-				// Przywróæ pozycjê selectedPictureBox do pocz¹tkowej, jeœli nie nad innym PictureBoxem
-				selectedPictureBox->Location = start_location;
-			}
-			
 		}
+	}
+	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
+	{
+		String^ pb_newfilepath = selected_pb->ImageLocation;
+		target_pb->BringToFront();
+
+		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
+		Piece piece1 = selected_pb->check_piece(selected_pb);
+
+		target_pb->ImageLocation = pb_newfilepath;
+		target_pb->set_color(target_pb, piece_color1);
+		target_pb->set_piece(target_pb, piece1);
+
+		selected_pb->ImageLocation = "";
+		selected_pb->set_color(selected_pb, NONE);
+		selected_pb->set_piece(selected_pb, EMPTY);
+		selected_pb->Location = start_location;
+		selected_pb->BringToFront();
 	}
 };
 

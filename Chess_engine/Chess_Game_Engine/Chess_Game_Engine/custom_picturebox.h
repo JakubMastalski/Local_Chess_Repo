@@ -239,6 +239,7 @@ public:
                     {
                         piece = Piece::EMPTY;
                         color = PieceColor::NONE;
+                        pictureBox->ImageLocation = "";
                     }
 
                     pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
@@ -275,6 +276,18 @@ public:
         {
             return pb_piececolor->color;
         }
+        public:
+            void set_piece(custom_picturebox^ pb_piece, Piece newPiece)
+            {
+                pb_piece->piece = newPiece;
+            }
+
+      public:
+        void set_color(custom_picturebox^ pb_piececolor, PieceColor newColor)
+    {
+        pb_piececolor->color = newColor;
+    }
+
 private:
     int pb_value;
     bool board_initialized;
