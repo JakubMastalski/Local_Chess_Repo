@@ -50,34 +50,21 @@ namespace ChessGameEngine {
 				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 				pictureBoxes[row][col]->Enabled = true;
-				pictureBoxes[row][col]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+				pictureBoxes[row][col]->ImageLocation = "";
 				//pictureBoxes[row][col]->Visible = true;;
 			}
 		}
 
 		for (int col = 0; col < 8; col++) {
 			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
-			pictureBoxes[6][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-			pictureBoxes[6][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-			pictureBoxes[6][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
-
 			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
-			pictureBoxes[7][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-			pictureBoxes[7][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-			pictureBoxes[7][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 		}
 
 		// Inicjalizacja bia³ych pionków (rzêdy 0 i 1) i przypisanie im zdarzeñ myszy
 		for (int col = 0; col < 8; col++) {
 			this->grid_panel->Controls->Add(pictureBoxes[0][col]);
-			pictureBoxes[0][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-			pictureBoxes[0][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-			pictureBoxes[0][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 
 			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
-			pictureBoxes[1][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-			pictureBoxes[1][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-			pictureBoxes[1][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 		}
 		
 	
@@ -85,7 +72,12 @@ namespace ChessGameEngine {
 		{
 			for (int j = 0; j < 8; j++)
 			{
+
 				pictureBoxes[i][j]->BringToFront();
+				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+
 			}
 		}
 	

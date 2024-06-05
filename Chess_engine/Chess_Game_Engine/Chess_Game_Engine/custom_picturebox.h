@@ -251,19 +251,6 @@ public:
             }
         }
 public:
-       static void SwapImages(custom_picturebox^ pb1, custom_picturebox^ pb2)
-         {
-        // Zamieñ lokalizacje i przypisz ImageLocation
-        Point tempLocation = pb2->Location;
-        String^ tempImageLocation = pb2->ImageLocation;
-
-        pb2->Location = pb1->Location;
-        pb2->ImageLocation = pb1->ImageLocation;
-
-        pb1->Location = tempLocation;
-        pb1->ImageLocation = tempImageLocation;
-         }
-       
        // Geter Piece piece
        // Geter PieceColor color
         public:
@@ -284,9 +271,9 @@ public:
 
       public:
         void set_color(custom_picturebox^ pb_piececolor, PieceColor newColor)
-    {
+         {
         pb_piececolor->color = newColor;
-    }
+         }
 
 private:
     int pb_value;
