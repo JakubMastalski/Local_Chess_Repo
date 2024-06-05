@@ -72,8 +72,6 @@ namespace ChessGameEngine {
 		{
 			for (int j = 0; j < 8; j++)
 			{
-
-				pictureBoxes[i][j]->BringToFront();
 				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
@@ -788,6 +786,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
+			selectedPictureBox->BringToFront();
 			selectedPictureBox->Location = new_location;
 		}
 
@@ -798,11 +797,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
 			selectedPictureBox->Capture = false;
-			selectedPictureBox->SendToBack();
+			if (selectedPictureBox->Location != start_location) {
+				selectedPictureBox->SendToBack();
+			}
 			selectedPictureBox->Tag = "";
 			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-		
+
 			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
 				BoardForm::change_pb(selectedPictureBox, targetPictureBox);
 			}
@@ -810,7 +811,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
-		picturebox_board->Refresh();
 		String^ pb_newfilepath = selected_pb->ImageLocation;
 		target_pb->BringToFront();
 		PieceColor piece_color1  = selected_pb->check_color(selected_pb);

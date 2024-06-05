@@ -48,7 +48,6 @@ public:
         SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
         TabIndex = 6;
         TabStop = false;
-        this->BringToFront();
     };
 private:
     //square on the board
