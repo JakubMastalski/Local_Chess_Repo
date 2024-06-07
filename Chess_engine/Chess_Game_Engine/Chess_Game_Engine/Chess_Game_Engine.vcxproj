@@ -122,7 +122,6 @@
   <ItemGroup>
     <ClCompile Include="BoardForm.cpp" />
     <ClCompile Include="BoardForm_main.cpp" />
-    <ClCompile Include="ChessTools.cpp" />
     <ClCompile Include="custom_picturebox.cpp" />
     <ClCompile Include="Piece_Class.cpp" />
   </ItemGroup>

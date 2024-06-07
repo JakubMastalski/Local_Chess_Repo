@@ -21,9 +21,6 @@
     <ClCompile Include="BoardForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChessTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="custom_picturebox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

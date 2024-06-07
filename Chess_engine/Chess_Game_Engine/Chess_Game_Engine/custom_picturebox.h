@@ -292,6 +292,11 @@ public:
                   pb_piecevalue->piece_value = newValue;
               }
 
+           public:
+               int get_counterval(custom_picturebox^ getpiece_val)
+               {
+                   return getpiece_val->pb_counterval;
+               }
 private:
     bool board_initialized;
     int pb_counterval;

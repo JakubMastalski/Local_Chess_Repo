@@ -68,9 +68,13 @@ namespace ChessGameEngine {
 		Point scope;
 
 		String^ file_path;
+		String^ start_filepath;
 		custom_picturebox^ selectedPictureBox;
 		Point start_location;
 		int chosen_piece_val;
+	private:
+		Control^ controlUnderCursor;
+		custom_picturebox^ targetPictureBox;
 	private:
 		array<array<custom_picturebox^>^>^ pictureBoxes;
 
@@ -105,7 +109,8 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: System::Void grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private: System::Void grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private: void change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb);
-	private: bool check_Pawnmove(custom_picturebox^ selected_pb, custom_picturebox^ target_pb);
+	private: bool check_Pawnmove(custom_picturebox^ selected_pb);
+	private:bool check_sent(custom_picturebox^ selected_pb);
 
 	//private: bool check_Knightmove(custom_picturebox^ pb);
 	//private: bool check_Bishopmove(custom_picturebox^ pb);

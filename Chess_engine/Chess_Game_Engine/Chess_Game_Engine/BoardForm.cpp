@@ -796,34 +796,54 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	bool move_legal;
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	 if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
-        selectedPictureBox->Capture = false;
-		selectedPictureBox->Tag = "";
+		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
+			selectedPictureBox->Capture = false;
+			selectedPictureBox->Tag = "";
 
-        if (selectedPictureBox->Location != start_location) {
-            selectedPictureBox->SendToBack();
-        }
+			bool isWithinBounds = check_sent(selectedPictureBox);
 
-		Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
-		custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+			if (selectedPictureBox->Location != start_location && isWithinBounds) {
+				
+				if (!check_Pawnmove(selectedPictureBox)) {
+					selectedPictureBox->Location = start_location;
+					return;
+				}
+				selectedPictureBox->SendToBack();
+			}
+			else {
+				selectedPictureBox->Location = start_location;
+				selectedPictureBox->ImageLocation = file_path;
+				return;
+			}
 
-		if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
-			BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-		}  
-    }
+			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
+			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+
+			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
+				BoardForm::change_pb(selectedPictureBox, targetPictureBox);
+			}
+		}
 	}
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
+		if (!check_Pawnmove(selected_pb)) {
+			selected_pb->Location = start_location;
+			return;
+		}
+
 		String^ pb_newfilepath = selected_pb->ImageLocation;
 		target_pb->BringToFront();
 		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
 		Piece piece1 = selected_pb->check_piece(selected_pb);
 		int piece_value = selected_pb->get_value(selected_pb);
+		
 
 		target_pb->ImageLocation = pb_newfilepath;
 		target_pb->set_color(target_pb, piece_color1);
 		target_pb->set_piece(target_pb, piece1);
 		target_pb->set_value(target_pb, piece_value);
+		
+		
 
 		selected_pb->ImageLocation = "";
 		selected_pb->set_color(selected_pb, NONE);
@@ -833,11 +853,33 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->BringToFront();
 	}
 	
-	bool BoardForm::check_Pawnmove(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
+	bool BoardForm::check_Pawnmove(custom_picturebox^ selected_pb)
 	{
-		return true;
+		return false;
 	}
 
+	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
+	{
+		int x = selected_pb->Location.X;
+		int y = selected_pb->Location.Y;
+		int pb_value;
+
+
+		int pbWidth = selected_pb->Width;
+		int pbHeight = selected_pb->Height;
+		int panelWidth = 460;  
+		int panelHeight = 460;
+
+		
+		if (x >= 0 && x + pbWidth <= panelWidth && y >= 0 && y + pbHeight <= panelHeight) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		pb_value = selected_pb->get_value(selected_pb);
+
+	}
 };
 
 
