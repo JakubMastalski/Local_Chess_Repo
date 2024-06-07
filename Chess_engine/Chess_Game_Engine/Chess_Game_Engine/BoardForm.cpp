@@ -16,11 +16,12 @@ namespace ChessGameEngine {
 		start_black = Point(602, 12);
 		start_white = Point(602, 250);
 		on_move = true;
-		seconds=0, seconds_white=0;
+		seconds=0, seconds_white = 1;
 		increment=0;
 		on_move=0;
 		dragging = false;
 		scope = Point(0, 0);
+		chosen_piece_val = 1;
 	}
 
 	BoardForm::~BoardForm()
@@ -775,6 +776,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			{
 				if (selectedPictureBox != nullptr) {
 					selectedPictureBox->Capture = true;
+					chosen_piece_val = selectedPictureBox->get_value(selectedPictureBox);
 					start_location = selectedPictureBox->Location;
 					file_path = selectedPictureBox->ImageLocation;
 					selectedPictureBox->Tag = "Dragging";
@@ -794,20 +796,21 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	bool move_legal;
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	
-		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
-			selectedPictureBox->Capture = false;
-			if (selectedPictureBox->Location != start_location) {
-				selectedPictureBox->SendToBack();
-			}
-			selectedPictureBox->Tag = "";
-			Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
-			custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+	 if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
+        selectedPictureBox->Capture = false;
+		selectedPictureBox->Tag = "";
 
-			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
-				BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-			}
-		}
+        if (selectedPictureBox->Location != start_location) {
+            selectedPictureBox->SendToBack();
+        }
+
+		Control^ controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
+		custom_picturebox^ targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+
+		if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
+			BoardForm::change_pb(selectedPictureBox, targetPictureBox);
+		}  
+    }
 	}
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
@@ -815,22 +818,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		target_pb->BringToFront();
 		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
 		Piece piece1 = selected_pb->check_piece(selected_pb);
+		int piece_value = selected_pb->get_value(selected_pb);
 
 		target_pb->ImageLocation = pb_newfilepath;
 		target_pb->set_color(target_pb, piece_color1);
 		target_pb->set_piece(target_pb, piece1);
+		target_pb->set_value(target_pb, piece_value);
 
 		selected_pb->ImageLocation = "";
 		selected_pb->set_color(selected_pb, NONE);
+		selected_pb->set_value(selected_pb, 0);
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
 	}
 	
-	bool BoardForm::check_Pawnmove(custom_picturebox^ pb) 
+	bool BoardForm::check_Pawnmove(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
-		
-
+		return true;
 	}
 
 };

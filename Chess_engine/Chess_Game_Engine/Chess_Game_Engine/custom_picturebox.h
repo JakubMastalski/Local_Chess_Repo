@@ -54,6 +54,8 @@ private:
 private:
     Piece piece;
     PieceColor color;
+    int piece_value;
+    int row;
 public:
     array<array<custom_picturebox^>^>^ GetPictureBoxes()
     {
@@ -80,7 +82,7 @@ public:
         
                 // Initialize the piece on the square
                 Piece piece = Piece::EMPTY;
-               
+                piece_value = 0;
                 PieceColor color = PieceColor::NONE;
 
                 if (row == 1 || row == 6)
@@ -91,7 +93,7 @@ public:
                         pictureBox->ImageLocation = (color == PieceColor::BLACK) ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png";
-                       
+                        piece_value = 1;
                     
                 }
 
@@ -107,6 +109,7 @@ public:
                             pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png" :
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+                            piece_value = 5;
                           
                         break;
                     case 1:
@@ -116,6 +119,7 @@ public:
                         pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+                        piece_value = 3;
                       
                         break;
                     case 2:
@@ -125,6 +129,7 @@ public:
                         pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+                        piece_value = 4;
                        
                             break;
                     case 3:
@@ -133,6 +138,7 @@ public:
                             pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png" :
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+                            piece_value = 9;
                             
                      
                         break;
@@ -142,13 +148,14 @@ public:
                             pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png" :
                                 "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+                            piece_value = 10;
                            
                         break;
                     }
                 }
             
                 pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
-                pictureBox->pb_value = pbCounter++;
+                pictureBox->pb_counterval = pbCounter++;
                 pictureBoxes[row][col] = pictureBox;
                 board_initialized = true;
                 
@@ -242,7 +249,7 @@ public:
                     }
 
                     pictureBox->Tag = gcnew Tuple<int, int>((int)piece, (int)color);
-                    pictureBox->pb_value = pbCounter++;
+                    pictureBox->pb_counterval = pbCounter++;
                     pictureBoxes[row][col] = pictureBox;
                     board_initialized = true;
 
@@ -274,9 +281,20 @@ public:
         pb_piececolor->color = newColor;
          }
 
+        public: 
+            int get_value(custom_picturebox^ getpiece_val)
+            {
+                return getpiece_val->piece_value;
+            }
+          public:
+              void set_value(custom_picturebox^ pb_piecevalue,int newValue)
+              {
+                  pb_piecevalue->piece_value = newValue;
+              }
+
 private:
-    int pb_value;
     bool board_initialized;
+    int pb_counterval;
 private:
     array<array<custom_picturebox^>^>^ pictureBoxes;
 };
