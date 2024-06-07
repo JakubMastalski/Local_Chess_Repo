@@ -826,6 +826,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
 	}
+	
+	bool BoardForm::check_Pawnmove(custom_picturebox^ pb) 
+	{
+		
+
+	}
+
 };
 
 
