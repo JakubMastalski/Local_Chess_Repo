@@ -55,7 +55,6 @@ private:
     Piece piece;
     PieceColor color;
     int piece_value;
-    int row;
 public:
     array<array<custom_picturebox^>^>^ GetPictureBoxes()
     {
@@ -79,6 +78,9 @@ public:
                 custom_picturebox^ pictureBox = gcnew custom_picturebox();
 
                 pictureBox->Location = System::Drawing::Point((col * squareSize)+6, (row * squareSize)+7);
+
+                pictureBox->row = row;
+                pictureBox->column = col;
         
                 // Initialize the piece on the square
                 Piece piece = Piece::EMPTY;
@@ -94,6 +96,7 @@ public:
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png" :
                             "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png";
                         piece_value = 1;
+                        
                     
                 }
 
@@ -300,6 +303,9 @@ public:
 private:
     bool board_initialized;
     int pb_counterval;
+    public:
+        int row;
+        int column;
 private:
     array<array<custom_picturebox^>^>^ pictureBoxes;
 };

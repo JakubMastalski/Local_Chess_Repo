@@ -804,7 +804,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 			if (selectedPictureBox->Location != start_location && isWithinBounds) {
 				
-				if (!check_Pawnmove(selectedPictureBox)) {
+				if (!check_Pawnmove(pictureBoxes)) {
 					selectedPictureBox->Location = start_location;
 					return;
 				}
@@ -826,7 +826,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
-		if (!check_Pawnmove(selected_pb)) {
+		if (!check_Pawnmove(pictureBoxes)) {
 			selected_pb->Location = start_location;
 			return;
 		}
@@ -843,8 +843,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		target_pb->set_piece(target_pb, piece1);
 		target_pb->set_value(target_pb, piece_value);
 		
-		
-
 		selected_pb->ImageLocation = "";
 		selected_pb->set_color(selected_pb, NONE);
 		selected_pb->set_value(selected_pb, 0);
@@ -853,11 +851,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->BringToFront();
 	}
 	
-	bool BoardForm::check_Pawnmove(custom_picturebox^ selected_pb)
+	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes)
 	{
+		
 		return false;
 	}
-
 	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
 	{
 		int x = selected_pb->Location.X;
