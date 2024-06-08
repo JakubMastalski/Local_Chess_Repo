@@ -793,7 +793,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 
 	}
-	bool move_legal;
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
@@ -804,7 +803,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 			if (selectedPictureBox->Location != start_location && isWithinBounds) {
 				
-				if (!check_Pawnmove(pictureBoxes)) {
+
+				if (!check_Pawnmove(pictureBoxes,selectedPictureBox)) {
 					selectedPictureBox->Location = start_location;
 					return;
 				}
@@ -826,7 +826,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
-		if (!check_Pawnmove(pictureBoxes)) {
+		if (!check_Pawnmove(pictureBoxes,selected_pb)) {
 			selected_pb->Location = start_location;
 			return;
 		}
@@ -851,10 +851,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->BringToFront();
 	}
 	
-	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes)
+	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
+		return true;
 		
-		return false;
 	}
 	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
 	{
