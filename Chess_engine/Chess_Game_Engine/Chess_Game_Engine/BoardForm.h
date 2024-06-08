@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include <vector>
 #include "custom_picturebox.h"
-
+#include <cmath> 
+#include <algorithm> 
 
 
 namespace ChessGameEngine {

@@ -1,4 +1,6 @@
 #include "BoardForm.h"
+#include <cmath> 
+#include <algorithm> 
 
 namespace ChessGameEngine {
 
@@ -776,6 +778,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			{
 				if (selectedPictureBox != nullptr) {
 					selectedPictureBox->Capture = true;
+					selectedPictureBox->BringToFront();
 					chosen_piece_val = selectedPictureBox->get_value(selectedPictureBox);
 					start_location = selectedPictureBox->Location;
 					file_path = selectedPictureBox->ImageLocation;
@@ -788,7 +791,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
-			selectedPictureBox->BringToFront();
+		    selectedPictureBox->BringToFront();
 			selectedPictureBox->Location = new_location;
 		}
 
@@ -853,7 +856,26 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
-		return true;
+		Point startPos = start_location; // Original position of the piece
+		Point targetPos = selected_pb->Location; // New position of the piece
+
+		// Calculate the difference in positions
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+
+		// Check if the move is exactly one step forward or backward
+		if (dx == 0 && dy == 1) {
+			return true;
+		}
+
+		// If the move is not valid, bring all pieces to front (as in the original code)
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
+
+		return false;
 		
 	}
 	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
