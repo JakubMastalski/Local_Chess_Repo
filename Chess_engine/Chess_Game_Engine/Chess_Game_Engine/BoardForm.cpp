@@ -1051,6 +1051,53 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check knight
 	bool BoardForm::check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
+		Point startPos = start_location; // Original position of the piece
+		Point targetPos = selected_pb->Location; // New position of the piece
+
+		// Calculate the difference in positions
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+
+		// Determine the row and column indices of the start and target positions
+		int startRow = startPos.Y / selected_pb->Height;
+		int startCol = startPos.X / selected_pb->Width;
+		int targetRow = targetPos.Y / selected_pb->Height;
+		int targetCol = targetPos.X / selected_pb->Width;
+
+		// Adjust column indices if they are out of bounds
+		if (startCol == 7 || startCol == 8 || startRow == 7) {
+			startCol -= 1;
+		}
+
+		
+		// Check if indices are within bounds
+		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+			return true;
+		}
+
+		// Check if the move is a valid knight move: 2 squares forward/backward and 1 square sideways or vice versa
+		if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2)) {
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			PieceColor check_targetpb = target_pb->check_color(target_pb);
+			Piece target_piece = target_pb->check_piece(target_pb);
+
+			// Check if the target position is empty or occupied by an opponent's piece
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb))) {
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		// If the move is not valid, bring all pieces to front
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
 		return false;
 	}
 	//check bishop
