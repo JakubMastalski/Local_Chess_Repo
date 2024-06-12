@@ -87,6 +87,7 @@ namespace ChessGameEngine {
 				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], KING);
 				break;
 			}
+			pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
 		}
 
 		// Inicjalizacja bia³ych pionków (rzêdy 0 i 1) i przypisanie im zdarzeñ myszy
@@ -941,62 +942,88 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
 		Point startPos = start_location; // Original position of the piece
-Point targetPos = selected_pb->Location; // New position of the piece
+		Point targetPos = selected_pb->Location; // New position of the piece
 
-// Calculate the difference in positions
-int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
-int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+		// Calculate the difference in positions
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
 
-// Determine direction of movement
-int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 for forward, -1 for backward
+		// Determine direction of movement
+		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 for forward, -1 for backward
 
-// Determine the row and column indices of the start and target positions
-int startRow = startPos.Y / selected_pb->Height;
-int startCol = startPos.X / selected_pb->Width;
-int targetRow = targetPos.Y / selected_pb->Height;
-int targetCol = targetPos.X / selected_pb->Width;
+		// Determine the row and column indices of the start and target positions
+		int startRow = startPos.Y / selected_pb->Height;
+		int startCol = startPos.X / selected_pb->Width;
+		int targetRow = targetPos.Y / selected_pb->Height;
+		int targetCol = targetPos.X / selected_pb->Width;
 
-if (startCol == 7 || startCol == 8)
-{
-	startCol -= 1;
-	targetCol -= 1;
-}
+		// Adjust column indices if they are out of bounds
+		if (startCol == 7 || startCol == 8) {
+			startCol -= 1;
+			targetCol -= 1;
+		}
 
+		if (startRow == 7 || startCol ==  8)
+		{
+			startRow -= 1;
+			targetRow -= 1;
+		}
 
+		// Check if the pawn is moving backward for black pawns
+		if (selected_pb->check_color(selected_pb) == BLACK && targetRow < startRow) {
+			return false;
+		}
 
-// Check if indices are within bounds
-if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
-    targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
-    return false;
-}
+		// Check if the pawn is moving backward for white pawns
+		if (selected_pb->check_color(selected_pb) == WHITE && targetRow > startRow) {
+			return false;
+		}
 
-// Check if the move is exactly one step forward or backward and there is no piece in the way
-if (dx == 0 && dy == 1) {
-    custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
-    Piece check_targetpb = target_pb->check_piece(target_pb);
+		// Check if indices are within bounds
+		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+			return true;
+		}
 
-    // Check if the target position is occupied
-    if (check_targetpb == EMPTY) {
-        return true;
-    }
-}
-else if (dx == 0 && dy == 2 && startRow == 1 || startRow == 6) { // Allow the initial double step move for pawns
-    custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
-    custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+		// Check if the move is exactly one step forward or backward and there is no piece in the way
+		if (dx == 0 && dy == 1) {
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			Piece check_targetpb = target_pb->check_piece(target_pb);
 
-    if (intermediate_pb->check_piece(intermediate_pb) == EMPTY && target_pb->check_piece(target_pb) == EMPTY) {
-        return true;
-    }
-}
+			// Check if the target position is occupied
+			if (check_targetpb == EMPTY) {
+				return true;
+			}
+		}
+		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) { // Allow the initial double step move for pawns
+			custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 
-// If the move is not valid, bring all pieces to front (as in the original code)
-for (int i = 0; i < 8; i++) {
-    for (int j = 0; j < 8; j++) {
-        pictureBoxes[i][j]->BringToFront();
-    }
-}
+			if (intermediate_pb->check_piece(intermediate_pb) == EMPTY && target_pb->check_piece(target_pb) == EMPTY) {
+				return true;
+			}
+		}
+		// Check for diagonal captures (for both black and white pawns)
+		else if (dx == 1 && dy == 1) {
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			PieceColor check_targetpb = target_pb->check_color(target_pb);
+			Piece check_piece = target_pb->check_piece(target_pb);
+			int captureDirection = (targetCol - startCol) / abs(targetCol - startCol);
 
-return false;
+			// Check if the target position is occupied by an opponent's piece
+			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING) {
+				return true;
+			}
+		}
+
+		// If the move is not valid, bring all pieces to front
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
+
+		return false;
 		
 	}
 	//check does pb in board border
@@ -1044,6 +1071,43 @@ return false;
 	//check king
 	bool BoardForm::check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
+		Point startPos = start_location; // Original position of the piece
+		Point targetPos = selected_pb->Location; // New position of the piece
+
+		// Calculate the difference in positions
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+
+		// Determine the row and column indices of the start and target positions
+		int startRow = startPos.Y / selected_pb->Height;
+		int startCol = startPos.X / selected_pb->Width;
+		int targetRow = targetPos.Y / selected_pb->Height;
+		int targetCol = targetPos.X / selected_pb->Width;
+
+		// Check if indices are within bounds
+		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+			return true;
+		}
+
+		// Check if the move is within one step in any direction for the king
+		if (dx <= 1 && dy <= 1) {
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			PieceColor check_targetpb = target_pb->check_color(target_pb);
+			Piece target_piece = target_pb->check_piece(target_pb);
+
+			// Check if the target position is empty or occupied by an opponent's piece
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb))) {
+				return true;
+			}
+		}
+
+		// If the move is not valid, bring all pieces to front
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
 		return false;
 	}
 
