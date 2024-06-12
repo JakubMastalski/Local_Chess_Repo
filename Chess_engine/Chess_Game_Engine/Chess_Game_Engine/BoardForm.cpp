@@ -45,13 +45,13 @@ namespace ChessGameEngine {
 	// Inicjalizacja czarnych pionków (rzêdy 6 i 7) i przypisanie im zdarzeñ myszy
 	
 		// Inicjalizacja pustych pól planszy (rzêdy 2 do 5) i przypisanie im zdarzeñ myszy
-		for (int row = 2; row < 6; row++) {
-			for (int col = 0; col < 8; col++) {
+		for (int row = 2; row < 6; ++row) {
+			for (int col = 0; col < 8; ++col) {
 				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
 				pictureBoxes[row][col]->ImageLocation = "";
-				//pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-				//pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-				//pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 				pictureBoxes[row][col]->Enabled = true;
 				pictureBoxes[row][col]->ImageLocation = "";
 				pictureBoxes[row][col]->set_color(pictureBoxes[row][col], NONE);
@@ -60,7 +60,7 @@ namespace ChessGameEngine {
 			}
 		}
 
-		for (int col = 0; col < 8; col++) {
+		for (int col = 0; col < 8; ++col) {
 			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
 			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
 			pictureBoxes[6][col]->set_color(pictureBoxes[6][col], WHITE);
@@ -90,7 +90,7 @@ namespace ChessGameEngine {
 		}
 
 		// Inicjalizacja bia³ych pionków (rzêdy 0 i 1) i przypisanie im zdarzeñ myszy
-		for (int col = 0; col < 8; col++) {
+		for (int col = 0; col < 8; ++col) {
 			this->grid_panel->Controls->Add(pictureBoxes[0][col]);
 			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
 
@@ -121,9 +121,9 @@ namespace ChessGameEngine {
 		}
 		
 	
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; ++i)
 		{
-			for (int j = 0; j < 8; j++)
+			for (int j = 0; j < 8; ++j)
 			{
 				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
@@ -941,25 +941,62 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
 		Point startPos = start_location; // Original position of the piece
-		Point targetPos = selected_pb->Location; // New position of the piece
+Point targetPos = selected_pb->Location; // New position of the piece
 
-		// Calculate the difference in positions
-		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
-		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+// Calculate the difference in positions
+int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
+int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
 
-		// Check if the move is exactly one step forward or backward
-		if (dx == 0 && dy == 1) {
-			return true;
-		}
+// Determine direction of movement
+int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 for forward, -1 for backward
 
-		// If the move is not valid, bring all pieces to front (as in the original code)
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				pictureBoxes[i][j]->BringToFront();
-			}
-		}
+// Determine the row and column indices of the start and target positions
+int startRow = startPos.Y / selected_pb->Height;
+int startCol = startPos.X / selected_pb->Width;
+int targetRow = targetPos.Y / selected_pb->Height;
+int targetCol = targetPos.X / selected_pb->Width;
 
-		return false;
+if (startCol == 7 || startCol == 8)
+{
+	startCol -= 1;
+	targetCol -= 1;
+}
+
+
+
+// Check if indices are within bounds
+if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
+    targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+    return false;
+}
+
+// Check if the move is exactly one step forward or backward and there is no piece in the way
+if (dx == 0 && dy == 1) {
+    custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+    Piece check_targetpb = target_pb->check_piece(target_pb);
+
+    // Check if the target position is occupied
+    if (check_targetpb == EMPTY) {
+        return true;
+    }
+}
+else if (dx == 0 && dy == 2 && startRow == 1 || startRow == 6) { // Allow the initial double step move for pawns
+    custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
+    custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+
+    if (intermediate_pb->check_piece(intermediate_pb) == EMPTY && target_pb->check_piece(target_pb) == EMPTY) {
+        return true;
+    }
+}
+
+// If the move is not valid, bring all pieces to front (as in the original code)
+for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+        pictureBoxes[i][j]->BringToFront();
+    }
+}
+
+return false;
 		
 	}
 	//check does pb in board border

@@ -81,7 +81,7 @@ namespace ChessGameEngine {
 		array<array<custom_picturebox^>^>^ pictureBoxes;
 	private:
 		Piece current_piece;
-
+		Piece target_piece;
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
