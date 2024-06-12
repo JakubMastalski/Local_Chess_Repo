@@ -780,6 +780,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->Capture = true;
 					selectedPictureBox->BringToFront();
 					chosen_piece_val = selectedPictureBox->get_value(selectedPictureBox);
+					current_piece = selectedPictureBox->check_piece(selectedPictureBox);
 					start_location = selectedPictureBox->Location;
 					file_path = selectedPictureBox->ImageLocation;
 					selectedPictureBox->Tag = "Dragging";
@@ -796,6 +797,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 
 	}
+
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
@@ -827,8 +829,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 	}
+	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
+		Piece chossen_piece = selected_pb->check_piece(selected_pb);
+
 		if (!check_Pawnmove(pictureBoxes,selected_pb)) {
 			selected_pb->Location = start_location;
 			return;
@@ -853,7 +858,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
 	}
-	
+	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
 		Point startPos = start_location; // Original position of the piece
@@ -878,6 +883,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		return false;
 		
 	}
+	//check does pb in board border
 	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
 	{
 		int x = selected_pb->Location.X;
@@ -898,8 +904,34 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return false;
 		}
 		pb_value = selected_pb->get_value(selected_pb);
-
 	}
+	//check knight
+	bool BoardForm::check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
+	{
+		return true;
+	}
+	//check bishop
+	bool BoardForm::check_Bishopmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
+	{
+		return true;
+	}
+	//check rook
+	bool BoardForm::check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
+	{
+		return true;
+	}
+	//check queen
+	bool BoardForm::check_Queenmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
+	{
+		return true;
+	}
+	//check king
+	bool BoardForm::check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
+	{
+		return true;
+	}
+
+
 };
 
 

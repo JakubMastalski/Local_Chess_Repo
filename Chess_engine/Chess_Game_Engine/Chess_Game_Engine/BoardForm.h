@@ -78,6 +78,8 @@ namespace ChessGameEngine {
 		custom_picturebox^ targetPictureBox;
 	private:
 		array<array<custom_picturebox^>^>^ pictureBoxes;
+	private:
+		Piece current_piece;
 
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
@@ -113,10 +115,10 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: bool check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 	private:bool check_sent(custom_picturebox^ selected_pb);
 
-	//private: bool check_Knightmove(custom_picturebox^ pb);
-	//private: bool check_Bishopmove(custom_picturebox^ pb);
-	//private: bool check_Rookmove(custom_picturebox^ pb);
-	//private: bool check_Queenmove(custom_picturebox^ pb);
-	//private: bool check_Kingmove(custom_picturebox^ pb);
+	private: bool check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
+    private: bool check_Bishopmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
+	private: bool check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
+	private: bool check_Queenmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
+	private: bool check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 };
 }
