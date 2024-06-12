@@ -918,27 +918,21 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
 		Piece chossen_piece = selected_pb->check_piece(selected_pb);
-
-		if (!check_Pawnmove(pictureBoxes,selected_pb)) {
-			selected_pb->Location = start_location;
-			return;
-		}
-
 		String^ pb_newfilepath = selected_pb->ImageLocation;
 		target_pb->BringToFront();
 		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
 		Piece piece1 = selected_pb->check_piece(selected_pb);
-		int piece_value = selected_pb->get_value(selected_pb);
+		//int piece_value = selected_pb->get_value(selected_pb);
 		
 
 		target_pb->ImageLocation = pb_newfilepath;
 		target_pb->set_color(target_pb, piece_color1);
 		target_pb->set_piece(target_pb, piece1);
-		target_pb->set_value(target_pb, piece_value);
+		//target_pb->set_value(target_pb, piece_value);
 		
 		selected_pb->ImageLocation = "";
 		selected_pb->set_color(selected_pb, NONE);
-		selected_pb->set_value(selected_pb, 0);
+		//selected_pb->set_value(selected_pb, 0);
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
@@ -993,27 +987,27 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check knight
 	bool BoardForm::check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		return true;
+		return false;
 	}
 	//check bishop
 	bool BoardForm::check_Bishopmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		return true;
+		return false;
 	}
 	//check rook
 	bool BoardForm::check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		return true;
+		return false;
 	}
 	//check queen
 	bool BoardForm::check_Queenmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		return true;
+		return false;
 	}
 	//check king
 	bool BoardForm::check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		return true;
+		return false;
 	}
 
 
