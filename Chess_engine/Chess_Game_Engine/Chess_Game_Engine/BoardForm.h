@@ -64,6 +64,7 @@ namespace ChessGameEngine {
 		int seconds, seconds_white;
 		int increment;
 		bool on_move;
+		bool isWithinBounds;
 
 		bool dragging;
 		Point scope;

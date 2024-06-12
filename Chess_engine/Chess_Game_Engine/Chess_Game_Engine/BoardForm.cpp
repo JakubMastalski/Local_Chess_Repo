@@ -49,11 +49,13 @@ namespace ChessGameEngine {
 			for (int col = 0; col < 8; col++) {
 				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
 				pictureBoxes[row][col]->ImageLocation = "";
-				pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				//pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				//pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				//pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 				pictureBoxes[row][col]->Enabled = true;
 				pictureBoxes[row][col]->ImageLocation = "";
+				pictureBoxes[row][col]->set_color(pictureBoxes[row][col], NONE);
+				pictureBoxes[row][col]->set_piece(pictureBoxes[row][col], EMPTY);
 				//pictureBoxes[row][col]->Visible = true;;
 			}
 		}
@@ -61,13 +63,61 @@ namespace ChessGameEngine {
 		for (int col = 0; col < 8; col++) {
 			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
 			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
+			pictureBoxes[6][col]->set_color(pictureBoxes[6][col], WHITE);
+			pictureBoxes[6][col]->set_piece(pictureBoxes[6][col], PAWN);
+
+			pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
+			switch (col) {
+			case 0:
+			case 7:
+				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], ROOK);
+				break;
+			case 1:
+			case 6:
+				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], KNIGHT);
+				break;
+			case 2:
+			case 5:
+				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], BISHOP);
+				break;
+			case 3:
+				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], QUEEN);
+				break;
+			case 4:
+				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], KING);
+				break;
+			}
 		}
 
 		// Inicjalizacja bia³ych pionków (rzêdy 0 i 1) i przypisanie im zdarzeñ myszy
 		for (int col = 0; col < 8; col++) {
 			this->grid_panel->Controls->Add(pictureBoxes[0][col]);
-
 			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
+
+			pictureBoxes[0][col]->set_color(pictureBoxes[0][col], BLACK);
+			switch (col) {
+			case 0:
+			case 7:
+				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], ROOK);
+				break;
+			case 1:
+			case 6:
+				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], KNIGHT);
+				break;
+			case 2:
+			case 5:
+				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], BISHOP);
+				break;
+			case 3:
+				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], QUEEN);
+				break;
+			case 4:
+				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], KING);
+				break;
+			}
+			pictureBoxes[1][col]->set_color(pictureBoxes[1][col],BLACK);
+			pictureBoxes[1][col]->set_piece(pictureBoxes[1][col], PAWN);
+
 		}
 		
 	
@@ -804,12 +854,47 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 
-			bool isWithinBounds = check_sent(selectedPictureBox);
+		    isWithinBounds = check_sent(selectedPictureBox);
 
 			if (selectedPictureBox->Location != start_location && isWithinBounds) {
-				
-
-				if (!check_Pawnmove(pictureBoxes,selectedPictureBox)) {
+				switch (current_piece) {
+				case PAWN:
+					if (!check_Pawnmove(pictureBoxes, selectedPictureBox)) {
+						selectedPictureBox->Location = start_location;
+						return;
+					}
+					break;
+				case KNIGHT:
+					if (!check_Knightmove(pictureBoxes, selectedPictureBox)) {
+						selectedPictureBox->Location = start_location;
+						return;
+					}
+					break;
+				case BISHOP:
+					if (!check_Bishopmove(pictureBoxes, selectedPictureBox)) {
+						selectedPictureBox->Location = start_location;
+						return;
+					}
+					break;
+				case ROOK:
+					if (!check_Rookmove(pictureBoxes, selectedPictureBox)) {
+						selectedPictureBox->Location = start_location;
+						return;
+					}
+					break;
+				case QUEEN:
+					if (!check_Queenmove(pictureBoxes, selectedPictureBox)) {
+						selectedPictureBox->Location = start_location;
+						return;
+					}
+					break;
+				case KING:
+					if (!check_Kingmove(pictureBoxes, selectedPictureBox)) {
+						selectedPictureBox->Location = start_location;
+						return;
+					}
+					break;
+				default:
 					selectedPictureBox->Location = start_location;
 					return;
 				}
