@@ -25,6 +25,7 @@ namespace ChessGameEngine {
 		dragging = false;
 		scope = Point(0, 0);
 		chosen_piece_val = 1;
+		whiteonMove = true;
 	}
 
 	BoardForm::~BoardForm()
@@ -842,6 +843,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
 	void BoardForm::grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
+			PieceColor current_collor = selectedPictureBox->check_color(selectedPictureBox);
+			if ((whiteonMove && current_collor == BLACK) || (!whiteonMove && current_collor == WHITE)) {
+				selectedPictureBox->Enabled = false; 
+				return;
+			}
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
 		    selectedPictureBox->BringToFront();
@@ -900,6 +906,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->Location = start_location;
 					return;
 				}
+				whiteonMove = !whiteonMove;
 				selectedPictureBox->SendToBack();
 			}
 			else {
@@ -1334,7 +1341,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 		return false;
 	}
-
+	void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes)
+	{
+		;
+	}
 
 
 };

@@ -82,6 +82,8 @@ namespace ChessGameEngine {
 	private:
 		Piece current_piece;
 		Piece target_piece;
+	private:
+		bool whiteonMove;
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
@@ -121,5 +123,6 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: bool check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 	private: bool check_Queenmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 	private: bool check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
+	private: void player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes);
 };
 }
