@@ -1,6 +1,7 @@
 #include "BoardForm.h"
 #include <cmath> 
 #include <algorithm> 
+#include <math.h>
 
 namespace ChessGameEngine {
 
@@ -957,17 +958,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
-		// Adjust column indices if they are out of bounds
-		if (startCol == 7 || startCol == 8) {
-			startCol -= 1;
-			targetCol -= 1;
-		}
-
-		if (startRow == 7 || startCol ==  8)
-		{
-			startRow -= 1;
-			targetRow -= 1;
-		}
+		startRow = Math::Min(startRow, 7);
+		startCol = Math::Min(startCol, 7);
+		targetRow = Math::Min(targetRow, 7);
+		targetCol = Math::Min(targetCol, 7);
 
 		// Check if the pawn is moving backward for black pawns
 		if (selected_pb->check_color(selected_pb) == BLACK && targetRow < startRow) {
@@ -1064,6 +1058,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
+
+		startRow = Math::Min(startRow, 7);
+		startCol = Math::Min(startCol, 7);
+		targetRow = Math::Min(targetRow, 7);
+		targetCol = Math::Min(targetCol, 7);
+
+
 		// Adjust column indices if they are out of bounds
 		if (startCol == 7 || startCol == 8 || startRow == 7) {
 			startCol -= 1;
@@ -1083,7 +1084,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece(target_pb);
 
 			// Check if the target position is empty or occupied by an opponent's piece
-			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb))) {
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb))&& target_piece != KING) {
 				return true;
 			}
 			else
@@ -1131,6 +1132,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
+		startRow = Math::Min(startRow, 7);
+		startCol = Math::Min(startCol, 7);
+		targetRow = Math::Min(targetRow, 7);
+		targetCol = Math::Min(targetCol, 7);
+
 		// Check if indices are within bounds
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
@@ -1144,7 +1150,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece(target_pb);
 
 			// Check if the target position is empty or occupied by an opponent's piece
-			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb))) {
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb)) && target_piece != KING) {
 				return true;
 			}
 		}
