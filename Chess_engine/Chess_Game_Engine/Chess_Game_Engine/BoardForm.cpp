@@ -1104,11 +1104,126 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check bishop
 	bool BoardForm::check_Bishopmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
+		Point startPos = start_location;
+		Point targetPos = selected_pb->Location;
+
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width;
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height;
+
+		int startRow = startPos.Y / selected_pb->Height;
+		int startCol = startPos.X / selected_pb->Width;
+		int targetRow = targetPos.Y / selected_pb->Height;
+		int targetCol = targetPos.X / selected_pb->Width;
+
+		startRow = Math::Min(startRow, 7);
+		startCol = Math::Min(startCol, 7);
+		targetRow = Math::Min(targetRow, 7);
+		targetCol = Math::Min(targetCol, 7);
+
+		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+			return false;
+		}
+
+		// Check for Bishop move
+		if (dx == dy) {
+			if (!dx || !dy)
+			{
+				return false;
+			}
+			
+				int stepX = (targetCol - startCol) / dx;
+				int stepY = (targetRow - startRow) / dy;
+			
+			for (int i = 1; i < dx; ++i) {
+				int currentRow = startRow + i * stepY;
+				int currentCol = startCol + i * stepX;
+				custom_picturebox^ current_pb = pictureBoxes[currentRow][currentCol];
+
+				if (current_pb->check_piece(current_pb) != EMPTY) {
+					return false;
+				}
+			}
+
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			PieceColor check_targetpb = target_pb->check_color(target_pb);
+			Piece target_piece = target_pb->check_piece(target_pb);
+
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
+		// If the move is not valid, bring all pieces to front
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
 		return false;
 	}
 	//check rook
 	bool BoardForm::check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
+		Point startPos = start_location;
+		Point targetPos = selected_pb->Location;
+
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width;
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height;
+
+		int startRow = startPos.Y / selected_pb->Height;
+		int startCol = startPos.X / selected_pb->Width;
+		int targetRow = targetPos.Y / selected_pb->Height;
+		int targetCol = targetPos.X / selected_pb->Width;
+
+		startRow = Math::Min(startRow, 7);
+		startCol = Math::Min(startCol, 7);
+		targetRow = Math::Min(targetRow, 7);
+		targetCol = Math::Min(targetCol, 7);
+
+		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+			return false;
+		}
+
+		// Check for Rook move
+		if (dx == 0 || dy == 0) {
+			int stepX = (targetCol - startCol) == 0 ? 0 : (targetCol - startCol) / abs(targetCol - startCol);
+			int stepY = (targetRow - startRow) == 0 ? 0 : (targetRow - startRow) / abs(targetRow - startRow);
+
+			int steps = Math::Max(dx, dy);
+
+			for (int i = 1; i < steps; ++i) {
+				int currentRow = startRow + i * stepY;
+				int currentCol = startCol + i * stepX;
+				custom_picturebox^ current_pb = pictureBoxes[currentRow][currentCol];
+
+				if (current_pb->check_piece(current_pb) != EMPTY) {
+					return false;
+				}
+			}
+
+			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			PieceColor check_targetpb = target_pb->check_color(target_pb);
+			Piece target_piece = target_pb->check_piece(target_pb);
+
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
+		// If the move is not valid, bring all pieces to front
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
 		return false;
 	}
 	//check queen
