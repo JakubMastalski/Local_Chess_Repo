@@ -123,6 +123,6 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: bool check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 	private: bool check_Queenmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 	private: bool check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-	private: void player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes);
+	private: void player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected);
 };
 }

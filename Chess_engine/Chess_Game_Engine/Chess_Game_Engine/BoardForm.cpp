@@ -848,6 +848,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				selectedPictureBox->Enabled = false; 
 				return;
 			}
+			player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
 		    selectedPictureBox->BringToFront();
@@ -1341,9 +1342,34 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 		return false;
 	}
-	void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes)
+	void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected)
 	{
-		;
+		if (onMove)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					if (pictureBoxes[i][j]->check_color(selected)==WHITE)
+					{
+						pictureBoxes[i][j]->Enabled = true;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					if (pictureBoxes[i][j]->check_color(selected) == BLACK)
+					{
+						pictureBoxes[i][j]->Enabled = true;
+					}
+				}
+			}
+		}
 	}
 
 
