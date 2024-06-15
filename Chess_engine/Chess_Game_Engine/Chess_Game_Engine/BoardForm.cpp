@@ -1334,6 +1334,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
+
 		// If the move is not valid, bring all pieces to front
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
