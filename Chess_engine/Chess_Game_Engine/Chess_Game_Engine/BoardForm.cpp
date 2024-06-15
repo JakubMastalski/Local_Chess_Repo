@@ -1336,8 +1336,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (dy == 0 && dx == 2 && targetCol > startCol) {
 			custom_picturebox^ rook_pb = pictureBoxes[startRow][7];
 			Piece rook_piece = rook_pb->check_piece(rook_pb);
-			if (rook_piece == ROOK && rook_pb->check_color(rook_pb) == selected_pb->check_color(selected_pb)) {
-				
+			if (rook_piece == ROOK && rook_pb->check_color(rook_pb) == selected_pb->check_color(selected_pb)) 
+			{
+	
 				bool pathClear = true;
 				for (int i = startCol + 1; i < 7; i++) {
 					if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -1350,6 +1351,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
+		if (dy == 0 && (dx == 3 || dx == 4) && targetCol < startCol) {
+			custom_picturebox^ Qside_rook = pictureBoxes[startRow][0];
+			Piece rook_piece2 = Qside_rook->check_piece(Qside_rook);
+
+			if (rook_piece2 == ROOK && Qside_rook->check_color(Qside_rook) == selected_pb->check_color(selected_pb)) {
+				bool pathClear = true;
+				for (int i = startCol - 1; i > 0; i--) {
+					if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
+						pathClear = false;
+						break;
+					}
+				}
+				if (pathClear) {
+					castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
+				}
+			}
+		}
+
 		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
