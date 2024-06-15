@@ -26,6 +26,8 @@ namespace ChessGameEngine {
 		scope = Point(0, 0);
 		chosen_piece_val = 1;
 		whiteonMove = true;
+		castle_move = false;
+		
 	}
 
 	BoardForm::~BoardForm()
@@ -919,9 +921,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 
-			if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
-				BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-			}
+			
+				if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
+				{
+					BoardForm::change_pb(selectedPictureBox, targetPictureBox);
+				
+				}
 		}
 	}
 	//swap pb
@@ -1319,7 +1324,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		// Check if indices are within bounds
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
-			return true;
+			return false;
 		}
 
 		// Check if the move is within one step in any direction for the king
@@ -1329,11 +1334,30 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece(target_pb);
 
 			// Check if the target position is empty or occupied by an opponent's piece
-			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb)) && target_piece != KING) {
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
 				return true;
 			}
 		}
 
+		// Check for kingside castling move
+		if (dy == 0 && dx == 2 && targetCol > startCol) {
+			custom_picturebox^ rook_pb = pictureBoxes[startRow][7]; // Rook is at the last column
+			Piece rook_piece = rook_pb->check_piece(rook_pb);
+			if (rook_piece == ROOK && rook_pb->check_color(rook_pb) == selected_pb->check_color(selected_pb)) {
+				// Ensure there are no pieces between the king and the rook
+				bool pathClear = true;
+				for (int i = startCol + 1; i < 7; i++) {
+					if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
+						pathClear = false;
+						break;
+					}
+				}
+				if (pathClear) {
+					castle(selected_pb, pictureBoxes[startRow][startCol + 2],rook_pb,pictureBoxes[startRow][startCol + 1]); // Move king
+					return true;
+				}
+			}
+		}
 
 		// If the move is not valid, bring all pieces to front
 		for (int i = 0; i < 8; i++) {
@@ -1371,6 +1395,40 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
+	}
+
+	void BoardForm::castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest)
+	{
+		Point start_king = Point(king->Location);
+		Point start_rook = Point(rook->Location);
+
+		String^ king_filepath = king->ImageLocation;
+		PieceColor king_piececolor = king->check_color(king);
+		Piece king_piece = king->check_piece(king);
+
+		String^ rook_filepath = rook->ImageLocation;
+		PieceColor rook_piececolor = rook->check_color(rook);
+		Piece rook_piece = rook->check_piece(rook);
+
+		
+		rook_dest->ImageLocation = rook_filepath;
+		rook_dest->set_color(rook, rook_piececolor);
+		rook_dest->set_piece(rook, rook_piece);
+
+		king_dest->ImageLocation = king_filepath;
+		king_dest->set_color(king, king_piececolor);
+		king_dest->set_piece(king, king_piece);
+
+		
+		rook->ImageLocation = "";
+		rook->set_color(rook, NONE);
+		rook->set_piece(rook, EMPTY);
+		
+		king->Location = start_king;
+		rook->Location = start_rook;
+
+		king->BringToFront();
+		rook->BringToFront();
 	}
 
 
