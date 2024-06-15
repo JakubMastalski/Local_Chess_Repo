@@ -46,9 +46,6 @@ namespace ChessGameEngine {
 		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
 		//add picture boxed to form
-	// Inicjalizacja czarnych pionków (rzêdy 6 i 7) i przypisanie im zdarzeñ myszy
-	
-		// Inicjalizacja pustych pól planszy (rzêdy 2 do 5) i przypisanie im zdarzeñ myszy
 		for (int row = 2; row < 6; ++row) {
 			for (int col = 0; col < 8; ++col) {
 				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
@@ -57,20 +54,20 @@ namespace ChessGameEngine {
 				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 				pictureBoxes[row][col]->Enabled = true;
-				pictureBoxes[row][col]->ImageLocation = "";
 				pictureBoxes[row][col]->set_color(pictureBoxes[row][col], NONE);
 				pictureBoxes[row][col]->set_piece(pictureBoxes[row][col], EMPTY);
-				//pictureBoxes[row][col]->Visible = true;;
 			}
 		}
 
+	
 		for (int col = 0; col < 8; ++col) {
+		
 			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
-			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
 			pictureBoxes[6][col]->set_color(pictureBoxes[6][col], WHITE);
 			pictureBoxes[6][col]->set_piece(pictureBoxes[6][col], PAWN);
 
-			pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
+		
+			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
 			switch (col) {
 			case 0:
 			case 7:
@@ -94,12 +91,10 @@ namespace ChessGameEngine {
 			pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
 		}
 
-		// Inicjalizacja bia³ych pionków (rzêdy 0 i 1) i przypisanie im zdarzeñ myszy
+		
 		for (int col = 0; col < 8; ++col) {
+		
 			this->grid_panel->Controls->Add(pictureBoxes[0][col]);
-			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
-
-			pictureBoxes[0][col]->set_color(pictureBoxes[0][col], BLACK);
 			switch (col) {
 			case 0:
 			case 7:
@@ -120,20 +115,18 @@ namespace ChessGameEngine {
 				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], KING);
 				break;
 			}
-			pictureBoxes[1][col]->set_color(pictureBoxes[1][col],BLACK);
-			pictureBoxes[1][col]->set_piece(pictureBoxes[1][col], PAWN);
+			pictureBoxes[0][col]->set_color(pictureBoxes[0][col], BLACK);
 
+			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
+			pictureBoxes[1][col]->set_color(pictureBoxes[1][col], BLACK);
+			pictureBoxes[1][col]->set_piece(pictureBoxes[1][col], PAWN);
 		}
-		
-	
-		for (int i = 0; i < 8; ++i)
-		{
-			for (int j = 0; j < 8; ++j)
-			{
+
+		for (int i = 0; i < 8; ++i) {
+			for (int j = 0; j < 8; ++j) {
 				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
-
 			}
 		}
 	
@@ -927,7 +920,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
 				{
 					BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-
 				}
 			}
 		}
@@ -944,17 +936,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		target_pb->BringToFront();
 		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
 		Piece piece1 = selected_pb->check_piece(selected_pb);
-		//int piece_value = selected_pb->get_value(selected_pb);
 		
-
 		target_pb->ImageLocation = pb_newfilepath;
 		target_pb->set_color(target_pb, piece_color1);
 		target_pb->set_piece(target_pb, piece1);
-		//target_pb->set_value(target_pb, piece_value);
 		
 		selected_pb->ImageLocation = "";
 		selected_pb->set_color(selected_pb, NONE);
-		//selected_pb->set_value(selected_pb, 0);
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
@@ -1291,7 +1279,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece target_piece = target_pb->check_piece(target_pb);
 
-			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
+			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) || target_piece != KING)) {
 				return true;
 			}
 			else {
@@ -1310,48 +1298,46 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check king
 	bool BoardForm::check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		Point startPos = start_location; // Original position of the piece
-		Point targetPos = selected_pb->Location; // New position of the piece
+		Point startPos = start_location; 
+		Point targetPos = selected_pb->Location; 
 
-		// Calculate the difference in positions
-		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
-		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+		
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width;
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; 
 
-		// Determine the row and column indices of the start and target positions
+		
 		int startRow = startPos.Y / selected_pb->Height;
 		int startCol = startPos.X / selected_pb->Width;
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
-		startRow = Math::Min(startRow, 7);
-		startCol = Math::Min(startCol, 7);
-		targetRow = Math::Min(targetRow, 7);
-		targetCol = Math::Min(targetCol, 7);
+		startRow = Math::Max(0, Math::Min(startRow, 7));
+		startCol = Math::Max(0, Math::Min(startCol, 7));
+		targetRow = Math::Max(0, Math::Min(targetRow, 7));
+		targetCol = Math::Max(0, Math::Min(targetCol, 7));
 
-		// Check if indices are within bounds
+	
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return false;
 		}
 
-		// Check if the move is within one step in any direction for the king
 		if (dx <= 1 && dy <= 1) {
 			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece target_piece = target_pb->check_piece(target_pb);
 
-			// Check if the target position is empty or occupied by an opponent's piece
 			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
 				return true;
 			}
 		}
 
-		// Check for kingside castling move
+		
 		if (dy == 0 && dx == 2 && targetCol > startCol) {
-			custom_picturebox^ rook_pb = pictureBoxes[startRow][7]; // Rook is at the last column
+			custom_picturebox^ rook_pb = pictureBoxes[startRow][7];
 			Piece rook_piece = rook_pb->check_piece(rook_pb);
 			if (rook_piece == ROOK && rook_pb->check_color(rook_pb) == selected_pb->check_color(selected_pb)) {
-				// Ensure there are no pieces between the king and the rook
+				
 				bool pathClear = true;
 				for (int i = startCol + 1; i < 7; i++) {
 					if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -1360,13 +1346,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					castle(selected_pb, pictureBoxes[startRow][startCol + 2],rook_pb,pictureBoxes[startRow][startCol + 1]); // Move king
-					return true;
+					castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
 				}
 			}
 		}
-
-		// If the move is not valid, bring all pieces to front
+		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -1406,10 +1390,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest)
 	{
-		castle_move = true;
-		/*
-		* Point start_king = Point(king->Location);
-		Point start_rook = Point(rook->Location);
+		Point start_king = king->Location;
+		Point start_rook = rook->Location;
 
 		String^ king_filepath = king->ImageLocation;
 		PieceColor king_piececolor = king->check_color(king);
@@ -1419,56 +1401,34 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		PieceColor rook_piececolor = rook->check_color(rook);
 		Piece rook_piece = rook->check_piece(rook);
 
-		
 		rook_dest->ImageLocation = rook_filepath;
-		rook_dest->set_color(rook, rook_piececolor);
-		rook_dest->set_piece(rook, rook_piece);
+		rook_dest->set_color(rook_dest, rook_piececolor); 
+		rook_dest->set_piece(rook_dest, rook_piece);     
 
 		king_dest->ImageLocation = king_filepath;
-		king_dest->set_color(king, king_piececolor);
-		king_dest->set_piece(king, king_piece);
+		king_dest->set_color(king_dest, king_piececolor); 
+		king_dest->set_piece(king_dest, king_piece);      
 
 		
+		king->ImageLocation = "";
+		king->set_color(king, NONE);
+		king->set_piece(king, EMPTY);
+
 		rook->ImageLocation = "";
 		rook->set_color(rook, NONE);
 		rook->set_piece(rook, EMPTY);
-		
+
+		king->Enabled = false;
+		rook->Enabled = false;
+
+
 		king->Location = start_king;
 		rook->Location = start_rook;
 
 		king->BringToFront();
 		rook->BringToFront();
-		*/
-		Point start_king = Point(king->Location);
-		Point start_rook = Point(rook->Location);
 
-		String^ king_filepath = king->ImageLocation;
-		PieceColor king_piececolor = king->check_color(king);
-		Piece king_piece = king->check_piece(king);
-
-		String^ rook_filepath = rook->ImageLocation;
-		PieceColor rook_piececolor = rook->check_color(rook);
-		Piece rook_piece = rook->check_piece(rook);
-
-		
-		rook_dest->ImageLocation = rook_filepath;
-		rook_dest->set_color(rook, rook_piececolor);
-		rook_dest->set_piece(rook, rook_piece);
-
-		king_dest->ImageLocation = king_filepath;
-		king_dest->set_color(king, king_piececolor);
-		king_dest->set_piece(king, king_piece);
-
-		
-		rook->ImageLocation = "";
-		rook->set_color(rook, NONE);
-		rook->set_piece(rook, EMPTY);
-		
-		king->Location = start_king;
-		rook->Location = start_rook;
-
-		king->BringToFront();
-		rook->BringToFront();
+		whiteonMove = !whiteonMove;
 	}
 
 
