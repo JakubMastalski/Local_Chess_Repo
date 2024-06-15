@@ -922,11 +922,18 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 
 			
+			if (!castle_move)
+			{
 				if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
 				{
 					BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-				
+
 				}
+			}
+		}
+		if (castle_move)
+		{
+			castle_move = false;
 		}
 	}
 	//swap pb
@@ -1399,6 +1406,39 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest)
 	{
+		castle_move = true;
+		/*
+		* Point start_king = Point(king->Location);
+		Point start_rook = Point(rook->Location);
+
+		String^ king_filepath = king->ImageLocation;
+		PieceColor king_piececolor = king->check_color(king);
+		Piece king_piece = king->check_piece(king);
+
+		String^ rook_filepath = rook->ImageLocation;
+		PieceColor rook_piececolor = rook->check_color(rook);
+		Piece rook_piece = rook->check_piece(rook);
+
+		
+		rook_dest->ImageLocation = rook_filepath;
+		rook_dest->set_color(rook, rook_piececolor);
+		rook_dest->set_piece(rook, rook_piece);
+
+		king_dest->ImageLocation = king_filepath;
+		king_dest->set_color(king, king_piececolor);
+		king_dest->set_piece(king, king_piece);
+
+		
+		rook->ImageLocation = "";
+		rook->set_color(rook, NONE);
+		rook->set_piece(rook, EMPTY);
+		
+		king->Location = start_king;
+		rook->Location = start_rook;
+
+		king->BringToFront();
+		rook->BringToFront();
+		*/
 		Point start_king = Point(king->Location);
 		Point start_rook = Point(rook->Location);
 

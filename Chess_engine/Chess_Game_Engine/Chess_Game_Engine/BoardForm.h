@@ -86,7 +86,6 @@ namespace ChessGameEngine {
 		bool castle_move;
 	private:
 		bool whiteonMove;
-	
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
