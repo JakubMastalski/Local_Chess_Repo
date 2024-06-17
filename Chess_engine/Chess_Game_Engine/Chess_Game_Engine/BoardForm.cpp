@@ -127,6 +127,7 @@ namespace ChessGameEngine {
 				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
 			}
 		}
 	
@@ -509,6 +510,7 @@ namespace ChessGameEngine {
 		this->grid_panel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 		this->grid_panel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 		this->grid_panel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+		this->grid_panel->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
 		// 
 		// BoardForm
 		// 
@@ -1448,6 +1450,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		rook->BringToFront();
 
 		whiteonMove = !whiteonMove;
+	}
+
+   void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+	{
+	   MessageBox::Show("Hello");
 	}
 
 
