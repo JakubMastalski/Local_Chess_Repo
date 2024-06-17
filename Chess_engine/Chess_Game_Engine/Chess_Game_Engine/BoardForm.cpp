@@ -27,6 +27,7 @@ namespace ChessGameEngine {
 		chosen_piece_val = 1;
 		whiteonMove = true;
 		castle_move = false;
+		piece_clicked = false;
 		
 	}
 
@@ -827,6 +828,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			if (selectedPictureBox->ImageLocation != "")
 			{
 				if (selectedPictureBox != nullptr) {
+					piece_clicked = true;
 					selectedPictureBox->Capture = true;
 					selectedPictureBox->BringToFront();
 					chosen_piece_val = selectedPictureBox->get_value(selectedPictureBox);
@@ -847,6 +849,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 			player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
+			piece_clicked = false;
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
 		    selectedPictureBox->BringToFront();
 			selectedPictureBox->Location = new_location;
@@ -857,6 +860,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
+			if (king_checked(pictureBoxes)) {
+				pictureBoxes[0][4]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.jpg";
+				selectedPictureBox->Location = start_location; 
+				return;
+			}
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 
@@ -904,6 +912,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->Location = start_location;
 					return;
 				}
+
 				whiteonMove = !whiteonMove;
 				selectedPictureBox->SendToBack();
 			}
@@ -973,6 +982,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		targetRow = Math::Min(targetRow, 7);
 		targetCol = Math::Min(targetCol, 7);
 
+	 
+
 		// Check if the pawn is moving backward for black pawns
 		if (selected_pb->check_color(selected_pb) == BLACK && targetRow < startRow) {
 			return false;
@@ -988,6 +999,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return true;
 		}
+
 
 		// Check if the move is exactly one step forward or backward and there is no piece in the way
 		if (dx == 0 && dy == 1) {
@@ -1019,6 +1031,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				return true;
 			}
 		}
+
+		
+
 
 		// If the move is not valid, bring all pieces to front
 		for (int i = 0; i < 8; i++) {
@@ -1454,9 +1469,78 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
-	   MessageBox::Show("Hello");
+	   ;
 	}
+   void BoardForm::reset_pb(array<array<custom_picturebox^>^>^ pictureBoxes)
+   {
+	  for (int i = 0; i < 8; i++) {
+		   for (int j = 0; j < 8; j++)
+		   {
+			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")pictureBoxes[i][j]->ImageLocation = "";
+		   }
+	  }
+   }
+   bool BoardForm::king_checked(array<array<custom_picturebox^>^>^ pictureBoxes)
+   {
+	   custom_picturebox^ kingBox;
+	   int kingCol = 0;
+	   int kingRow =0;
+	   Piece currentPiece;
+	 //  PieceColor pieceColor;
 
+	   for (int i = 0; i < 8; i++)
+	   {
+		   for (int j = 0; j < 8; j++)
+		   {
+			    currentPiece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
+			   // pieceColor = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+
+			   if (currentPiece == KING)
+			   {
+				   kingBox = pictureBoxes[i][j];
+				   kingRow = i;
+				   kingCol = j;
+			   }
+
+			   bool isPawnAttackingKing = check_Pawn_Attack(pictureBoxes[i][j], kingRow, kingCol);
+
+			   if (isPawnAttackingKing)
+			   {
+				   kingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.jpg";
+				   return true; // If any pawn is attacking the king, return true
+			   }
+		   }
+	   }
+
+	   return false; // If no pawn is attacking the king, return false
+   }
+
+   bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
+   {
+	   int pawnRow = pawnBox->row;
+	   int pawnCol = pawnBox->column;
+	   PieceColor pawnColor = pawnBox->check_color(pawnBox);
+
+	   // Check if the pawn can attack the king diagonally
+	   if (pawnColor == WHITE) {
+		   // White pawn attacks (one row up, left and right)
+		   if ((pawnRow - 1 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
+			   return true;
+		   // White pawn first move (two rows up, left and right)
+		   if (pawnRow == 6 && (pawnRow - 2 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
+			   return true;
+	   }
+	   else if (pawnColor == BLACK) {
+		   // Black pawn attacks (one row down, left and right)
+		   if ((pawnRow + 1 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
+			   return true;
+		   // Black pawn first move (two rows down, left and right)
+		   if (pawnRow == 1 && (pawnRow + 2 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
+			   return true;
+	   }
+
+	   return false;
+   }
 
 };
 
