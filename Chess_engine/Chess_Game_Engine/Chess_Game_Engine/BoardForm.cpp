@@ -862,7 +862,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
-
+			if (white_king_on_checked || black_king_on_checked)
+			{
+				selectedPictureBox->Location = start_location;
+				return;
+		    }
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 
@@ -936,8 +940,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		{
 			castle_move = false;
 		}
-		if (king_checked(pictureBoxes)) {
-			selectedPictureBox->Location = start_location;
+		if (king_checked(pictureBoxes,selectedPictureBox)) {
 			return;
 		}
 	}
@@ -1484,61 +1487,151 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	  }
    }
-   bool BoardForm::king_checked(array<array<custom_picturebox^>^>^ pictureBoxes)
+   bool BoardForm::king_checked(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_piece)
    {
-	   custom_picturebox^ whiteKingBox = nullptr;
-	   custom_picturebox^ blackKingBox = nullptr;
-	   int whiteKingRow = -1, whiteKingCol = -1;
-	   int blackKingRow = -1, blackKingCol = -1;
+	custom_picturebox^ whiteKingBox = nullptr;
+    custom_picturebox^ blackKingBox = nullptr;
+    int whiteKingRow = -1, whiteKingCol = -1;
+    int blackKingRow = -1, blackKingCol = -1;
 
-	   // ZnajdŸ obu królów na planszy
-	   for (int i = 0; i < 8; i++) {
-		   for (int j = 0; j < 8; j++) {
-			   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING) {
-				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE) {
-					   whiteKingBox = pictureBoxes[i][j];
-					   whiteKingRow = i;
-					   whiteKingCol = j;
-				   }
-				   else {
-					   blackKingBox = pictureBoxes[i][j];
-					   blackKingRow = i;
-					   blackKingCol = j;
-				   }
-			   }
-		   }
-	   }
+    // Find both kings on the board
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING)
+            {
+                if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE)
+                {
+                    whiteKingBox = pictureBoxes[i][j];
+                    whiteKingRow = i;
+                    whiteKingCol = j;
+                }
+                else
+                {
+                    blackKingBox = pictureBoxes[i][j];
+                    blackKingRow = i;
+                    blackKingCol = j;
+                }
+            }
+        }
+    }
 
-	   // SprawdŸ, czy bia³y król jest szachowany
-	   if (whiteKingBox != nullptr) {
-		   for (int i = 0; i < 8; i++) {
-			   for (int j = 0; j < 8; j++) {
-				   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == PAWN) {
-					   if (check_Pawn_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
-						   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-						   return true;
-					   }
-				   }
-			   }
-		   }
-	   }
+    // Check if the white king is in check
+    if (whiteKingBox != nullptr)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) != WHITE && pictureBoxes[i][j] != selected_piece)
+                {
+                    switch (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]))
+                    {
+                        case PAWN:
+                            if (check_Pawn_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
+                            {
+                                whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+                                white_king_on_checked = true;
+                                return true;
+                            }
+                            break;
+                        case KNIGHT:
+                            if (check_Knight_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
+                            {
+                                whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+                                white_king_on_checked = true;
+                                return true;
+                            }
+                            break;
+                        case BISHOP:
+                            if (check_Bishop_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
+                            {
+                                whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+                                white_king_on_checked = true;
+                                return true;
+                            }
+						case ROOK:
+							if (check_Rook_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
+							{
+								blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+								black_king_on_checked = true;
+								return true;
+							}
+						case QUEEN:
+							if (check_Queen_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
+							{
+								blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+								black_king_on_checked = true;
+								return true;
+							}
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
 
-	   // SprawdŸ, czy czarny król jest szachowany
-	   if (blackKingBox != nullptr) {
-		   for (int i = 0; i < 8; i++) {
-			   for (int j = 0; j < 8; j++) {
-				   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == PAWN) {
-					   if (check_Pawn_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
-						   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-						   return true;
-					   }
-				   }
-			   }
-		   }
-	   }
+	if (blackKingBox != nullptr)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) != BLACK && pictureBoxes[i][j] != selected_piece)
+				{
+					switch (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]))
+					{
+					case PAWN:
+						if (check_Pawn_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+						{
+							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							black_king_on_checked = true;
+							return true;
+						}
+						break;
+					case KNIGHT:
+						if (check_Knight_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+						{
+							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							black_king_on_checked = true;
+							return true;
+						}
+						break;
+					case BISHOP:
+						if (check_Bishop_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+						{
+							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							black_king_on_checked = true;
+							return true;
+						}
+						break;
+					case ROOK:
+						if (check_Rook_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+						{
+							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							black_king_on_checked = true;
+							return true;
+						}
+					case QUEEN:
+						if (check_Queen_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+						{
+							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							black_king_on_checked = true;
+							return true;
+						}
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+	}
 
-	   return false;
-
+	return false;
    }
 
    bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
@@ -1547,24 +1640,136 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int pawnCol = pawnBox->column;
 	   PieceColor pawnColor = pawnBox->check_color(pawnBox);
 
-	   // Check if the pawn can attack the king diagonally
-	   if (pawnColor == WHITE) {
-		   // White pawn attacks (one row up, left and right)
+	   if (pawnColor == WHITE)
+	   {
 		   if ((pawnRow - 1 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
 			   return true;
-		   // White pawn first move (two rows up, left and right)
 		   if (pawnRow == 6 && (pawnRow - 2 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
 			   return true;
 	   }
-	   else if (pawnColor == BLACK) {
-		   // Black pawn attacks (one row down, left and right)
+	   else if (pawnColor == BLACK) 
+	   {
 		   if ((pawnRow + 1 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
 			   return true;
-		   // Black pawn first move (two rows down, left and right)
 		   if (pawnRow == 1 && (pawnRow + 2 == kingRow) && (pawnCol - 1 == kingCol || pawnCol + 1 == kingCol))
 			   return true;
 	   }
 
+	   return false;
+   }
+   bool BoardForm::check_Knight_Attack(custom_picturebox^ knightBox, int kingRow, int kingCol)
+   {
+	   int knightRow = knightBox->row;
+	   int knightCol = knightBox->column;
+
+	
+	   array<Point>^ knightMoves = gcnew array<Point>
+	   {
+		   Point(-2, -1), Point(-2, 1), Point(-1, -2), Point(-1, 2),
+			   Point(1, -2), Point(1, 2), Point(2, -1), Point(2, 1)
+	   };
+
+	   for each (Point move in knightMoves)
+	   {
+		   int newRow = knightRow + move.X;
+		   int newCol = knightCol + move.Y;
+
+		   if (newRow == kingRow && newCol == kingCol) 
+		   {
+			   return true;
+		   }
+	   }
+
+	   return false;
+   }
+
+   bool BoardForm::check_Bishop_Attack(custom_picturebox^ bishopBox, int kingRow, int kingCol)
+   {
+	   int bishopRow = bishopBox->row;
+	   int bishopCol = bishopBox->column;
+
+	   if (abs(kingRow - bishopRow) == abs(kingCol - bishopCol)) {
+		   int rowDirection = (kingRow > bishopRow) ? 1 : -1;
+		   int colDirection = (kingCol > bishopCol) ? 1 : -1;
+
+		   int currentRow = bishopRow + rowDirection;
+		   int currentCol = bishopCol + colDirection;
+		   while (currentRow != kingRow && currentCol != kingCol) {
+			   if (pictureBoxes[currentRow][currentCol]->check_piece(pictureBoxes[currentRow][currentCol]) != NONE) {
+				   return false;
+			   }
+			   currentRow += rowDirection;
+			   currentCol += colDirection;
+		   }
+		   return true;
+	   }
+
+	   return false;
+   }
+
+   bool BoardForm::check_Rook_Attack(custom_picturebox^ rookBox, int kingRow, int kingCol)
+   {
+	   int rookRow = rookBox->row;
+	   int rookCol = rookBox->column;
+
+	   if (rookRow == kingRow || rookCol == kingCol)
+	   {
+		   if (rookRow == kingRow) 
+		   {
+			   int startCol, endCol;
+			   if (rookCol < kingCol)
+			   {
+				   startCol = rookCol + 1;
+				   endCol = kingCol;
+			   }
+			   else
+			   {
+				   startCol = kingCol + 1;
+				   endCol = rookCol;
+			   }
+
+			   for (int col = startCol; col < endCol; ++col)
+			   {
+				   if (pictureBoxes[rookRow][col]->check_piece(pictureBoxes[rookRow][col]) != NONE)
+				   {
+					   return false;
+				   }
+			   }
+			   return true; 
+		   }
+		   else 
+		   {
+			   int startRow, endRow;
+			   if (rookRow < kingRow)
+			   {
+				   startRow = rookRow + 1;
+				   endRow = kingRow;
+			   }
+			   else
+			   {
+				   startRow = kingRow + 1;
+				   endRow = rookRow;
+			   }
+
+			   for (int row = startRow; row < endRow; ++row)
+			   {
+				   if (pictureBoxes[row][rookCol]->check_piece(pictureBoxes[row][rookCol]) != NONE)
+				   {
+					   return false; 
+				   }
+			   }
+			   return true; 
+		   }
+	   }
+
+	   return false;
+   }
+   bool BoardForm::check_Queen_Attack(custom_picturebox^ queenBox, int kingRow, int kingCol)
+   {
+	   if (check_Rook_Attack(queenBox, kingRow, kingCol)||check_Bishop_Attack(queenBox, kingRow, kingCol))
+	   {
+		   return true;
+	   }
 	   return false;
    }
 

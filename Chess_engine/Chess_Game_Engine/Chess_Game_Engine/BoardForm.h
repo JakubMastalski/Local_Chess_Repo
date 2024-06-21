@@ -90,6 +90,9 @@ namespace ChessGameEngine {
 	private:
 		bool whiteonMove;
 		bool piece_clicked;
+	private:
+		bool white_king_on_checked;
+		bool black_king_on_checked;
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
@@ -132,7 +135,11 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: void player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected);
 	private:void castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest);
 	private:void reset_pb(array<array<custom_picturebox^>^>^ pictureBoxes);
-	private:bool king_checked(array<array<custom_picturebox^>^>^ pb);
+	private:bool king_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected_piece);
 	private:bool check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
+	private:bool check_Knight_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
+    private:bool check_Bishop_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
+	private:bool check_Rook_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
+    private:bool check_Queen_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
 };
 }
