@@ -78,6 +78,9 @@ namespace ChessGameEngine {
 		Control^ controlUnderCursor;
 		custom_picturebox^ targetPictureBox;
 	private:
+		custom_picturebox^ white_king;
+		custom_picturebox^ black_king;
+	private:
 		array<array<custom_picturebox^>^>^ pictureBoxes;
 	private:
 		Piece current_piece;
@@ -130,7 +133,6 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private:void castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest);
 	private:void reset_pb(array<array<custom_picturebox^>^>^ pictureBoxes);
 	private:bool king_checked(array<array<custom_picturebox^>^>^ pb);
-
 	private:bool check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
 };
 }

@@ -87,6 +87,7 @@ namespace ChessGameEngine {
 				break;
 			case 4:
 				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], KING);
+				white_king = pictureBoxes[7][col];
 				break;
 			}
 			pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
@@ -114,6 +115,7 @@ namespace ChessGameEngine {
 				break;
 			case 4:
 				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], KING);
+				black_king = pictureBoxes[0][col];
 				break;
 			}
 			pictureBoxes[0][col]->set_color(pictureBoxes[0][col], BLACK);
@@ -860,11 +862,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
-			if (king_checked(pictureBoxes)) {
-				pictureBoxes[0][4]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.jpg";
-				selectedPictureBox->Location = start_location; 
-				return;
-			}
+
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 
@@ -938,6 +936,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		{
 			castle_move = false;
 		}
+		if (king_checked(pictureBoxes)) {
+			selectedPictureBox->Location = start_location;
+			return;
+		}
 	}
 	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
@@ -961,6 +963,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
+
+
 		Point startPos = start_location; // Original position of the piece
 		Point targetPos = selected_pb->Location; // New position of the piece
 
@@ -1482,37 +1486,59 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
    bool BoardForm::king_checked(array<array<custom_picturebox^>^>^ pictureBoxes)
    {
-	   custom_picturebox^ kingBox;
-	   int kingCol = 0;
-	   int kingRow =0;
-	   Piece currentPiece;
-	 //  PieceColor pieceColor;
+	   custom_picturebox^ whiteKingBox = nullptr;
+	   custom_picturebox^ blackKingBox = nullptr;
+	   int whiteKingRow = -1, whiteKingCol = -1;
+	   int blackKingRow = -1, blackKingCol = -1;
 
-	   for (int i = 0; i < 8; i++)
-	   {
-		   for (int j = 0; j < 8; j++)
-		   {
-			    currentPiece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
-			   // pieceColor = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
-
-			   if (currentPiece == KING)
-			   {
-				   kingBox = pictureBoxes[i][j];
-				   kingRow = i;
-				   kingCol = j;
-			   }
-
-			   bool isPawnAttackingKing = check_Pawn_Attack(pictureBoxes[i][j], kingRow, kingCol);
-
-			   if (isPawnAttackingKing)
-			   {
-				   kingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.jpg";
-				   return true; // If any pawn is attacking the king, return true
+	   // ZnajdŸ obu królów na planszy
+	   for (int i = 0; i < 8; i++) {
+		   for (int j = 0; j < 8; j++) {
+			   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING) {
+				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE) {
+					   whiteKingBox = pictureBoxes[i][j];
+					   whiteKingRow = i;
+					   whiteKingCol = j;
+				   }
+				   else {
+					   blackKingBox = pictureBoxes[i][j];
+					   blackKingRow = i;
+					   blackKingCol = j;
+				   }
 			   }
 		   }
 	   }
 
-	   return false; // If no pawn is attacking the king, return false
+	   // SprawdŸ, czy bia³y król jest szachowany
+	   if (whiteKingBox != nullptr) {
+		   for (int i = 0; i < 8; i++) {
+			   for (int j = 0; j < 8; j++) {
+				   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == PAWN) {
+					   if (check_Pawn_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
+						   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+						   return true;
+					   }
+				   }
+			   }
+		   }
+	   }
+
+	   // SprawdŸ, czy czarny król jest szachowany
+	   if (blackKingBox != nullptr) {
+		   for (int i = 0; i < 8; i++) {
+			   for (int j = 0; j < 8; j++) {
+				   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == PAWN) {
+					   if (check_Pawn_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
+						   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+						   return true;
+					   }
+				   }
+			   }
+		   }
+	   }
+
+	   return false;
+
    }
 
    bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
