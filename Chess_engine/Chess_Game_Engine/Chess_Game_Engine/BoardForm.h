@@ -93,6 +93,8 @@ namespace ChessGameEngine {
 	private:
 		bool white_king_on_checked;
 		bool black_king_on_checked;
+	private:
+		custom_picturebox^ last_moved_piece;
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
