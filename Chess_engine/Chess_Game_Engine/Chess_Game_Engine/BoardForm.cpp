@@ -1282,8 +1282,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return false;
 		}
 
-		// Check for Queen move (combination of Rook and Bishop moves)
-		if ((dx == 0 || dy == 0) || (dx == dy)) {
+		// Rook-like move (horizontal or vertical)
+		if (dx == 0 || dy == 0) {
 			int stepX = (targetCol - startCol) == 0 ? 0 : (targetCol - startCol) / abs(targetCol - startCol);
 			int stepY = (targetRow - startRow) == 0 ? 0 : (targetRow - startRow) / abs(targetRow - startRow);
 
@@ -1298,26 +1298,36 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					return false;
 				}
 			}
+		}
+		// Bishop-like move (diagonal)
+		else if (dx == dy) {
+			int stepX = (targetCol - startCol) / dx;
+			int stepY = (targetRow - startRow) / dy;
 
-			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
-			PieceColor check_targetpb = target_pb->check_color(target_pb);
-			Piece target_piece = target_pb->check_piece(target_pb);
+			for (int i = 1; i < dx; ++i) {
+				int currentRow = startRow + i * stepY;
+				int currentCol = startCol + i * stepX;
+				custom_picturebox^ current_pb = pictureBoxes[currentRow][currentCol];
 
-			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) || target_piece != KING)) {
-				return true;
-			}
-			else {
-				return false;
+				if (current_pb->check_piece(current_pb) != EMPTY) {
+					return false;
+				}
 			}
 		}
-
-		// If the move is not valid, bring all pieces to front
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				pictureBoxes[i][j]->BringToFront();
-			}
+		else {
+			return false;
 		}
-		return false;
+
+		custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+		PieceColor check_targetpb = target_pb->check_color(target_pb);
+		Piece target_piece = target_pb->check_piece(target_pb);
+
+		if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	//check king
 	bool BoardForm::check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
