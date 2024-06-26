@@ -45,6 +45,7 @@ public:
         SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
         TabIndex = 6;
         TabStop = false;
+        attacked = false;
     };
 private:
     //square on the board
@@ -303,6 +304,7 @@ private:
     public:
         int row;
         int column;
+        bool attacked;
 private:
     array<array<custom_picturebox^>^>^ pictureBoxes;
 };

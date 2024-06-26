@@ -1494,11 +1494,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int whiteKingRow = -1, whiteKingCol = -1;
 	   int blackKingRow = -1, blackKingCol = -1;
 
-	   // Find both kings on the board
-	   for (int i = 0; i < 8; i++)
-	   {
-		   for (int j = 0; j < 8; j++)
-		   {
+	   
+	   white_king_on_checked = false; 
+	   black_king_on_checked = false; 
+
+	  
+	   for (int i = 0; i < 8; i++) {
+		   for (int j = 0; j < 8; j++) {
 			   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING)
 			   {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE)
@@ -1507,8 +1509,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   whiteKingRow = i;
 					   whiteKingCol = j;
 				   }
-				   else
-				   {
+				   else {
 					   blackKingBox = pictureBoxes[i][j];
 					   blackKingRow = i;
 					   blackKingCol = j;
@@ -1517,125 +1518,65 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
-	   // Check if the white king is in check
-	   if (whiteKingBox != nullptr)
+	 
+	   if (whiteKingBox != nullptr) 
 	   {
-		   for (int i = 0; i < 8; i++)
+		   for (int i = 0; i < 8; i++) 
 		   {
-			   for (int j = 0; j < 8; j++)
+			   for (int j = 0; j < 8; j++) 
 			   {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) != WHITE && pictureBoxes[i][j] != selected_piece)
 				   {
-					   switch (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]))
-					   {
-					   case PAWN:
-						   if (check_Pawn_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
-						   {
-							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   white_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case KNIGHT:
-						   if (check_Knight_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
-						   {
-							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   white_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case BISHOP:
-						   if (check_Bishop_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
-						   {
-							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   white_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case ROOK:
-						   if (check_Rook_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
-						   {
-							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   white_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case QUEEN:
-						   if (check_Queen_Attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
-						   {
-							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   white_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   default:
-						   break;
+					   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) { 
+						   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+						   white_king_on_checked = true;
+						   return true;
 					   }
 				   }
 			   }
 		   }
+		   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png"; 
 	   }
 
-	   // Check if the black king is in check
-	   if (blackKingBox != nullptr)
+	   if (blackKingBox != nullptr) 
 	   {
 		   for (int i = 0; i < 8; i++)
 		   {
-			   for (int j = 0; j < 8; j++)
+			   for (int j = 0; j < 8; j++) 
 			   {
-				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) != BLACK && pictureBoxes[i][j] != selected_piece)
+				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) != BLACK && pictureBoxes[i][j] != selected_piece) 
 				   {
-					   switch (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]))
-					   {
-					   case PAWN:
-						   if (check_Pawn_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-						   {
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   black_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case KNIGHT:
-						   if (check_Knight_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-						   {
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   black_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case BISHOP:
-						   if (check_Bishop_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-						   {
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   black_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case ROOK:
-						   if (check_Rook_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-						   {
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   black_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   case QUEEN:
-						   if (check_Queen_Attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-						   {
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   black_king_on_checked = true;
-							   return true;
-						   }
-						   break;
-					   default:
-						   break;
+					   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+					   { 
+						   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+						   black_king_on_checked = true;
+						   return true;
 					   }
 				   }
 			   }
 		   }
+		   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png"; 
 	   }
 
 	   return false;
+   }
+
+   bool BoardForm::is_king_under_attack(custom_picturebox^ piece, int kingRow, int kingCol)
+   {
+	   switch (piece->check_piece(piece)) {
+	   case PAWN:
+		   return check_Pawn_Attack(piece, kingRow, kingCol);
+	   case KNIGHT:
+		   return check_Knight_Attack(piece, kingRow, kingCol);
+	   case BISHOP:
+		   return check_Bishop_Attack(piece, kingRow, kingCol);
+	   case ROOK:
+		   return check_Rook_Attack(piece, kingRow, kingCol);
+	   case QUEEN:
+		   return check_Queen_Attack(piece, kingRow, kingCol);
+	   default:
+		   return false;
+	   }
    }
 
    bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
