@@ -911,15 +911,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->Location = start_location;
 					return;
 				}
-				if (white_king_on_checked || black_king_on_checked)
-				{
-					if (king_checked(pictureBoxes, last_moved_piece))
-					{
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-				}
-
+				
 				whiteonMove = !whiteonMove;
 				selectedPictureBox->SendToBack();
 			}
@@ -932,7 +924,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 
-
+			if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox))
+			{
+				selectedPictureBox->Location = start_location;
+				selectedPictureBox->ImageLocation = file_path;
+				return;
+			}
+			//zrob droga porme change_pb tylko unndo i zaleznie od sprawdzenia ruchu albo przesun pb normalnie albo przesun albo potem wroc
 				if (!castle_move)
 				{
 					if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
@@ -940,6 +938,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							BoardForm::change_pb(selectedPictureBox, targetPictureBox);	
 					}
 				}
+
 
 			if (castle_move)
 			{
@@ -968,6 +967,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
+	}
+
+	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target)
+	{
+		return king_checked(pb, last_moved_piece);
 	}
 	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
