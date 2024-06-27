@@ -923,19 +923,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-
-			if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox))
+			/*
+			if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox,last_moved_piece))
 			{
 				selectedPictureBox->Location = start_location;
 				selectedPictureBox->ImageLocation = file_path;
 				return;
 			}
-			//zrob droga porme change_pb tylko unndo i zaleznie od sprawdzenia ruchu albo przesun pb normalnie albo przesun albo potem wroc
+			*/
 				if (!castle_move)
 				{
 					if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
 					{
-							BoardForm::change_pb(selectedPictureBox, targetPictureBox);	
+						BoardForm::change_pb(selectedPictureBox, targetPictureBox);
+						if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
+						{
+
+						}
 					}
 				}
 
@@ -969,9 +973,63 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->BringToFront();
 	}
 
-	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target)
+	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)
 	{
-		return king_checked(pb, last_moved_piece);
+		// ZnajdŸ pola króla bia³ego i czarnego oraz ich pozycje
+		custom_picturebox^ whiteKingBox = nullptr;
+		custom_picturebox^ blackKingBox = nullptr;
+		int whiteKingRow = -1, whiteKingCol = -1;
+		int blackKingRow = -1, blackKingCol = -1;
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (pb[i][j]->check_piece(pb[i][j]) == KING) {
+					if (pb[i][j]->check_color(pb[i][j]) == WHITE) {
+						whiteKingBox = pb[i][j];
+						whiteKingRow = i;
+						whiteKingCol = j;
+					}
+					else {
+						blackKingBox = pb[i][j];
+						blackKingRow = i;
+						blackKingCol = j;
+					}
+				}
+			}
+		}
+
+		// SprawdŸ szachowanie bia³ego króla
+		if (whiteKingBox != nullptr) {
+			// Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					// SprawdŸ czy figura nale¿y do przeciwnika
+					if (pb[i][j]->check_color(pb[i][j]) == BLACK) {
+						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
+						if (is_king_under_attack(pb[i][j], whiteKingRow, whiteKingCol)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		// SprawdŸ szachowanie czarnego króla
+		if (blackKingBox != nullptr) {
+			// Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					// SprawdŸ czy figura nale¿y do przeciwnika
+					if (pb[i][j]->check_color(pb[i][j]) == WHITE) {
+						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
+						if (is_king_under_attack(pb[i][j], blackKingRow, blackKingCol)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		// Jeœli król nie jest szachowany, zwróæ false
+		return false;
 	}
 	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
