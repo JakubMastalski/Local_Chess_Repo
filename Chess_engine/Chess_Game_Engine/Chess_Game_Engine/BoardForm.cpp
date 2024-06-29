@@ -952,9 +952,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 					return;
 				}
-				else
+				else if(king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
 				{
-					;
+					selectedPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+					targetPictureBox->ImageLocation = "";
 				}
 				
 			}
