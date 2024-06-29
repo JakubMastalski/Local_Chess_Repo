@@ -868,6 +868,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 			isWithinBounds = check_sent(selectedPictureBox);
 
+			
+
 			if (selectedPictureBox->Location != start_location && isWithinBounds) {
 
 				switch (current_piece) {
@@ -923,23 +925,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-			/*
-			if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox,last_moved_piece))
-			{
-				selectedPictureBox->Location = start_location;
-				selectedPictureBox->ImageLocation = file_path;
-				return;
-			}
-			*/
+			
+		
+			
 				if (!castle_move)
 				{
 					if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
 					{
 						BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-						if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
-						{
-
-						}
 					}
 				}
 
@@ -948,7 +941,26 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			{
 				castle_move = false;
 			}
-			if (king_checked(pictureBoxes, selectedPictureBox)) {
+
+			if (white_king_on_checked || black_king_on_checked)
+			{
+				if (!king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
+				{
+					white_king_on_checked = false;
+					black_king_on_checked = false;
+					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+					return;
+				}
+				else
+				{
+					;
+				}
+				
+			}
+
+			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) {
+			   
 				return;
 			}
 	}
@@ -956,6 +968,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
+
+
+		Piece chossen_piece1 = target_pb->check_piece(selected_pb);
+		String^ pb_newfilepath1 = target_pb->ImageLocation;
+
+		Point start_selected = selected_pb->Location;
+	
+		PieceColor piece_color11 = target_pb->check_color(selected_pb);
+		Piece piece11 = target_pb->check_piece(selected_pb);
+
 		Piece chossen_piece = selected_pb->check_piece(selected_pb);
 		String^ pb_newfilepath = selected_pb->ImageLocation;
 		target_pb->BringToFront();
@@ -971,6 +993,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
 		selected_pb->BringToFront();
+
+		/*
+		if (king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece))
+		{
+			selectedPictureBox->BringToFront();
+			selected_pb->ImageLocation = pb_newfilepath1;
+			selected_pb->set_piece(target_pb, piece11);
+			selected_pb->set_color(target_pb, piece_color11);
+			selected_pb->Location = start_location;
+
+			targetPictureBox->set_color(selected_pb, NONE);
+			targetPictureBox->set_piece(selected_pb, EMPTY);
+			targetPictureBox->Location = start_location;
+			targetPictureBox->ImageLocation = "";
+
+		}
+		*/
 	}
 
 	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)
