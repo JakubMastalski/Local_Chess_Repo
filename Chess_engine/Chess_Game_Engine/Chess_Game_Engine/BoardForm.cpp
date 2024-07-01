@@ -926,6 +926,18 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 			
+			//king still chkecked method
+			pieceType_selected = selectedPictureBox->check_piece(selectedPictureBox);
+			pieceColor_selected = selectedPictureBox->check_color(selectedPictureBox);
+			imgLocation_selected = selectedPictureBox->ImageLocation;
+			startLocation_selected = start_location;
+
+			/*
+			pieceType_target = targetPictureBox->c
+			pieceColor_target = color_target;
+			imgLocation_target = img_location_target;
+			startLocation_target = start_location_target;
+			*/
 		
 			
 				if (!castle_move)
@@ -954,12 +966,18 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 				else if(king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
 				{
-					selectedPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+
+					selectedPictureBox->ImageLocation = imgLocation_selected;
+					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
+					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
+
+
 					targetPictureBox->ImageLocation = "";
+					targetPictureBox->set_color(targetPictureBox, NONE);
+					targetPictureBox->set_piece(targetPictureBox, EMPTY);
 				}
 				
 			}
-
 			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) {
 			   
 				return;
@@ -969,48 +987,42 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
+		Piece chosen_piece_selected = selected_pb->check_piece(selected_pb);
+		Piece chosen_piece_target = target_pb->check_piece(target_pb);
 
+		PieceColor color_selected = selected_pb->check_color(selected_pb);
+		PieceColor color_target = target_pb->check_color(target_pb);
 
-		Piece chossen_piece1 = target_pb->check_piece(selected_pb);
-		String^ pb_newfilepath1 = target_pb->ImageLocation;
+		String^ img_location_selected = selected_pb->ImageLocation;
+		String^ img_location_target = target_pb->ImageLocation;
 
-		Point start_selected = selected_pb->Location;
-	
-		PieceColor piece_color11 = target_pb->check_color(selected_pb);
-		Piece piece11 = target_pb->check_piece(selected_pb);
+		Point start_location_selected = selected_pb->Location;
+		Point start_location_target = target_pb->Location;
 
-		Piece chossen_piece = selected_pb->check_piece(selected_pb);
-		String^ pb_newfilepath = selected_pb->ImageLocation;
-		target_pb->BringToFront();
-		PieceColor piece_color1  = selected_pb->check_color(selected_pb);
-		Piece piece1 = selected_pb->check_piece(selected_pb);
-		
-		target_pb->ImageLocation = pb_newfilepath;
-		target_pb->set_color(target_pb, piece_color1);
-		target_pb->set_piece(target_pb, piece1);
-		
+		//king still chkecked method
+		/*
+		 pieceType_selected = chosen_piece_selected;
+		 pieceColor_selected = color_selected;
+		 imgLocation_selected = img_location_selected;
+		 startLocation_selected = start_location_selected;
+
+		 pieceType_target = chosen_piece_target;
+		 pieceColor_target = color_target;
+		 imgLocation_target = img_location_target;
+		 startLocation_target = start_location_target;
+		 */
+
+		target_pb->ImageLocation = img_location_selected;
+		target_pb->set_color(target_pb, color_selected);
+		target_pb->set_piece(target_pb, chosen_piece_selected);
+
 		selected_pb->ImageLocation = "";
 		selected_pb->set_color(selected_pb, NONE);
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
+
 		selected_pb->BringToFront();
-
-		/*
-		if (king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece))
-		{
-			selectedPictureBox->BringToFront();
-			selected_pb->ImageLocation = pb_newfilepath1;
-			selected_pb->set_piece(target_pb, piece11);
-			selected_pb->set_color(target_pb, piece_color11);
-			selected_pb->Location = start_location;
-
-			targetPictureBox->set_color(selected_pb, NONE);
-			targetPictureBox->set_piece(selected_pb, EMPTY);
-			targetPictureBox->Location = start_location;
-			targetPictureBox->ImageLocation = "";
-
-		}
-		*/
+		target_pb->BringToFront();
 	}
 
 	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)

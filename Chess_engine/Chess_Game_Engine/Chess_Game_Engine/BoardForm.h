@@ -95,6 +95,17 @@ namespace ChessGameEngine {
 		bool black_king_on_checked;
 	private:
 		custom_picturebox^ last_moved_piece;
+	private:
+		Piece pieceType_selected;
+		PieceColor pieceColor_selected;
+		String^ imgLocation_selected;
+		Point startLocation_selected;
+
+		Piece pieceType_target;
+		PieceColor pieceColor_target;
+		String^ imgLocation_target;
+		Point startLocation_target;
+
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
