@@ -967,6 +967,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				else if(king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
 				{
 
+					white_king_on_checked = true;
+					white_king_on_checked = true;
+
 					selectedPictureBox->ImageLocation = imgLocation_selected;
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
 					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
@@ -975,6 +978,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					targetPictureBox->ImageLocation = "";
 					targetPictureBox->set_color(targetPictureBox, NONE);
 					targetPictureBox->set_piece(targetPictureBox, EMPTY);
+					whiteonMove = !whiteonMove;
 				}
 				
 			}
@@ -1097,6 +1101,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Determine direction of movement
 		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 for forward, -1 for backward
+		if (direction == 0)direction = 1;
 
 		// Determine the row and column indices of the start and target positions
 		int startRow = startPos.Y / selected_pb->Height;
