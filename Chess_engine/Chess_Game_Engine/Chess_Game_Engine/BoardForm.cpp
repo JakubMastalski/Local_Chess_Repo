@@ -28,7 +28,8 @@ namespace ChessGameEngine {
 		whiteonMove = true;
 		castle_move = false;
 		piece_clicked = false;
-		
+		enPassantRow = -1;
+		enPassantCol = -1;
 	}
 
 	BoardForm::~BoardForm()
@@ -985,6 +986,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) {
 			   
 				return;
+				//dodaj warunki brzegowe 
 			}
 	}
 	}
@@ -1090,8 +1092,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
-
-
 		Point startPos = start_location; // Original position of the piece
 		Point targetPos = selected_pb->Location; // New position of the piece
 
@@ -1128,22 +1128,26 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Check if indices are within bounds
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
-			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8)
+		{
 			return true;
 		}
 
 
 		// Check if the move is exactly one step forward or backward and there is no piece in the way
-		if (dx == 0 && dy == 1) {
+		if (dx == 0 && dy == 1)
+		{
 			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 			Piece check_targetpb = target_pb->check_piece(target_pb);
 
 			// Check if the target position is occupied
-			if (check_targetpb == EMPTY) {
+			if (check_targetpb == EMPTY) 
+			{
 				return true;
 			}
 		}
-		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) { // Allow the initial double step move for pawns
+		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) 
+		{ // Allow the initial double step move for pawns
 			custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
 			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 
@@ -1152,22 +1156,29 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 		// Check for diagonal captures (for both black and white pawns)
-		else if (dx == 1 && dy == 1) {
+		else if (dx == 1 && dy == 1) 
+		{
 			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece check_piece = target_pb->check_piece(target_pb);
 			int captureDirection = (targetCol - startCol) / abs(targetCol - startCol);
 
 			// Check if the target position is occupied by an opponent's piece
-			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING) {
+			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING && direction) {
+
 				return true;
 			}
+		}
+		else if (dx == 0 && dy == 1)
+		{
+			MessageBox::Show("eeee");
+			return true;
 		}
 
 		
 
 
-		// If the move is not valid, bring all pieces to front
+
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();

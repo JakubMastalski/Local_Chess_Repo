@@ -106,6 +106,9 @@ namespace ChessGameEngine {
 		String^ imgLocation_target;
 		Point startLocation_target;
 
+		int enPassantRow;
+		int enPassantCol;
+
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
 #pragma endregion
