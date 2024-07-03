@@ -1175,10 +1175,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return true;
 		}
 
-		
-
-
-
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -1498,6 +1494,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece(target_pb);
 
 			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
+				PieceColor king_piece = selected_pb->check_color(selected_pb);
+
+				if (king_piece == WHITE)
+				{
+					white_king_moved = true;
+				}
+				else if(king_piece == BLACK)
+				{
+					black_king_moved = true;
+				}
 				return true;
 			}
 		}
@@ -1517,7 +1523,19 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
+					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved)
+					{
+						castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
+					}
+					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved)
+					{
+						castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
+					}
+					else
+					{
+						return false;
+					}
+
 				}
 			}
 		}
@@ -1534,7 +1552,18 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
+					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved)
+					{
+						castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
+					}
+					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved)
+					{
+						castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
+					}
+					else
+					{
+						return false;
+					}
 				}
 			}
 		}
@@ -1579,45 +1608,48 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest)
 	{
-		Point start_king = king->Location;
-		Point start_rook = rook->Location;
+		if (!white_king_on_checked || !black_king_on_checked)
+		{
+				Point start_king = king->Location;
+				Point start_rook = rook->Location;
 
-		String^ king_filepath = king->ImageLocation;
-		PieceColor king_piececolor = king->check_color(king);
-		Piece king_piece = king->check_piece(king);
+				String^ king_filepath = king->ImageLocation;
+				PieceColor king_piececolor = king->check_color(king);
+				Piece king_piece = king->check_piece(king);
 
-		String^ rook_filepath = rook->ImageLocation;
-		PieceColor rook_piececolor = rook->check_color(rook);
-		Piece rook_piece = rook->check_piece(rook);
+				String^ rook_filepath = rook->ImageLocation;
+				PieceColor rook_piececolor = rook->check_color(rook);
+				Piece rook_piece = rook->check_piece(rook);
 
-		rook_dest->ImageLocation = rook_filepath;
-		rook_dest->set_color(rook_dest, rook_piececolor); 
-		rook_dest->set_piece(rook_dest, rook_piece);     
+				rook_dest->ImageLocation = rook_filepath;
+				rook_dest->set_color(rook_dest, rook_piececolor);
+				rook_dest->set_piece(rook_dest, rook_piece);
 
-		king_dest->ImageLocation = king_filepath;
-		king_dest->set_color(king_dest, king_piececolor); 
-		king_dest->set_piece(king_dest, king_piece);      
-
-		
-		king->ImageLocation = "";
-		king->set_color(king, NONE);
-		king->set_piece(king, EMPTY);
-
-		rook->ImageLocation = "";
-		rook->set_color(rook, NONE);
-		rook->set_piece(rook, EMPTY);
-
-		king->Enabled = false;
-		rook->Enabled = false;
+				king_dest->ImageLocation = king_filepath;
+				king_dest->set_color(king_dest, king_piececolor);
+				king_dest->set_piece(king_dest, king_piece);
 
 
-		king->Location = start_king;
-		rook->Location = start_rook;
+				king->ImageLocation = "";
+				king->set_color(king, NONE);
+				king->set_piece(king, EMPTY);
 
-		king->BringToFront();
-		rook->BringToFront();
+				rook->ImageLocation = "";
+				rook->set_color(rook, NONE);
+				rook->set_piece(rook, EMPTY);
 
-		whiteonMove = !whiteonMove;
+				king->Enabled = false;
+				rook->Enabled = false;
+
+
+				king->Location = start_king;
+				rook->Location = start_rook;
+
+				king->BringToFront();
+				rook->BringToFront();
+
+				whiteonMove = !whiteonMove;
+		}
 	}
 
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)

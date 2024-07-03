@@ -108,6 +108,9 @@ namespace ChessGameEngine {
 
 		int enPassantRow;
 		int enPassantCol;
+	private:
+		bool white_king_moved;
+		bool black_king_moved;
 
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
