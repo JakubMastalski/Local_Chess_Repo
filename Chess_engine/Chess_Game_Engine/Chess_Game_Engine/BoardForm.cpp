@@ -867,9 +867,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 
-			isWithinBounds = check_sent(selectedPictureBox);
-
-			
+			isWithinBounds = check_sent(selectedPictureBox);		
 
 			if (selectedPictureBox->Location != start_location && isWithinBounds) {
 
@@ -932,14 +930,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			pieceColor_selected = selectedPictureBox->check_color(selectedPictureBox);
 			imgLocation_selected = selectedPictureBox->ImageLocation;
 			startLocation_selected = start_location;
-
-			/*
-			pieceType_target = targetPictureBox->c
-			pieceColor_target = color_target;
-			imgLocation_target = img_location_target;
-			startLocation_target = start_location_target;
-			*/
-		
 			
 				if (!castle_move)
 				{
@@ -981,12 +971,32 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					targetPictureBox->set_piece(targetPictureBox, EMPTY);
 					whiteonMove = !whiteonMove;
 				}
-				
+			
 			}
-			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) {
-			   
-				return;
-				//dodaj warunki brzegowe 
+			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) 
+			{
+				if (whiteonMove && black_king_on_checked || !whiteonMove && white_king_on_checked)
+				{
+					//jeszcze do naprawy ale mamy poszlake
+					selectedPictureBox->ImageLocation = imgLocation_selected;
+					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
+					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
+
+
+					targetPictureBox->ImageLocation = "";
+					targetPictureBox->set_color(targetPictureBox, NONE);
+					targetPictureBox->set_piece(targetPictureBox, EMPTY);
+
+					white_king_on_checked = false;
+					black_king_on_checked = false;
+					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+					return;
+				}
+				else
+				{
+					return;
+				}
 			}
 	}
 	}
@@ -1114,7 +1124,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		targetRow = Math::Min(targetRow, 7);
 		targetCol = Math::Min(targetCol, 7);
 
-	 
+		custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
+		custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 
 		// Check if the pawn is moving backward for black pawns
 		if (selected_pb->check_color(selected_pb) == BLACK && targetRow < startRow) {
@@ -1132,14 +1143,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		{
 			return true;
 		}
-
+		bool check_move = king_still_checked(pictureBoxes, selected_pb, pictureBoxes[targetRow][targetCol], last_moved_piece);
+		
 
 		// Check if the move is exactly one step forward or backward and there is no piece in the way
 		if (dx == 0 && dy == 1)
 		{
-			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			target_pb = pictureBoxes[targetRow][targetCol];
 			Piece check_targetpb = target_pb->check_piece(target_pb);
-
 			// Check if the target position is occupied
 			if (check_targetpb == EMPTY) 
 			{
@@ -1148,8 +1159,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) 
 		{ // Allow the initial double step move for pawns
-			custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
-			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			intermediate_pb = pictureBoxes[startRow + direction][startCol];
+			target_pb = pictureBoxes[targetRow][targetCol];
 
 			if (intermediate_pb->check_piece(intermediate_pb) == EMPTY && target_pb->check_piece(target_pb) == EMPTY) {
 				return true;
@@ -1158,7 +1169,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		// Check for diagonal captures (for both black and white pawns)
 		else if (dx == 1 && dy == 1) 
 		{
-			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+			target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece check_piece = target_pb->check_piece(target_pb);
 			int captureDirection = (targetCol - startCol) / abs(targetCol - startCol);
@@ -1169,7 +1180,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				return true;
 			}
 		}
-		else if (dx == 0 && dy == 1)
+		bool king_safe_place = king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece);
+
+		if (king_safe_place)
+		{
+			return false;
+		}
+
+		//bicie w przelocie
+		if (dx == 0 && dy == 1)
 		{
 			MessageBox::Show("eeee");
 			return true;
