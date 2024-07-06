@@ -991,6 +991,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					black_king_on_checked = false;
 					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+					whiteonMove = !whiteonMove;
 					return;
 				}
 				else
@@ -1014,19 +1015,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		Point start_location_selected = selected_pb->Location;
 		Point start_location_target = target_pb->Location;
-
-		//king still chkecked method
-		/*
-		 pieceType_selected = chosen_piece_selected;
-		 pieceColor_selected = color_selected;
-		 imgLocation_selected = img_location_selected;
-		 startLocation_selected = start_location_selected;
-
-		 pieceType_target = chosen_piece_target;
-		 pieceColor_target = color_target;
-		 imgLocation_target = img_location_target;
-		 startLocation_target = start_location_target;
-		 */
 
 		target_pb->ImageLocation = img_location_selected;
 		target_pb->set_color(target_pb, color_selected);
