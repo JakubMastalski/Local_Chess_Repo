@@ -1129,8 +1129,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		{
 			return true;
 		}
-		bool check_move = king_still_checked(pictureBoxes, selected_pb, pictureBoxes[targetRow][targetCol], last_moved_piece);
-		
+		//bool check_move = king_still_checked(pictureBoxes, selected_pb, pictureBoxes[targetRow][targetCol], last_moved_piece);		
 
 		// Check if the move is exactly one step forward or backward and there is no piece in the way
 		if (dx == 0 && dy == 1)
@@ -1160,24 +1159,26 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece check_piece = target_pb->check_piece(target_pb);
 			int captureDirection = (targetCol - startCol) / abs(targetCol - startCol);
 
+	        if (check_targetpb == EMPTY)
+		    {
+				change_pb(selected_pb, pictureBoxes[selected_pb->row-1][selected_pb->column]);
+				//dodaj last moved piece to bedzie pionek i change bedzie zachodzic miedzy nimi,wylaczysz wtedy change pb w glownej 
+				//metodzie
+				return true;
+		    }
+
 			// Check if the target position is occupied by an opponent's piece
 			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING && direction) {
 
 				return true;
 			}
 		}
+		
 		bool king_safe_place = king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece);
 
 		if (king_safe_place)
 		{
 			return false;
-		}
-
-		//bicie w przelocie
-		if (dx == 0 && dy == 1)
-		{
-			MessageBox::Show("eeee");
-			return true;
 		}
 
 		for (int i = 0; i < 8; i++) {
