@@ -939,21 +939,17 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 
-
 			if (castle_move)
 			{
 				castle_move = false;
 			}
-
 			if (white_king_on_checked || black_king_on_checked)
 			{
 				if (!king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
 				{
+					
 					white_king_on_checked = false;
 					black_king_on_checked = false;
-					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-					return;
 				}
 				else if(king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
 				{
@@ -965,7 +961,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
 					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
 
-
 					targetPictureBox->ImageLocation = "";
 					targetPictureBox->set_color(targetPictureBox, NONE);
 					targetPictureBox->set_piece(targetPictureBox, EMPTY);
@@ -973,15 +968,17 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			
 			}
+			
 			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) 
 			{
-				if (whiteonMove && black_king_on_checked || !whiteonMove && white_king_on_checked)
+				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked))
 				{
-					//jeszcze do naprawy ale mamy poszlake
+					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+
 					selectedPictureBox->ImageLocation = imgLocation_selected;
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
 					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
-
 
 					targetPictureBox->ImageLocation = "";
 					targetPictureBox->set_color(targetPictureBox, NONE);
@@ -989,9 +986,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 					white_king_on_checked = false;
 					black_king_on_checked = false;
-					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+
 					whiteonMove = !whiteonMove;
+					
 					return;
 				}
 				else
@@ -999,12 +996,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					return;
 				}
 			}
+			
 	}
 	}
 	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
-		Piece chosen_piece_selected = selected_pb->check_piece(selected_pb);
+     	Piece chosen_piece_selected = selected_pb->check_piece(selected_pb);
 		Piece chosen_piece_target = target_pb->check_piece(target_pb);
 
 		PieceColor color_selected = selected_pb->check_color(selected_pb);
