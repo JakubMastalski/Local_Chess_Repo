@@ -930,6 +930,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			pieceColor_selected = selectedPictureBox->check_color(selectedPictureBox);
 			imgLocation_selected = selectedPictureBox->ImageLocation;
 			startLocation_selected = start_location;
+
+			pieceType_target = targetPictureBox->check_piece(targetPictureBox);
+			pieceColor_target = targetPictureBox->check_color(targetPictureBox);
+			imgLocation_target = targetPictureBox->ImageLocation;
 			
 				if (!castle_move)
 				{
@@ -961,9 +965,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
 					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
 
-					targetPictureBox->ImageLocation = "";
-					targetPictureBox->set_color(targetPictureBox, NONE);
-					targetPictureBox->set_piece(targetPictureBox, EMPTY);
+					targetPictureBox->ImageLocation = imgLocation_target;
+					targetPictureBox->set_color(targetPictureBox, targetPictureBox->check_color(targetPictureBox));
+					targetPictureBox->set_piece(targetPictureBox, targetPictureBox->check_piece(targetPictureBox));
 					whiteonMove = !whiteonMove;
 				}
 			
@@ -980,9 +984,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
 					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
 
-					targetPictureBox->ImageLocation = "";
-					targetPictureBox->set_color(targetPictureBox, NONE);
-					targetPictureBox->set_piece(targetPictureBox, EMPTY);
+					targetPictureBox->ImageLocation = imgLocation_target;
+					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
+					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
 
 					white_king_on_checked = false;
 					black_king_on_checked = false;
