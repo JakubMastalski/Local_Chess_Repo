@@ -1165,9 +1165,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	        if (check_targetpb == EMPTY)
 		    {
-				change_pb(selected_pb, pictureBoxes[selected_pb->row-1][selected_pb->column]);
-				//dodaj last moved piece to bedzie pionek i change bedzie zachodzic miedzy nimi,wylaczysz wtedy change pb w glownej 
-				//metodzie
+				pictureBoxes[3][5]->ImageLocation = "";
+				
 				return true;
 		    }
 
@@ -1184,13 +1183,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		{
 			return false;
 		}
-
+		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
 			}
 		}
-
+		
 		return false;
 		
 	}
