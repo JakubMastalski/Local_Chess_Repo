@@ -1092,90 +1092,97 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
-		Point startPos = start_location; // Original position of the piece
-		Point targetPos = selected_pb->Location; // New position of the piece
-		passantable = nullptr; // Reset passantable at the beginning of each move
+		Point startPos = start_location; // Pozycja pocz¹tkowa pionka
+		Point targetPos = selected_pb->Location; // Nowa pozycja pionka
 
-		// Calculate the difference in positions
-		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
-		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+		// Obliczanie ró¿nicy w pozycjach
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // Ró¿nica w kolumnach
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // Ró¿nica w rzêdach
 
-		// Determine direction of movement
-		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 for forward, -1 for backward
+		// Okreœlenie kierunku ruchu
+		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 do przodu, -1 do ty³u
 		if (direction == 0) direction = 1;
 
-		// Determine the row and column indices of the start and target positions
+		// Okreœlenie indeksów wierszy i kolumn dla pozycji pocz¹tkowej i docelowej
 		int startRow = startPos.Y / selected_pb->Height;
 		int startCol = startPos.X / selected_pb->Width;
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
+		// Ograniczenie indeksów do zakresu planszy (0-7)
 		startRow = Math::Min(startRow, 7);
 		startCol = Math::Min(startCol, 7);
 		targetRow = Math::Min(targetRow, 7);
 		targetCol = Math::Min(targetCol, 7);
 
-		custom_picturebox^ intermediate_pb = pictureBoxes[startRow + direction][startCol];
-		custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+		custom_picturebox^ intermediate_pb = nullptr;
+		custom_picturebox^ target_pb = nullptr;
 
-		// Check if the pawn is moving backward for black pawns
+		// Sprawdzenie czy pionek siê porusza do ty³u dla pionków czarnych
 		if (selected_pb->check_color(selected_pb) == BLACK && targetRow < startRow) {
+			passantable = nullptr;
 			return false;
 		}
 
-		// Check if the pawn is moving backward for white pawns
+		// Sprawdzenie czy pionek siê porusza do ty³u dla pionków bia³ych
 		if (selected_pb->check_color(selected_pb) == WHITE && targetRow > startRow) {
+			passantable = nullptr;
 			return false;
 		}
 
-		// Check if indices are within bounds
+		// Sprawdzenie czy indeksy s¹ w granicach planszy
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return true;
 		}
 
-		// Check if the move is exactly one step forward or backward and there is no piece in the way
+		// Ruch do przodu o jedno pole i brak przeszkód
 		if (dx == 0 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
 			if (target_pb->check_piece(target_pb) == EMPTY) {
+				passantable = nullptr;
 				return true;
 			}
 		}
-		// Allow the initial double step move for pawns
+		// Ruch inicjalny o dwa pola do przodu
 		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) {
 			intermediate_pb = pictureBoxes[startRow + direction][startCol];
 			target_pb = pictureBoxes[targetRow][targetCol];
 			if (intermediate_pb->check_piece(intermediate_pb) == EMPTY && target_pb->check_piece(target_pb) == EMPTY) {
-				passantable = selected_pb;
+				passantable = pictureBoxes[targetRow][targetCol];
 				return true;
 			}
 		}
-		// Check for diagonal captures (for both black and white pawns)
+		// Bicie na skos
 		else if (dx == 1 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece check_piece = target_pb->check_piece(target_pb);
 
-			// Normal capture
+
+			// Normalne bicie
 			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING) {
+				passantable = nullptr;
 				return true;
 			}
 
-			// En passant capture
-			if (check_targetpb == EMPTY) {
+			// Bicie w przelocie (en passant)
+			else if (check_targetpb == EMPTY) {
 				int enPassantRow = selected_pb->check_color(selected_pb) == WHITE ? targetRow + 1 : targetRow - 1;
 				custom_picturebox^ enPassant_pb = pictureBoxes[enPassantRow][targetCol];
+				//enPassant_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
+				//passantable->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
 				if (enPassant_pb->check_piece(enPassant_pb) == PAWN && enPassant_pb->check_color(enPassant_pb) != selected_pb->check_color(selected_pb) && passantable == enPassant_pb) {
-					// Perform en passant capture
-					enPassant_pb->ImageLocation = "";
-					enPassant_pb->set_color(enPassant_pb, NONE);
-					enPassant_pb->set_piece(enPassant_pb, EMPTY);
+					// Wykonanie bicia w przelocie
+					enPassant_pb->ImageLocation = ""; // Usuniêcie obrazka zbitego pionka (opcjonalne)
+					enPassant_pb->set_color(enPassant_pb, NONE); // Ustawienie koloru na NONE (opcjonalne)
+					enPassant_pb->set_piece(enPassant_pb, EMPTY); // Ustawienie typu pionka na EMPTY (opcjonalne)
 					return true;
 				}
 			}
 		}
 
-		// Check if the king is safe after the move
+		// Sprawdzenie czy po wykonaniu ruchu król jest bezpieczny
 		bool king_safe_place = king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece);
 		if (!king_safe_place) {
 			return false;
