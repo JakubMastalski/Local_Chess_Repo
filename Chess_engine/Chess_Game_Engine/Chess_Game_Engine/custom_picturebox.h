@@ -53,6 +53,8 @@ private:
     Piece piece;
     PieceColor color;
     int piece_value;
+private:
+    bool passantable;
 public:
     array<array<custom_picturebox^>^>^ GetPictureBoxes()
     {

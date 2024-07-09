@@ -1094,6 +1094,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	{
 		Point startPos = start_location; // Original position of the piece
 		Point targetPos = selected_pb->Location; // New position of the piece
+		passantable = nullptr; // Reset passantable at the beginning of each move
 
 		// Calculate the difference in positions
 		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
@@ -1101,7 +1102,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Determine direction of movement
 		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 for forward, -1 for backward
-		if (direction == 0)direction = 1;
+		if (direction == 0) direction = 1;
 
 		// Determine the row and column indices of the start and target positions
 		int startRow = startPos.Y / selected_pb->Height;
@@ -1129,69 +1130,58 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Check if indices are within bounds
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
-			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8)
-		{
+			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return true;
 		}
-		//bool check_move = king_still_checked(pictureBoxes, selected_pb, pictureBoxes[targetRow][targetCol], last_moved_piece);		
 
 		// Check if the move is exactly one step forward or backward and there is no piece in the way
-		if (dx == 0 && dy == 1)
-		{
+		if (dx == 0 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
-			Piece check_targetpb = target_pb->check_piece(target_pb);
-			// Check if the target position is occupied
-			if (check_targetpb == EMPTY) 
-			{
+			if (target_pb->check_piece(target_pb) == EMPTY) {
 				return true;
 			}
 		}
-		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) 
-		{ // Allow the initial double step move for pawns
+		// Allow the initial double step move for pawns
+		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) {
 			intermediate_pb = pictureBoxes[startRow + direction][startCol];
 			target_pb = pictureBoxes[targetRow][targetCol];
-
 			if (intermediate_pb->check_piece(intermediate_pb) == EMPTY && target_pb->check_piece(target_pb) == EMPTY) {
+				passantable = selected_pb;
 				return true;
 			}
 		}
 		// Check for diagonal captures (for both black and white pawns)
-		else if (dx == 1 && dy == 1) 
-		{
+		else if (dx == 1 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece check_piece = target_pb->check_piece(target_pb);
-			int captureDirection = (targetCol - startCol) / abs(targetCol - startCol);
 
-	        if (check_targetpb == EMPTY)
-		    {
-				pictureBoxes[3][5]->ImageLocation = "";
-				
-				return true;
-		    }
-
-			// Check if the target position is occupied by an opponent's piece
-			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING && direction) {
-
+			// Normal capture
+			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING) {
 				return true;
 			}
-		}
-		
-		bool king_safe_place = king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece);
 
-		if (king_safe_place)
-		{
+			// En passant capture
+			if (check_targetpb == EMPTY) {
+				int enPassantRow = selected_pb->check_color(selected_pb) == WHITE ? targetRow + 1 : targetRow - 1;
+				custom_picturebox^ enPassant_pb = pictureBoxes[enPassantRow][targetCol];
+				if (enPassant_pb->check_piece(enPassant_pb) == PAWN && enPassant_pb->check_color(enPassant_pb) != selected_pb->check_color(selected_pb) && passantable == enPassant_pb) {
+					// Perform en passant capture
+					enPassant_pb->ImageLocation = "";
+					enPassant_pb->set_color(enPassant_pb, NONE);
+					enPassant_pb->set_piece(enPassant_pb, EMPTY);
+					return true;
+				}
+			}
+		}
+
+		// Check if the king is safe after the move
+		bool king_safe_place = king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece);
+		if (!king_safe_place) {
 			return false;
 		}
-		
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				pictureBoxes[i][j]->BringToFront();
-			}
-		}
-		
+
 		return false;
-		
 	}
 	//check does pb in board border
 	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
