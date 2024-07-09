@@ -156,6 +156,13 @@ namespace ChessGameEngine {
 		this->time_black = (gcnew System::Windows::Forms::Label());
 		this->picturebox_bg = (gcnew System::Windows::Forms::PictureBox());
 		this->chess_menu = (gcnew System::Windows::Forms::MenuStrip());
+
+		this->promote_panel = (gcnew System::Windows::Forms::Panel());
+		this->picturebox_bishop = gcnew System::Windows::Forms::PictureBox();
+		this->picturebox_knight = gcnew System::Windows::Forms::PictureBox();
+		this->picturebox_rook = gcnew System::Windows::Forms::PictureBox();
+		this->picturebox_queen = gcnew System::Windows::Forms::PictureBox();
+
 		this->flipBoardToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 		this->flipBoardToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 		this->setTimeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -167,6 +174,7 @@ namespace ChessGameEngine {
 		this->board_panel->SuspendLayout();
 		this->timeset_panel->SuspendLayout();
 		this->increment_panel->SuspendLayout();
+		this->promote_panel->SuspendLayout();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_secincrement))->BeginInit();
 		this->timeroptions_panel->SuspendLayout();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_minperside))->BeginInit();
@@ -180,6 +188,7 @@ namespace ChessGameEngine {
 		this->board_panel->Controls->Add(this->timeset_panel);
 		this->board_panel->Controls->Add(this->time_white);
 		this->board_panel->Controls->Add(this->label_whitetime);
+		this->board_panel->Controls->Add(this->promote_panel);
 		this->board_panel->Controls->Add(this->label_blacktime);
 		this->board_panel->Controls->Add(this->time_black);
 		this->board_panel->Controls->Add(this->picturebox_board);
@@ -187,6 +196,76 @@ namespace ChessGameEngine {
 		this->board_panel->Name = L"board_panel";
 		this->board_panel->Size = System::Drawing::Size(700, 469);
 		this->board_panel->TabIndex = 0;
+		//
+		// promote_panel
+		// 
+		// Ustawienia dla picturebox_bishop
+		picturebox_bishop = gcnew System::Windows::Forms::PictureBox();
+		picturebox_bishop->Location = System::Drawing::Point(20, 20);
+		picturebox_bishop->Size = System::Drawing::Size(50, 50);
+		picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
+		picturebox_bishop->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+		picturebox_bishop->TabIndex = 0;
+		picturebox_bishop->Visible = true;
+		picturebox_bishop->Enabled = true;
+		picturebox_bishop->TabStop = false;
+		picturebox_bishop->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+		//picturebox_bishop->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
+
+		// Ustawienia dla picturebox_knight
+		picturebox_knight = gcnew System::Windows::Forms::PictureBox();
+		picturebox_knight->Location = System::Drawing::Point(80, 20);
+		picturebox_knight->Size = System::Drawing::Size(50, 50);
+		picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
+		picturebox_knight->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+		picturebox_knight->TabIndex = 1;
+		picturebox_knight->Visible = true; 
+		picturebox_knight->Enabled = true;
+		picturebox_knight->TabStop = false;
+		picturebox_knight->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+		//picturebox_knight->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
+
+
+		// Ustawienia dla picturebox_rook
+		picturebox_rook = gcnew System::Windows::Forms::PictureBox();
+		picturebox_rook->Location = System::Drawing::Point(20, 80);
+		picturebox_rook->Size = System::Drawing::Size(50, 50);
+		picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
+		picturebox_rook->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+		picturebox_rook->TabIndex = 2;
+		picturebox_rook->Visible = true; 
+		picturebox_rook->Enabled = true;
+		picturebox_rook->TabStop = false;
+		picturebox_rook->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+		//picturebox_rook->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
+
+		// Ustawienia dla picturebox_queen
+		picturebox_queen = gcnew System::Windows::Forms::PictureBox();
+		picturebox_queen->Location = System::Drawing::Point(80, 80);
+		picturebox_queen->Size = System::Drawing::Size(50, 50);
+		picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
+		picturebox_queen->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+		picturebox_queen->TabIndex = 3;
+		picturebox_queen->Visible = true; 
+		picturebox_queen->Enabled = true;
+		picturebox_queen->TabStop = false;
+		picturebox_queen->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+		//picturebox_queen->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
+
+		// promote_panel
+		promote_panel = gcnew System::Windows::Forms::Panel();
+		promote_panel->BackColor = System::Drawing::Color::Black; 
+		promote_panel->Location = System::Drawing::Point(50, 50);   
+		promote_panel->Size = System::Drawing::Size(150,150);     
+		promote_panel->BorderStyle = System::Windows::Forms::BorderStyle::None;  
+		promote_panel->Margin = System::Windows::Forms::Padding(10); 
+		promote_panel->Visible = false;  
+		promote_panel->Enabled = true;
+		promote_panel->Controls->Add(picturebox_bishop);
+		promote_panel->Controls->Add(picturebox_knight);
+		promote_panel->Controls->Add(picturebox_rook);
+		promote_panel->Controls->Add(picturebox_queen);
+
 		// 
 		// timeset_panel
 		// 
@@ -489,7 +568,6 @@ namespace ChessGameEngine {
 		this->menu_timer_white->Interval = 1000;
 		this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
 		//PB TESTOWE CUSTOM
-		
         //picture box bg
 		this->picturebox_bg->Location = System::Drawing::Point(0, 0); // Ustawienie lokalizacji
 		this->picturebox_bg->Size = System::Drawing::Size(460, 460); // Ustawienie rozmiaru
@@ -502,15 +580,16 @@ namespace ChessGameEngine {
 		// 
 		// grid_panel
 		// 
-		this->grid_panel->BackColor = System::Drawing::Color::Transparent;
+		//this->grid_panel->BackColor = System::Drawing::Color::Transparent;
 		this->grid_panel->Location = System::Drawing::Point(121, 5);
 		this->grid_panel->Name = L"grid_panel";
 		this->grid_panel->Size = System::Drawing::Size(460, 460);
 		this->grid_panel->Controls->Add(picturebox_bg);
+		this->grid_panel->Controls->Add(promote_panel);
 		this->grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
 		this->grid_panel->TabIndex = 47;
 		this->grid_panel->Visible = true;
-		this->grid_panel->BringToFront();
+		//this->grid_panel->BringToFront();
 		this->grid_panel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 		this->grid_panel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 		this->grid_panel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
@@ -524,6 +603,7 @@ namespace ChessGameEngine {
 		this->ClientSize = System::Drawing::Size(799, 538);
 		this->Controls->Add(this->board_panel);
 		this->Controls->Add(this->chess_menu);
+		this->Controls->Add(this->promote_panel);
 		this->Font = (gcnew System::Drawing::Font(L"Georgia", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 			static_cast<System::Byte>(238)));
 		this->ForeColor = System::Drawing::Color::White;
@@ -541,6 +621,8 @@ namespace ChessGameEngine {
 		this->timeset_panel->PerformLayout();
 		this->increment_panel->ResumeLayout(false);
 		this->increment_panel->PerformLayout();
+		this->promote_panel->ResumeLayout(false);
+		this->promote_panel->PerformLayout();
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_secincrement))->EndInit();
 		this->timeroptions_panel->ResumeLayout(false);
 		this->timeroptions_panel->PerformLayout();
@@ -921,9 +1003,30 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				selectedPictureBox->ImageLocation = file_path;
 				return;
 			}
-
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+
+			if (whiteonMove)
+			{
+				//grid_panel->Enabled = false;
+				promote_panel->BackColor = System::Drawing::Color::Black;
+				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
+				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
+				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
+				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
+			}
+			else
+			{
+				//grid_panel->Enabled = false;
+				promote_panel->BackColor = System::Drawing::Color::White;
+				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+			}
+
+			promote_panel->Visible = true;
+			promote_panel->BringToFront();
 			
 			//king still chkecked method
 			pieceType_selected = selectedPictureBox->check_piece(selectedPictureBox);
@@ -1902,6 +2005,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   return true;
 	   }
 	   return false;
+   }
+
+   Void BoardForm::picturebox_bishop_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+   {
+
+   }
+   Void BoardForm::picturebox_rook_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+   {
+
+   }
+   Void BoardForm::picturebox_knight_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+   {
+
+   }
+   Void BoardForm::picturebox_queen_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+   {
+
    }
 
 };

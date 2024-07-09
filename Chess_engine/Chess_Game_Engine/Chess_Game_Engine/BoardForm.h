@@ -40,6 +40,8 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::ToolStripMenuItem^ flipBoardToolStripMenuItem1;
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
 	private: System::Windows::Forms::Panel^ increment_panel;
+
+	private: System::Windows::Forms::Panel^ promote_panel;
 	private: System::Windows::Forms::Panel^ timeroptions_panel;
 	private: System::Windows::Forms::Label^ minperside_label;
 	private: System::Windows::Forms::Label^ increment_label;
@@ -57,6 +59,10 @@ namespace ChessGameEngine {
 	private: System::Windows::Forms::PictureBox^ picturebox_board;
 	private: System::Windows::Forms::Panel^ grid_panel;
     private: System::ComponentModel::IContainer^ components;
+	private: System::Windows::Forms::PictureBox^ picturebox_queen;
+	private: System::Windows::Forms::PictureBox^ picturebox_knight;
+	private: System::Windows::Forms::PictureBox^ picturebox_rook;
+	private: System::Windows::Forms::PictureBox^ picturebox_bishop;
 	private:
 		Point start_black;
 		Point start_white;
@@ -164,5 +170,9 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
     private:bool check_Queen_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
 	private:bool is_king_under_attack(custom_picturebox^ piece, int kingRow, int kingCol);
 	private:bool king_still_checked(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target, custom_picturebox^ last_moved);
+    private: System::Void picturebox_bishop_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+    private:System::Void picturebox_knight_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private:System::Void picturebox_rook_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	private: System::Void picturebox_queen_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 };
 }
