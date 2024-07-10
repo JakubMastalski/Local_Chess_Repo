@@ -207,6 +207,7 @@ namespace ChessGameEngine {
 		picturebox_bishop->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		picturebox_bishop->TabIndex = 0;
 		picturebox_bishop->Visible = true;
+		picturebox_bishop->Cursor = System::Windows::Forms::Cursors::Hand;
 		picturebox_bishop->Enabled = true;
 		picturebox_bishop->TabStop = false;
 		picturebox_bishop->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
@@ -219,6 +220,7 @@ namespace ChessGameEngine {
 		picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
 		picturebox_knight->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		picturebox_knight->TabIndex = 1;
+		picturebox_knight->Cursor = System::Windows::Forms::Cursors::Hand;
 		picturebox_knight->Visible = true; 
 		picturebox_knight->Enabled = true;
 		picturebox_knight->TabStop = false;
@@ -233,6 +235,7 @@ namespace ChessGameEngine {
 		picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
 		picturebox_rook->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		picturebox_rook->TabIndex = 2;
+		picturebox_rook->Cursor = System::Windows::Forms::Cursors::Hand;
 		picturebox_rook->Visible = true; 
 		picturebox_rook->Enabled = true;
 		picturebox_rook->TabStop = false;
@@ -246,6 +249,7 @@ namespace ChessGameEngine {
 		picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
 		picturebox_queen->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		picturebox_queen->TabIndex = 3;
+		picturebox_queen->Cursor = System::Windows::Forms::Cursors::Hand;
 		picturebox_queen->Visible = true; 
 		picturebox_queen->Enabled = true;
 		picturebox_queen->TabStop = false;
@@ -635,6 +639,11 @@ namespace ChessGameEngine {
 		this->SetStyle(System::Windows::Forms::ControlStyles::UserPaint, true);
 		this->SetStyle(System::Windows::Forms::ControlStyles::AllPaintingInWmPaint, true);
 		this->SetStyle(System::Windows::Forms::ControlStyles::DoubleBuffer, true);
+		picturebox_rook->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_rook_MouseClick);
+		picturebox_knight->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_knight_MouseClick);
+		picturebox_queen->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_queen_MouseClick);
+		picturebox_bishop->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::picturebox_bishop_MouseClick);
+
 	}
 #pragma endregion
 #pragma endregion
@@ -912,7 +921,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 			if (selectedPictureBox->ImageLocation != "")
 			{
-				if (selectedPictureBox != nullptr) {
+				if (selectedPictureBox != nullptr && promote_panel->Visible == false) {
 					piece_clicked = true;
 					selectedPictureBox->Capture = true;
 					selectedPictureBox->BringToFront();
@@ -1006,10 +1015,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 
-			if (whiteonMove)
-			{
-				//grid_panel->Enabled = false;
-				promote_panel->BackColor = System::Drawing::Color::Black;
+			if (!whiteonMove)
+			{	
+			    promote_panel->BackColor = System::Drawing::Color::Black;
 				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
 				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
 				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
@@ -1017,15 +1025,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 			else
 			{
-				//grid_panel->Enabled = false;
 				promote_panel->BackColor = System::Drawing::Color::White;
 				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
 				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
 				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
 				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
 			}
-
-			promote_panel->Visible = true;
 			promote_panel->BringToFront();
 			
 			//king still chkecked method
@@ -1204,7 +1209,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Okreœlenie kierunku ruchu
 		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 do przodu, -1 do ty³u
-		if (direction == 0) direction = 1;
+		//if (direction == 0) direction = 1;
 
 		// Okreœlenie indeksów wierszy i kolumn dla pozycji pocz¹tkowej i docelowej
 		int startRow = startPos.Y / selected_pb->Height;
@@ -1243,6 +1248,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (dx == 0 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
 			if (target_pb->check_piece(target_pb) == EMPTY) {
+				if (targetRow == 7 || targetRow == 0)
+				{
+					promote_panel->Visible = true;
+					promote_panel->Enabled = true;
+					promote_panel->BringToFront();
+				}
 				passantable = nullptr;
 				return true;
 			}
@@ -1262,9 +1273,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			PieceColor check_targetpb = target_pb->check_color(target_pb);
 			Piece check_piece = target_pb->check_piece(target_pb);
 
-
 			// Normalne bicie
 			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING) {
+				if (targetRow == 7 || targetRow == 0)
+				{
+					promote_panel->Visible = true;
+					promote_panel->Enabled = true;
+					promote_panel->BringToFront();
+				}
 				passantable = nullptr;
 				return true;
 			}
@@ -2009,20 +2025,127 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    Void BoardForm::picturebox_bishop_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
    {
-
+	   if (!whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
+	   }
+	   else if(whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+	   }
+	   targetPictureBox->set_piece(targetPictureBox, BISHOP);
+	   grid_panel->Enabled = true;
+	   promote_panel->Visible = false;
+	   promote_panel->Enabled = false;
+	   promote_panel->SendToBack();
    }
    Void BoardForm::picturebox_rook_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
    {
-
+	   if (!whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
+	   }
+	   else if (whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+	   }
+	   targetPictureBox->set_piece(targetPictureBox, ROOK);
+	   grid_panel->Enabled = true;
+	   promote_panel->Visible = false;
+	   promote_panel->Enabled = false;
+	   promote_panel->SendToBack();
    }
    Void BoardForm::picturebox_knight_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
    {
+	   if (!whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
+	   }
+	   else if (whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+	   }
 
+	   targetPictureBox->set_piece(targetPictureBox, KNIGHT);
+	   grid_panel->Enabled = true;
+	   promote_panel->Visible = false;
+	   promote_panel->Enabled = false;
+	   promote_panel->SendToBack();
    }
    Void BoardForm::picturebox_queen_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
    {
-
+	   if (!whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
+	   }
+	   else if (whiteonMove)
+	   {
+		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+	   }
+	   targetPictureBox->set_piece(targetPictureBox, QUEEN);
+	   grid_panel->Enabled = true;
+	   promote_panel->Visible = false;
+	   promote_panel->Enabled = false;
+	   promote_panel->SendToBack();
    }
+
+   //check is king chechmated
+
+   bool BoardForm::is_king_still_in_check_after_move(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target) {
+	   // Temporarily make the move
+	   Piece originalPiece = target->check_piece(target);
+	   PieceColor originalColor = target->check_color(target);
+	   String^ originalImageLocation = target->ImageLocation;
+
+	   target->set_piece(target, selected->check_piece(selected));
+	   target->set_color(target, selected->check_color(selected));
+	   target->ImageLocation = selected->ImageLocation;
+
+	   selected->set_piece(selected, EMPTY);
+	   selected->set_color(selected, NONE);
+	   selected->ImageLocation = "";
+
+	   bool stillInCheck = king_still_checked(pb, selected, target, nullptr);
+
+	   // Revert the move
+	   selected->set_piece(selected, target->check_piece(target));
+	   selected->set_color(selected, target->check_color(target));
+	   selected->ImageLocation = target->ImageLocation;
+
+	   target->set_piece(target, originalPiece);
+	   target->set_color(target, originalColor);
+	   target->ImageLocation = originalImageLocation;
+
+	   return stillInCheck;
+   }
+
+   bool BoardForm::is_checkmate(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ kingBox) {
+	   int kingRow = kingBox->row;
+	   int kingCol = kingBox->column;
+
+	   array<Point>^ kingMoves = gcnew array<Point> {
+		   Point(-1, -1), Point(-1, 0), Point(-1, 1),
+			   Point(0, -1), Point(0, 1),
+			   Point(1, -1), Point(1, 0), Point(1, 1)
+	   };
+
+	   for each (Point move in kingMoves) {
+		   int newRow = kingRow + move.X;
+		   int newCol = kingCol + move.Y;
+
+		   if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+			   if (pb[newRow][newCol]->check_color(pb[newRow][newCol]) != kingBox->check_color(kingBox)) {
+				   if (!is_king_still_in_check_after_move(pb, kingBox, pb[newRow][newCol])) {
+					   return false; // Król mo¿e wykonaæ ruch, który wyci¹ga go z szachu
+				   }
+			   }
+		   }
+	   }
+
+	   return true; // Król nie ma legalnych ruchów, które wyci¹gaj¹ go z szachu
+   }
+
+
 
 };
 
