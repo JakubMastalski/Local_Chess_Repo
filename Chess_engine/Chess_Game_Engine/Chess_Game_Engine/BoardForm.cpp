@@ -1069,8 +1069,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 
-			if (king_checked(pictureBoxes, selectedPictureBox) || !white_king_on_checked || !black_king_on_checked) {
+			if (king_checked(pictureBoxes, selectedPictureBox) || white_king_on_checked || black_king_on_checked) {
 				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked)) {
+					selectedPictureBox->ImageLocation = imgLocation_selected;
+					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
+					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
+
+					targetPictureBox->ImageLocation = imgLocation_target;
+					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
+					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
+
+					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+
+					whiteonMove = !whiteonMove;
+					return;
+				}
+				else
+				{
 					custom_picturebox^ whiteKingBox = nullptr;
 					custom_picturebox^ blackKingBox = nullptr;
 
@@ -1086,8 +1102,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							}
 						}
 					}
-
-					if ((whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (!whiteonMove && is_checkmate(pictureBoxes, whiteKingBox))) {
+					if ((!whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (whiteonMove && is_checkmate(pictureBoxes, whiteKingBox))) {
 						MessageBox::Show("Checkmate!", "Game Over");
 						// Reset game or any other logic for end game
 						return;
@@ -2108,26 +2123,152 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int kingRow = kingBox->row;
 	   int kingCol = kingBox->column;
 
-	   array<Point>^ kingMoves = gcnew array<Point> {
+	   array<Point>^ kingMoves = gcnew array<Point>
+	   {
 		   Point(-1, -1), Point(-1, 0), Point(-1, 1),
 			   Point(0, -1), Point(0, 1),
 			   Point(1, -1), Point(1, 0), Point(1, 1)
 	   };
 
+	   // Sprawdzenie czy król mo¿e wykonaæ jakiœ ruch
 	   for each (Point move in kingMoves) {
 		   int newRow = kingRow + move.X;
 		   int newCol = kingCol + move.Y;
 
 		   if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
 			   if (pb[newRow][newCol]->check_color(pb[newRow][newCol]) != kingBox->check_color(kingBox)) {
-				   if (!is_king_still_in_check_after_move(pb, kingBox, pb[newRow][newCol])) {
-					   return false; // Król mo¿e wykonaæ ruch, który wyci¹ga go z szachu
+				   custom_picturebox^ originalBox = pb[newRow][newCol];
+				   Piece originalPiece = originalBox->check_piece(originalBox);
+				   PieceColor originalColor = originalBox->check_color(originalBox);
+				   String^ originalImageLocation = originalBox->ImageLocation;
+
+				   // Przeniesienie króla na docelow¹ pozycjê
+				   pb[newRow][newCol]->ImageLocation = kingBox->ImageLocation;
+				   pb[newRow][newCol]->set_piece(pb[newRow][newCol], kingBox->check_piece(kingBox));
+				   pb[newRow][newCol]->set_color(pb[newRow][newCol], kingBox->check_color(kingBox));
+
+				   // Aktualizacja pozycji króla
+				   kingBox->ImageLocation = "";
+				   kingBox->set_piece(kingBox, EMPTY);
+				   kingBox->set_color(kingBox, NONE);
+
+				   // Sprawdzenie czy po ruchu król nadal jest w szachu
+				   if (!king_still_checked(pb, pb[newRow][newCol], originalBox, nullptr)) {
+					   // Przywrócenie pierwotnego stanu
+					   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+					   kingBox->set_piece(kingBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+					   kingBox->set_color(kingBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+					   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+					   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+					   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+					   return false; // Król mo¿e siê unikn¹æ szacha
+				   }
+
+				   // Przywrócenie pierwotnego stanu
+				   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+				   kingBox->set_piece(kingBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+				   kingBox->set_color(kingBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+				   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+				   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+				   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+			   }
+		   }
+	   }
+
+	   // Sprawdzenie czy król mo¿e zbic figurê przeciwnika
+	   for each (Point move in kingMoves) {
+		   int newRow = kingRow + move.X;
+		   int newCol = kingCol + move.Y;
+
+		   if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+			   if (pb[newRow][newCol]->check_color(pb[newRow][newCol]) == kingBox->check_color(kingBox)) {
+				   continue; // Ignoruj pola z w³asnymi figurami
+			   }
+
+			   custom_picturebox^ originalBox = pb[newRow][newCol];
+			   Piece originalPiece = originalBox->check_piece(originalBox);
+			   PieceColor originalColor = originalBox->check_color(originalBox);
+			   String^ originalImageLocation = originalBox->ImageLocation;
+
+			   // Przeniesienie króla na docelow¹ pozycjê
+			   pb[newRow][newCol]->ImageLocation = kingBox->ImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], kingBox->check_piece(kingBox));
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], kingBox->check_color(kingBox));
+
+			   // Aktualizacja pozycji króla
+			   kingBox->ImageLocation = "";
+			   kingBox->set_piece(kingBox, EMPTY);
+			   kingBox->set_color(kingBox, NONE);
+
+			   // Sprawdzenie czy po ruchu król nadal jest w szachu
+			   if (!king_still_checked(pb, pb[newRow][newCol], originalBox, nullptr)) {
+				   // Przywrócenie pierwotnego stanu
+				   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+				   kingBox->set_piece(kingBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+				   kingBox->set_color(kingBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+				   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+				   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+				   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+				   return false; // Król mo¿e siê unikn¹æ szacha
+			   }
+
+			   // Przywrócenie pierwotnego stanu
+			   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+			   kingBox->set_piece(kingBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+			   kingBox->set_color(kingBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+			   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+		   }
+	   }
+
+
+	   // Sprawdzenie czy inne figury mog¹ zablokowaæ szacha
+	   for (int row = 0; row < 8; row++) {
+		   for (int col = 0; col < 8; col++) {
+			   custom_picturebox^ currentBox = pictureBoxes[row][col];
+
+			   if (currentBox->check_color(currentBox) == kingBox->check_color(kingBox)) {
+				   switch (currentBox->check_piece(currentBox)) {
+				   case PAWN:
+					   // Implementacja sprawdzania ruchów piona
+					   if (check_Pawnmove(pictureBoxes, currentBox))
+						   return false;
+					   break;
+				   case KNIGHT:
+					   // Implementacja sprawdzania ruchów skoczka
+					   if (check_Knightmove(pictureBoxes, currentBox))
+						   return false;
+					   break;
+				   case BISHOP:
+					   // Implementacja sprawdzania ruchów goñca
+					   if (check_Bishopmove(pictureBoxes, currentBox))
+						   return false;
+					   break;
+				   case ROOK:
+					   // Implementacja sprawdzania ruchów wie¿y
+					   if (check_Rookmove(pictureBoxes, currentBox))
+						   return false;
+					   break;
+				   case QUEEN:
+					   // Implementacja sprawdzania ruchów królowej
+					   if (check_Queenmove(pictureBoxes, currentBox))
+						   return false;
+					   break;
+				   default:
+					   continue;
 				   }
 			   }
 		   }
 	   }
 
-	   return true; // Król nie ma legalnych ruchów, które wyci¹gaj¹ go z szachu
+	   return true;  // Brak mo¿liwoœci unikniêcia szacha - szachmat
    }
 
 
