@@ -954,14 +954,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
-
 			selectedPictureBox->Capture = false;
 			selectedPictureBox->Tag = "";
 
-			isWithinBounds = check_sent(selectedPictureBox);		
+			isWithinBounds = check_sent(selectedPictureBox);
 
 			if (selectedPictureBox->Location != start_location && isWithinBounds) {
-
 				switch (current_piece) {
 				case PAWN:
 					if (!check_Pawnmove(pictureBoxes, selectedPictureBox)) {
@@ -1003,7 +1001,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->Location = start_location;
 					return;
 				}
-				
+
 				whiteonMove = !whiteonMove;
 				selectedPictureBox->SendToBack();
 			}
@@ -1012,19 +1010,18 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				selectedPictureBox->ImageLocation = file_path;
 				return;
 			}
+
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 
-			if (!whiteonMove)
-			{	
-			    promote_panel->BackColor = System::Drawing::Color::Black;
+			if (!whiteonMove) {
+				promote_panel->BackColor = System::Drawing::Color::Black;
 				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
 				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
 				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
 				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
 			}
-			else
-			{
+			else {
 				promote_panel->BackColor = System::Drawing::Color::White;
 				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
 				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
@@ -1032,8 +1029,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
 			}
 			promote_panel->BringToFront();
-			
-			//king still chkecked method
+
 			pieceType_selected = selectedPictureBox->check_piece(selectedPictureBox);
 			pieceColor_selected = selectedPictureBox->check_color(selectedPictureBox);
 			imgLocation_selected = selectedPictureBox->ImageLocation;
@@ -1042,51 +1038,25 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			pieceType_target = targetPictureBox->check_piece(targetPictureBox);
 			pieceColor_target = targetPictureBox->check_color(targetPictureBox);
 			imgLocation_target = targetPictureBox->ImageLocation;
-			
-				if (!castle_move)
-				{
-					if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox)
-					{
-						BoardForm::change_pb(selectedPictureBox, targetPictureBox);
-					}
-				}
 
-			if (castle_move)
-			{
+			if (!castle_move) {
+				if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox) {
+					BoardForm::change_pb(selectedPictureBox, targetPictureBox);
+				}
+			}
+
+			if (castle_move) {
 				castle_move = false;
 			}
-			if (white_king_on_checked || black_king_on_checked)
-			{
-				if (!king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
-				{
-					
+
+			if (white_king_on_checked || black_king_on_checked) {
+				if (!king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece)) {
 					white_king_on_checked = false;
 					black_king_on_checked = false;
 				}
-				else if(king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
-				{
-
+				else if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece)) {
 					white_king_on_checked = true;
-					white_king_on_checked = true;
-
-					selectedPictureBox->ImageLocation = imgLocation_selected;
-					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
-					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
-
-					targetPictureBox->ImageLocation = imgLocation_target;
-					targetPictureBox->set_color(targetPictureBox, targetPictureBox->check_color(targetPictureBox));
-					targetPictureBox->set_piece(targetPictureBox, targetPictureBox->check_piece(targetPictureBox));
-					whiteonMove = !whiteonMove;
-				}
-			
-			}
-			
-			if (king_checked(pictureBoxes, selectedPictureBox)||!white_king_on_checked||!black_king_on_checked) 
-			{
-				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked))
-				{
-					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+					black_king_on_checked = true;
 
 					selectedPictureBox->ImageLocation = imgLocation_selected;
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
@@ -1095,21 +1065,36 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					targetPictureBox->ImageLocation = imgLocation_target;
 					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
 					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
-
-					white_king_on_checked = false;
-					black_king_on_checked = false;
-
 					whiteonMove = !whiteonMove;
-					
-					return;
-				}
-				else
-				{
-					return;
 				}
 			}
-			
-	}
+
+			if (king_checked(pictureBoxes, selectedPictureBox) || !white_king_on_checked || !black_king_on_checked) {
+				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked)) {
+					custom_picturebox^ whiteKingBox = nullptr;
+					custom_picturebox^ blackKingBox = nullptr;
+
+					for (int i = 0; i < 8; i++) {
+						for (int j = 0; j < 8; j++) {
+							if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING) {
+								if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE) {
+									whiteKingBox = pictureBoxes[i][j];
+								}
+								else {
+									blackKingBox = pictureBoxes[i][j];
+								}
+							}
+						}
+					}
+
+					if ((whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (!whiteonMove && is_checkmate(pictureBoxes, whiteKingBox))) {
+						MessageBox::Show("Checkmate!", "Game Over");
+						// Reset game or any other logic for end game
+						return;
+					}
+				}
+			}
+		}
 	}
 	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
