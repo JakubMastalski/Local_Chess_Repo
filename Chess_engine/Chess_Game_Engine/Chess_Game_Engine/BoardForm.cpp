@@ -30,6 +30,13 @@ namespace ChessGameEngine {
 		piece_clicked = false;
 		enPassantRow = -1;
 		enPassantCol = -1;
+		menu_timer_white->Enabled = false;
+		menu_timer_black->Enabled = false;
+		game_started = false;
+		timer_set = false;
+		white_time_ended = false;
+		black_time_ended = false;
+		show = false;
 	}
 
 	BoardForm::~BoardForm()
@@ -715,9 +722,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		//test time
 		//black
 		menu_timer_black->Enabled = true;
+		label_blacktime->Visible = true;
 		time_black->Visible = true;
 		//white
 		menu_timer_white->Enabled = true;
+		//menu_timer_white->Enabled = false;
+		label_whitetime->Visible = true;
 		time_white->Visible = true;
 		//switch black
 		switch (trackbar_minperside->Value)
@@ -760,6 +770,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		seconds_white = seconds;
 		//add increment
 		increment = trackbar_secincrement->Value;
+		timer_set = true;
+		show = false;
 	}
 	else
 	{
@@ -771,6 +783,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		menu_timer_white->Enabled = false;
 		label_whitetime->Visible = false;
 		time_white->Visible = false;
+
+		timer_set = false;
 	}
 
 }
@@ -861,46 +875,88 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	   //black timer tick
 	   void BoardForm::menu_timer_Tick(System::Object^ sender, System::EventArgs^ e) {
-	seconds--;
-	int minutes = seconds / 60;
-	int sec = seconds - minutes * 60;
-	label_blacktime->Visible = true;
-	time_black->Text = "0" + Convert::ToString(minutes) + ":" + Convert::ToString(sec);
+		   if (game_started && seconds > 0) {
+			   seconds--;
+			   int minutes = seconds / 60;
+			   int sec = seconds - minutes * 60;
+			   label_blacktime->Visible = true;
+			   time_black->Text = (minutes < 10 ? "0" : "") + Convert::ToString(minutes) + ":" + (sec < 10 ? "0" : "") + Convert::ToString(sec);
 
-	if (sec < 10)
-		time_black->Text = "0" + Convert::ToString(minutes) + ":" + "0" + Convert::ToString(sec);
+			   if (seconds <= 0 && !show) {
+				   MessageBox::Show("White wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				   menu_timer_black->Stop();
+				   menu_timer_white->Stop();
+				   label_blacktime->Visible = false;
+				   label_whitetime->Visible = false;
+				   game_started = false;
+				   show = true;
+			   }
+		   }
 
-	if (minutes > 10)
-		time_black->Text = Convert::ToString(minutes) + ":" + Convert::ToString(sec);
-
-	if (seconds <= 0)
-	{
-		MessageBox::Show("White wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
-		menu_timer_black->Stop();
-		menu_timer_white->Stop();
-	}
 }
 	   //white timer tick
 	   void BoardForm::menu_timer_white_Tick(System::Object^ sender, System::EventArgs^ e) {
-	seconds_white--;
-	int minutes_white = seconds_white / 60;
-	int sec_white = seconds_white - minutes_white * 60;
-	label_whitetime->Visible = true;
-	time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
+		   if (game_started && seconds_white > 0) {
+			   seconds_white--;
+			   int minutes_white = seconds_white / 60;
+			   int sec_white = seconds_white - minutes_white * 60;
+			   label_whitetime->Visible = true;
+			   time_white->Text = (minutes_white < 10 ? "0" : "") + Convert::ToString(minutes_white) + ":" + (sec_white < 10 ? "0" : "") + Convert::ToString(sec_white);
 
-	if (sec_white < 10)
-		time_white->Text = "0" + Convert::ToString(minutes_white) + ":" + "0" + Convert::ToString(sec_white);
-
-	if (minutes_white > 10)
-		time_white->Text = Convert::ToString(minutes_white) + ":" + Convert::ToString(sec_white);
-
-	if (seconds_white <= 0)
-	{
-		MessageBox::Show("Black wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
-		menu_timer_white->Stop();
-		menu_timer_black->Stop();
-	}
+			   if (seconds_white <= 0 && !show) {
+				   MessageBox::Show("Black wins!", "Game Over", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				   menu_timer_black->Stop();
+				   menu_timer_white->Stop();
+				   label_blacktime->Visible = false;
+				   label_whitetime->Visible = false;
+				   game_started = false;
+				   show = true;
+			   }
+		   }
 }
+
+	   void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected)
+	   {
+		   if (onMove)
+		   {
+			   for (int i = 0; i < 8; i++)
+			   {
+				   for (int j = 0; j < 8; j++)
+				   {
+					   if (pictureBoxes[i][j]->check_color(selected) == WHITE)
+					   {
+						   pictureBoxes[i][j]->Enabled = true;
+
+						   if (timer_set)
+						   {
+							   menu_timer_black->Start();
+							   menu_timer_white->Stop();
+						   }
+					   }
+				   }
+			   }
+		   }
+		   else
+		   {
+			   for (int i = 0; i < 8; i++)
+			   {
+				   for (int j = 0; j < 8; j++)
+				   {
+					   if (pictureBoxes[i][j]->check_color(selected) == BLACK)
+					   {
+						   pictureBoxes[i][j]->Enabled = true;
+
+						   if (timer_set)
+						   {
+							   menu_timer_white->Start();
+							   menu_timer_black->Stop();
+						   }
+					   }
+				   }
+			   }
+		   }
+	   }
+
 	   //restart app
 	   void BoardForm::restartToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 	Application::Restart();
@@ -1110,6 +1166,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
+		game_started = true;
 	}
 	//swap pb
 	void BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
@@ -1701,36 +1758,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 		return false;
 	}
-	void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected)
-	{
-		if (onMove)
-		{
-			for (int i = 0; i < 8; i++)
-			{
-				for (int j = 0; j < 8; j++)
-				{
-					if (pictureBoxes[i][j]->check_color(selected)==WHITE)
-					{
-						pictureBoxes[i][j]->Enabled = true;
-					}
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i < 8; i++)
-			{
-				for (int j = 0; j < 8; j++)
-				{
-					if (pictureBoxes[i][j]->check_color(selected) == BLACK)
-					{
-						pictureBoxes[i][j]->Enabled = true;
-					}
-				}
-			}
-		}
-	}
-
+	
 	void BoardForm::castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest)
 	{
 		if (!white_king_on_checked || !black_king_on_checked)

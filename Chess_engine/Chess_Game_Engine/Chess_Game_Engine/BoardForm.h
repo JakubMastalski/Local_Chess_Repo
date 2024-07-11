@@ -119,6 +119,13 @@ namespace ChessGameEngine {
 		bool black_king_moved;
 	private:
 		custom_picturebox^ passantable = nullptr;
+	private:
+		bool game_started;
+		bool timer_set;
+		bool white_time_ended;
+		bool black_time_ended;
+
+		bool show;
 
 #pragma region Windows Form Designer generated code
     void InitializeComponent(void);
