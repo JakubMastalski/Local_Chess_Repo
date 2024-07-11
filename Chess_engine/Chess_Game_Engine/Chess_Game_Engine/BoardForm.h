@@ -176,5 +176,12 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: System::Void picturebox_queen_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private:bool  BoardForm::is_king_still_in_check_after_move(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target);
 	private:bool BoardForm::is_checkmate(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ kingBox);
+	private:bool BoardForm::pawn_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
+	private:bool BoardForm::knight_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
+    //private:bool BoardForm::bishop_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
+	//private:bool BoardForm::rook_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
+	//private:bool BoardForm::queen_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
+
+
 };
 }
