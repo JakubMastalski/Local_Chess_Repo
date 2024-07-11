@@ -2366,22 +2366,219 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
     }
     return false;
    }
-   /*
+   
    bool BoardForm::bishop_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox)
    {
-	   return true;
-   }
+	   int row = currentBox->row;
+	   int col = currentBox->column;
+	   PieceColor pieceColor = currentBox->check_color(currentBox);
 
+	   // Sprawdzenie mo¿liwych kierunków ruchu goñca (diagonalnie)
+	   array<Point>^ bishopDirections = gcnew array<Point>
+	   {
+		   Point(-1, -1), Point(-1, 1),
+			   Point(1, -1), Point(1, 1)
+	   };
+
+	   for each (Point direction in bishopDirections)
+	   {
+		   int newRow = row + direction.X;
+		   int newCol = col + direction.Y;
+
+		   while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8)
+		   {
+			   if (pb[newRow][newCol]->check_color(pb[newRow][newCol]) == pieceColor)
+				   break; // Stop jeœli napotkano w³asn¹ figurê
+
+			   // Symulacja ruchu goñca
+			   custom_picturebox^ originalBox = pb[newRow][newCol];
+			   Piece originalPiece = originalBox->check_piece(originalBox);
+			   PieceColor originalColor = originalBox->check_color(originalBox);
+			   String^ originalImageLocation = originalBox->ImageLocation;
+
+			   pb[newRow][newCol]->ImageLocation = currentBox->ImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], currentBox->check_piece(currentBox));
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], currentBox->check_color(currentBox));
+
+			   currentBox->ImageLocation = "";
+			   currentBox->set_piece(currentBox, EMPTY);
+			   currentBox->set_color(currentBox, NONE);
+
+			   // Sprawdzenie, czy król jest nadal w szachu
+			   if (!king_still_checked(pb, nullptr, nullptr, nullptr))
+			   {
+				   // Przywrócenie pierwotnego stanu
+				   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+				   currentBox->set_piece(currentBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+				   currentBox->set_color(currentBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+				   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+				   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+				   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+				   return true; // Goñcze mo¿e zas³oniæ szacha
+			   }
+
+			   // Przywrócenie pierwotnego stanu
+			   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+			   currentBox->set_piece(currentBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+			   currentBox->set_color(currentBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+			   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+			   // Przesuniêcie do kolejnego pola na przek¹tnej
+			   newRow += direction.X;
+			   newCol += direction.Y;
+		   }
+	   }
+
+	   return false;
+   }
+   
    bool BoardForm::rook_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox)
    {
-	  return true;
-   }
+	   int row = currentBox->row;
+	   int col = currentBox->column;
+	   PieceColor pieceColor = currentBox->check_color(currentBox);
 
+	   // Sprawdzenie mo¿liwych kierunków ruchu wie¿y (poziomo i pionowo)
+	   array<Point>^ rookDirections = gcnew array<Point>
+	   {
+		   Point(-1, 0), Point(1, 0), // ruchy pionowe
+			   Point(0, -1), Point(0, 1)  // ruchy poziome
+	   };
+
+	   for each (Point direction in rookDirections)
+	   {
+		   int newRow = row + direction.X;
+		   int newCol = col + direction.Y;
+
+		   while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8)
+		   {
+			   if (pb[newRow][newCol]->check_color(pb[newRow][newCol]) == pieceColor)
+				   break; // Stop jeœli napotkano w³asn¹ figurê
+
+			   // Symulacja ruchu wie¿y
+			   custom_picturebox^ originalBox = pb[newRow][newCol];
+			   Piece originalPiece = originalBox->check_piece(originalBox);
+			   PieceColor originalColor = originalBox->check_color(originalBox);
+			   String^ originalImageLocation = originalBox->ImageLocation;
+
+			   pb[newRow][newCol]->ImageLocation = currentBox->ImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], currentBox->check_piece(currentBox));
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], currentBox->check_color(currentBox));
+
+			   currentBox->ImageLocation = "";
+			   currentBox->set_piece(currentBox, EMPTY);
+			   currentBox->set_color(currentBox, NONE);
+
+			   // Sprawdzenie, czy król jest nadal w szachu
+			   if (!king_still_checked(pb, nullptr, nullptr, nullptr))
+			   {
+				   // Przywracanie pierwotnego stanu
+				   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+				   currentBox->set_piece(currentBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+				   currentBox->set_color(currentBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+				   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+				   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+				   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+				   return true; // Wie¿a mo¿e zas³oniæ szacha
+			   }
+
+			   // Przywracanie pierwotnego stanu
+			   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+			   currentBox->set_piece(currentBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+			   currentBox->set_color(currentBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+			   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+			   // Przesuniêcie do kolejnego pola w kierunku
+			   newRow += direction.X;
+			   newCol += direction.Y;
+		   }
+	   }
+
+	   return false;
+   }
+   
    bool BoardForm::queen_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox)
    {
-	   return true;
+	   int row = currentBox->row;
+	   int col = currentBox->column;
+	   PieceColor pieceColor = currentBox->check_color(currentBox);
+
+	   // Tablica kierunków ruchu hetmana (poziomo, pionowo i po skosie)
+	   array<Point>^ queenDirections = gcnew array<Point>
+	   {
+		   Point(-1, 0), Point(1, 0),    // ruchy pionowe
+			   Point(0, -1), Point(0, 1),    // ruchy poziome
+			   Point(-1, -1), Point(-1, 1),  // ruchy po skosie w górê
+			   Point(1, -1), Point(1, 1)     // ruchy po skosie w dó³
+	   };
+
+	   for each (Point direction in queenDirections)
+	   {
+		   int newRow = row + direction.X;
+		   int newCol = col + direction.Y;
+
+		   while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8)
+		   {
+			   if (pb[newRow][newCol]->check_color(pb[newRow][newCol]) == pieceColor)
+				   break; // Stop jeœli napotkano w³asn¹ figurê
+
+			   // Symulacja ruchu hetmana
+			   custom_picturebox^ originalBox = pb[newRow][newCol];
+			   Piece originalPiece = originalBox->check_piece(originalBox);
+			   PieceColor originalColor = originalBox->check_color(originalBox);
+			   String^ originalImageLocation = originalBox->ImageLocation;
+
+			   pb[newRow][newCol]->ImageLocation = currentBox->ImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], currentBox->check_piece(currentBox));
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], currentBox->check_color(currentBox));
+
+			   currentBox->ImageLocation = "";
+			   currentBox->set_piece(currentBox, EMPTY);
+			   currentBox->set_color(currentBox, NONE);
+
+			   // Sprawdzenie, czy król jest nadal w szachu
+			   if (!king_still_checked(pb, nullptr, nullptr, nullptr))
+			   {
+				   // Przywracanie pierwotnego stanu
+				   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+				   currentBox->set_piece(currentBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+				   currentBox->set_color(currentBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+				   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+				   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+				   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+				   return true; // Hetman mo¿e zas³oniæ szacha
+			   }
+
+			   // Przywracanie pierwotnego stanu
+			   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
+			   currentBox->set_piece(currentBox, pb[newRow][newCol]->check_piece(pb[newRow][newCol]));
+			   currentBox->set_color(currentBox, pb[newRow][newCol]->check_color(pb[newRow][newCol]));
+
+			   pb[newRow][newCol]->ImageLocation = originalImageLocation;
+			   pb[newRow][newCol]->set_piece(pb[newRow][newCol], originalPiece);
+			   pb[newRow][newCol]->set_color(pb[newRow][newCol], originalColor);
+
+			   // Przesuniêcie do kolejnego pola w kierunku
+			   newRow += direction.X;
+			   newCol += direction.Y;
+		   }
+	   }
+
+	   return false;
    }
-   */
+   
 
    bool BoardForm::is_checkmate(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ kingBox) {
 	   int kingRow = kingBox->row;
@@ -2509,15 +2706,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   return false;
 					   break;
 				   case BISHOP:
-					   if (check_Bishopmove(pb, currentBox))
+					   if (bishop_cansaveking(pb, currentBox))
 						   return false;
 					   break;
 				   case ROOK:
-					   if (check_Rookmove(pb, currentBox))
+					   if (rook_cansaveking(pb, currentBox))
 						   return false;
 					   break;
 				   case QUEEN:
-					   if (check_Queenmove(pb, currentBox))
+					   if (queen_cansaveking(pb, currentBox))
 						   return false;
 					   break;
 				   default:
