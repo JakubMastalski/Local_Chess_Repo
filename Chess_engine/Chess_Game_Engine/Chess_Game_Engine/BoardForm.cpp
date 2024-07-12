@@ -37,6 +37,7 @@ namespace ChessGameEngine {
 		white_time_ended = false;
 		black_time_ended = false;
 		show = false;
+		boardFlipped = false;
 	}
 
 	BoardForm::~BoardForm()
@@ -51,7 +52,6 @@ namespace ChessGameEngine {
 		//init grid panel
 		this->grid_panel = (gcnew System::Windows::Forms::Panel());
 		//array of board classes objects
-		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
 		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
 		//add picture boxed to form
@@ -72,10 +72,13 @@ namespace ChessGameEngine {
 		for (int col = 0; col < 8; ++col) {
 		
 			this->grid_panel->Controls->Add(pictureBoxes[6][col]);
-			pictureBoxes[6][col]->set_color(pictureBoxes[6][col], WHITE);
+			if(!boardFlipped)pictureBoxes[6][col]->set_color(pictureBoxes[6][col], WHITE);
+			else
+			{
+				pictureBoxes[6][col]->set_color(pictureBoxes[6][col], BLACK);
+			}
 			pictureBoxes[6][col]->set_piece(pictureBoxes[6][col], PAWN);
 
-		
 			this->grid_panel->Controls->Add(pictureBoxes[7][col]);
 			switch (col) {
 			case 0:
@@ -95,10 +98,18 @@ namespace ChessGameEngine {
 				break;
 			case 4:
 				pictureBoxes[7][col]->set_piece(pictureBoxes[7][col], KING);
-				white_king = pictureBoxes[7][col];
+				if(!boardFlipped)white_king = pictureBoxes[7][col];
+				else
+				{
+					black_king = pictureBoxes[7][col];
+				}
 				break;
 			}
-			pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
+			if(!boardFlipped)pictureBoxes[7][col]->set_color(pictureBoxes[7][col], WHITE);
+			else
+			{
+				pictureBoxes[7][col]->set_color(pictureBoxes[7][col], BLACK);
+			}
 		}
 
 		
@@ -123,13 +134,25 @@ namespace ChessGameEngine {
 				break;
 			case 4:
 				pictureBoxes[0][col]->set_piece(pictureBoxes[0][col], KING);
-				black_king = pictureBoxes[0][col];
+				if(!boardFlipped)black_king = pictureBoxes[0][col];
+				else
+				{
+					white_king = pictureBoxes[0][col];
+				}
 				break;
 			}
-			pictureBoxes[0][col]->set_color(pictureBoxes[0][col], BLACK);
+			if(!boardFlipped)pictureBoxes[0][col]->set_color(pictureBoxes[0][col], BLACK);
+			else
+			{
+				pictureBoxes[0][col]->set_color(pictureBoxes[0][col], WHITE);
+			}
 
 			this->grid_panel->Controls->Add(pictureBoxes[1][col]);
-			pictureBoxes[1][col]->set_color(pictureBoxes[1][col], BLACK);
+			if(!boardFlipped)pictureBoxes[1][col]->set_color(pictureBoxes[1][col], BLACK);
+			else
+			{
+				pictureBoxes[1][col]->set_color(pictureBoxes[1][col], WHITE);
+			}
 			pictureBoxes[1][col]->set_piece(pictureBoxes[1][col], PAWN);
 		}
 
@@ -660,48 +683,45 @@ namespace ChessGameEngine {
 	
 
 void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->grid_panel->Controls->Clear();
-	//init grid panel
+	this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
 
-	if (this->picturebox_board->ImageLocation == L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg")
-	{
-		//array of board classes objects
-		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
-		pictureBoxInstance->FlipBoard(); // init board in pb_instance
-		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes();
-		//add picture boxed to form
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-			}
+	boardFlipped = !boardFlipped; // Toggle board flipped status
+
+	if (boardFlipped) {
+		// Flip the board
+		pictureBoxInstance->FlipBoard();
+	}
+	else {
+		// Initialize the board normally
+		pictureBoxInstance->InitializeBoard();
+	}
+
+	this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
+
+	// Add PictureBoxes to grid_panel
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			// Update PictureBox properties based on pictureBoxes array
+			this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+
+			// Reattach event handlers
+			pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+			pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+			pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+			pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
 		}
+	}
+
+	// Set board image based on flipped status
+	if (boardFlipped) {
 		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg";
-		picturebox_board->Refresh();
-		label_blacktime->Location = start_white;
-		label_whitetime->Location = start_black;
 	}
-	else
-	{
-		//array of board classes objects
-		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
-		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
-		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes();
-		//add picture boxed to form
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-			}
-		}
+	else {
 		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
-		picturebox_board->Refresh();
-		label_blacktime->Location = start_black;
-		label_whitetime->Location = start_white;
 	}
 
+	// Refresh the form
+	this->Refresh();
 }
 	   //open panel with time
 void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1202,7 +1222,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				menu_timer_white->Stop();
 				menu_timer_black->Start();
 			}
-			if (whiteonMove)
+			if (whiteonMove )
 			{
 				menu_timer_white->Start();
 				menu_timer_black->Stop();

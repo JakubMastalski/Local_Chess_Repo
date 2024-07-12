@@ -124,6 +124,9 @@ namespace ChessGameEngine {
 		bool timer_set;
 		bool white_time_ended;
 		bool black_time_ended;
+		bool boardFlipped = false;
+
+		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
 
 		bool show;
 
