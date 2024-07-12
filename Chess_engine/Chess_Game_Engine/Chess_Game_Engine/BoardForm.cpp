@@ -997,7 +997,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				selectedPictureBox->Enabled = false; 
 				return;
 			}
-			player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
+			//player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			piece_clicked = false;
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
@@ -1058,7 +1058,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					return;
 				}
 
-				whiteonMove = !whiteonMove;
 				selectedPictureBox->SendToBack();
 			}
 			else {
@@ -1191,9 +1190,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		selected_pb->set_color(selected_pb, NONE);
 		selected_pb->set_piece(selected_pb, EMPTY);
 		selected_pb->Location = start_location;
-
 		selected_pb->BringToFront();
 		target_pb->BringToFront();
+
+		whiteonMove = !whiteonMove;
+		
+		if (timer_set)
+		{
+			if (!whiteonMove)
+			{
+				menu_timer_white->Stop();
+				menu_timer_black->Start();
+			}
+			if (whiteonMove)
+			{
+				menu_timer_white->Start();
+				menu_timer_black->Stop();
+			}
+		}
 	}
 
 	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)
