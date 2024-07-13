@@ -59,9 +59,6 @@ namespace ChessGameEngine {
 			for (int col = 0; col < 8; ++col) {
 				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
 				pictureBoxes[row][col]->ImageLocation = "";
-				pictureBoxes[row][col]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-				pictureBoxes[row][col]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-				pictureBoxes[row][col]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 				pictureBoxes[row][col]->Enabled = true;
 				pictureBoxes[row][col]->set_color(pictureBoxes[row][col], NONE);
 				pictureBoxes[row][col]->set_piece(pictureBoxes[row][col], EMPTY);
@@ -709,7 +706,25 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 			pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 			pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+			grid_panel->Controls->Add(pictureBoxes[i][j]);
 		}
+	}
+
+
+
+
+
+	for (int i = 0; i < 8; i++)
+	{
+		pictureBoxes[1][i]->set_piece(pictureBoxes[1][i], PAWN);
+		pictureBoxes[1][i]->set_color(pictureBoxes[1][i], WHITE);
+	}
+
+
+	for (int i = 0; i < 8; i++)
+	{
+		pictureBoxes[6][i]->set_piece(pictureBoxes[6][i], PAWN);
+		pictureBoxes[6][i]->set_color(pictureBoxes[6][i], BLACK);
 	}
 
 	// Set board image based on flipped status
