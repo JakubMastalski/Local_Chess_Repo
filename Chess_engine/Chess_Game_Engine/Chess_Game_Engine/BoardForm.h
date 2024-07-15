@@ -125,6 +125,10 @@ namespace ChessGameEngine {
 		bool white_time_ended;
 		bool black_time_ended;
 		bool boardFlipped = false;
+	private:
+		custom_picturebox^ flipped_black_kingbox;
+		custom_picturebox^ flipped_white_kingbox;
+
 
 		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
 
