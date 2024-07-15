@@ -286,7 +286,7 @@ namespace ChessGameEngine {
 		// promote_panel
 		promote_panel = gcnew System::Windows::Forms::Panel();
 		promote_panel->BackColor = System::Drawing::Color::Black; 
-		promote_panel->Location = System::Drawing::Point(50, 50);   
+		promote_panel->Location = System::Drawing::Point(13, 63);   
 		promote_panel->Size = System::Drawing::Size(150,150);     
 		promote_panel->BorderStyle = System::Windows::Forms::BorderStyle::None;  
 		promote_panel->Margin = System::Windows::Forms::Padding(10); 
@@ -618,6 +618,7 @@ namespace ChessGameEngine {
 		this->grid_panel->Controls->Add(picturebox_bg);
 		this->grid_panel->Controls->Add(promote_panel);
 		this->grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
+		if(boardFlipped)grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1");
 		this->grid_panel->TabIndex = 47;
 		this->grid_panel->Visible = true;
 		//this->grid_panel->BringToFront();
@@ -682,7 +683,7 @@ namespace ChessGameEngine {
 void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
 
-	boardFlipped = !boardFlipped; // Toggle board flipped status
+	boardFlipped = true; // Toggle board flipped status
 
 	if (boardFlipped) {
 		// Flip the board
@@ -694,47 +695,66 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 	}
 
 	this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
-
 	// Add PictureBoxes to grid_panel
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			// Update PictureBox properties based on pictureBoxes array
-			this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-
 			// Reattach event handlers
 			pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 			pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 			pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
 			pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
 			grid_panel->Controls->Add(pictureBoxes[i][j]);
+			pictureBoxes[i][j]->BringToFront();
 		}
 	}
 
+	if (boardFlipped) {
+		// Zamiana wierszy i kolumn w tablicy pictureBoxes
+		for (int i = 0; i < 8 / 2; i++) {
+			for (int j = 0; j < 8; j++) {
+				custom_picturebox^ temp = pictureBoxes[i][j];
+				pictureBoxes[i][j] = pictureBoxes[7 - i][7 - j];
+				pictureBoxes[7 - i][7 - j] = temp;
+			}
+		}
+	}
 
-
-
+	for (int i = 2; i < 6; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			pictureBoxes[i][j]->set_piece(pictureBoxes[j][i], EMPTY);
+			pictureBoxes[1][i]->set_color(pictureBoxes[j][i], NONE);
+			grid_panel->Controls->Add(pictureBoxes[i][j]);
+		}
+	}
 
 	for (int i = 0; i < 8; i++)
 	{
 		pictureBoxes[1][i]->set_piece(pictureBoxes[1][i], PAWN);
-		pictureBoxes[1][i]->set_color(pictureBoxes[1][i], WHITE);
+		pictureBoxes[1][i]->set_color(pictureBoxes[1][i], BLACK);	
+		grid_panel->Controls->Add(pictureBoxes[1][i]);
 	}
 
 
 	for (int i = 0; i < 8; i++)
 	{
 		pictureBoxes[6][i]->set_piece(pictureBoxes[6][i], PAWN);
-		pictureBoxes[6][i]->set_color(pictureBoxes[6][i], BLACK);
+		pictureBoxes[6][i]->set_color(pictureBoxes[6][i], WHITE);
+		grid_panel->Controls->Add(pictureBoxes[6][i]);
 	}
-
 	// Set board image based on flipped status
+	
+	
 	if (boardFlipped) {
-		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg";
+		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg");
+		//this->picturebox_board->BringToFront();
 	}
 	else {
-		this->picturebox_board->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
+		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
 	}
-
+		
 	// Refresh the form
 	this->Refresh();
 }
@@ -1032,7 +1052,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				selectedPictureBox->Enabled = false; 
 				return;
 			}
-			//player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
+			player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			piece_clicked = false;
 			new_location.Offset(-selectedPictureBox->Width / 2, -selectedPictureBox->Height / 2);
@@ -1230,6 +1250,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		whiteonMove = !whiteonMove;
 		
+		/*
 		if (timer_set)
 		{
 			if (!whiteonMove)
@@ -1243,6 +1264,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				menu_timer_black->Stop();
 			}
 		}
+		*/
 	}
 
 	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)
@@ -1315,7 +1337,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Okreœlenie kierunku ruchu
 		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 do przodu, -1 do ty³u
-		//if (direction == 0) direction = 1;
+		if (direction == 0) direction = 1;
 
 		// Okreœlenie indeksów wierszy i kolumn dla pozycji pocz¹tkowej i docelowej
 		int startRow = startPos.Y / selected_pb->Height;

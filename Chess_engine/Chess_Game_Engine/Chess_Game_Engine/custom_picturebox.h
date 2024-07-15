@@ -192,18 +192,19 @@ public:
                     Piece piece = Piece::EMPTY;
                     PieceColor color = PieceColor::NONE;
 
+                    // Flipping pieces
                     if (row == 1 || row == 6)
                     {
                         piece = Piece::PAWN;
-                        color = (row == 1) ? PieceColor::WHITE : PieceColor::BLACK;
-                        pictureBox->ImageLocation = (color == PieceColor::BLACK) ?
-                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png":
-                        "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png";
-                            
+                        color = (row == 6) ? PieceColor::WHITE : PieceColor::BLACK;
+                        pictureBox->ImageLocation = (color == PieceColor::WHITE) ?
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png" :
+                            "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_pawn.png";
                     }
+
                     if (row == 0 || row == 7)
                     {
-                        color = (row == 0) ? PieceColor::BLACK : PieceColor::WHITE;
+                        color = (row == 7) ? PieceColor::WHITE : PieceColor::BLACK;
                         switch (col)
                         {
                         case 0:
