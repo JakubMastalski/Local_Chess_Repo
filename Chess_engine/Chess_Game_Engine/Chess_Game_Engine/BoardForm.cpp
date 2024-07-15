@@ -682,6 +682,7 @@ namespace ChessGameEngine {
 
 void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
+	grid_panel->BackgroundImage = nullptr;
 
 	boardFlipped = true; // Toggle board flipped status
 
@@ -744,15 +745,95 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 		pictureBoxes[6][i]->set_color(pictureBoxes[6][i], WHITE);
 		grid_panel->Controls->Add(pictureBoxes[6][i]);
 	}
-	// Set board image based on flipped status
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int i = 0; i < 8; i++) {
+			switch (i) {
+			case 0:
+			case 7:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], ROOK);
+				break;
+
+			case 1:
+			case 6:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KNIGHT);
+				break;
+
+			case 2:
+			case 5:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], BISHOP);
+				break;
+
+			case 3:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], QUEEN);
+				break;
+
+			case 4:
+				
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KING);
+				black_king = pictureBoxes[7][i];
+				break;
+			}
+		}
+		pictureBoxes[7][i]->set_color(pictureBoxes[7][i], BLACK);
+		grid_panel->Controls->Add(pictureBoxes[7][i]);
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int i = 0; i < 8; i++) {
+			switch (i) {
+			case 0:
+			case 7:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], ROOK);
+				break;
+
+			case 1:
+			case 6:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KNIGHT);
+				break;
+
+			case 2:
+			case 5:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], BISHOP);
+				break;
+
+			case 3:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], QUEEN);
+				break;
+
+			case 4:
+
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KING);
+				white_king = pictureBoxes[0][i];
+				break;
+			}
+		}
+		pictureBoxes[0][i]->set_color(pictureBoxes[0][i], WHITE);
+		grid_panel->Controls->Add(pictureBoxes[0][i]);
+	}
 	
 	
 	if (boardFlipped) {
 		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg");
-		//this->picturebox_board->BringToFront();
+		this->grid_panel->Location = System::Drawing::Point(121, 5);
+		this->grid_panel->Name = L"grid_panel";
+		this->grid_panel->Size = System::Drawing::Size(460, 460);
+		this->grid_panel->Controls->Add(picturebox_bg);
+		this->grid_panel->Controls->Add(promote_panel);
+		this->grid_panel->TabIndex = 47;
+		this->grid_panel->Visible = true;
 	}
 	else {
 		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
+		this->grid_panel->Location = System::Drawing::Point(121, 5);
+		this->grid_panel->Name = L"grid_panel";
+		this->grid_panel->Size = System::Drawing::Size(460, 460);
+		this->grid_panel->Controls->Add(picturebox_bg);
+		this->grid_panel->Controls->Add(promote_panel);
+		this->grid_panel->TabIndex = 47;
+		this->grid_panel->Visible = true;
 	}
 		
 	// Refresh the form
