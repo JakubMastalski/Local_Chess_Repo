@@ -684,6 +684,9 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 	this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
 	grid_panel->BackgroundImage = nullptr;
 
+	white_king = nullptr;
+	black_king = nullptr;
+
 	boardFlipped = !boardFlipped; // Toggle board flipped status
 
 	if (boardFlipped) {
@@ -700,18 +703,6 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 
 	this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
 
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			// Update PictureBox properties based on pictureBoxes array
-			pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-			pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-			pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
-			pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
-			grid_panel->Controls->Add(pictureBoxes[i][j]);
-			pictureBoxes[i][j]->BringToFront();
-		}
-	}
-
 	if (boardFlipped) {
 		// Adjust indices when the board is flipped
 		array<array<custom_picturebox^>^>^ flippedPictureBoxes = gcnew array<array<custom_picturebox^>^>(8);
@@ -727,10 +718,11 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 	// Setting pieces on the board
 	for (int i = 2; i < 6; i++) {
 		for (int j = 0; j < 8; j++) {
+			this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+			pictureBoxes[i][j]->ImageLocation = "";
+			pictureBoxes[i][j]->Enabled = true;
+			pictureBoxes[i][j]->set_color(pictureBoxes[i][j], NONE);
 			pictureBoxes[i][j]->set_piece(pictureBoxes[i][j], EMPTY);
-			pictureBoxes[i][i]->set_color(pictureBoxes[i][j], NONE);
-			pictureBoxes[i][j]->BringToFront();
-			grid_panel->Controls->Add(pictureBoxes[i][j]);
 		}
 	}
 
@@ -768,6 +760,7 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			break;
 		case 3:
 			flipped_black_kingbox = pictureBoxes[7][i];
+			black_king = flipped_black_kingbox;
 			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KING);
 			break;
 		}
@@ -795,6 +788,7 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			break;
 		case 3:
 			flipped_white_kingbox = pictureBoxes[0][i];
+			white_king = flipped_white_kingbox;
 			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KING);
 			break;
 		}
@@ -818,6 +812,19 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 	this->grid_panel->Controls->Add(promote_panel);
 	this->grid_panel->TabIndex = 47;
 	this->grid_panel->Visible = true;
+
+
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			// Update PictureBox properties based on pictureBoxes array
+			pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+			pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+			pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+			pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+			grid_panel->Controls->Add(pictureBoxes[i][j]);
+			pictureBoxes[i][j]->BringToFront();
+		}
+	}
 
 	// Refresh the form
 	this->Refresh();
@@ -1349,16 +1356,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pb[i][j]->check_piece(pb[i][j]) == KING) {
-					if (pb[i][j]->check_color(pb[i][j]) == WHITE) {
-						whiteKingBox = pb[i][j];
-						whiteKingRow = i;
-						whiteKingCol = j;
+				int actualRow = i;
+				int actualCol = j;
+				if (boardFlipped) {
+					actualRow = 7 - i;
+					actualCol = 7 - j;
+				}
+
+				if (pb[actualRow][actualCol]->check_piece(pb[actualRow][actualCol]) == KING) {
+					if (pb[actualRow][actualCol]->check_color(pb[actualRow][actualCol]) == WHITE) {
+						whiteKingBox = pb[actualRow][actualCol];
+						whiteKingRow = actualRow;
+						whiteKingCol = actualCol;
 					}
 					else {
-						blackKingBox = pb[i][j];
-						blackKingRow = i;
-						blackKingCol = j;
+						blackKingBox = pb[actualRow][actualCol];
+						blackKingRow = actualRow;
+						blackKingCol = actualCol;
 					}
 				}
 			}
@@ -1369,31 +1383,47 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			// Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
+					int actualRow = i;
+					int actualCol = j;
+					if (boardFlipped) {
+						actualRow = 7 - i;
+						actualCol = 7 - j;
+					}
+
 					// SprawdŸ czy figura nale¿y do przeciwnika
-					if (pb[i][j]->check_color(pb[i][j]) == BLACK) {
+					if (pb[actualRow][actualCol]->check_color(pb[actualRow][actualCol]) == BLACK) {
 						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
-						if (is_king_under_attack(pb[i][j], whiteKingRow, whiteKingCol)) {
+						if (is_king_under_attack(pb[actualRow][actualCol], whiteKingRow, whiteKingCol)) {
 							return true;
 						}
 					}
 				}
 			}
 		}
+
 		// SprawdŸ szachowanie czarnego króla
 		if (blackKingBox != nullptr) {
 			// Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
+					int actualRow = i;
+					int actualCol = j;
+					if (boardFlipped) {
+						actualRow = 7 - i;
+						actualCol = 7 - j;
+					}
+
 					// SprawdŸ czy figura nale¿y do przeciwnika
-					if (pb[i][j]->check_color(pb[i][j]) == WHITE) {
+					if (pb[actualRow][actualCol]->check_color(pb[actualRow][actualCol]) == WHITE) {
 						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
-						if (is_king_under_attack(pb[i][j], blackKingRow, blackKingCol)) {
+						if (is_king_under_attack(pb[actualRow][actualCol], blackKingRow, blackKingCol)) {
 							return true;
 						}
 					}
 				}
 			}
 		}
+
 		// Jeœli król nie jest szachowany, zwróæ false
 		return false;
 	}
@@ -1573,20 +1603,19 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		targetRow = Math::Min(targetRow, 7);
 		targetCol = Math::Min(targetCol, 7);
 
-		// Adjust column index if it's out of bounds
-		if (startCol == 7 || startCol == 8 || startRow == 7) {
-			startCol -= 1;
-		}
-
 		// Check if indices are within bounds
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
-			return true;
+			return false;
 		}
 
-		// Adjust target position and direction based on flipped board state
-		int direction = boardFlipped ? -1 : 1;
-		targetRow = boardFlipped ? 7 - targetRow : targetRow;
+		// Adjust coordinates for a flipped board
+		if (boardFlipped) {
+			startRow = 7 - startRow;
+			startCol = 7 - startCol;
+			targetRow = 7 - targetRow;
+			targetCol = 7 - targetCol;
+		}
 
 		// Check if the move is a valid knight move: L-shaped movement
 		if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2)) {
@@ -1645,7 +1674,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			
 				int stepX = (targetCol - startCol) / dx;
 				int stepY = (targetRow - startRow) / dy;
-			
+
+
 			for (int i = 1; i < dx; ++i) {
 				int currentRow = startRow + i * stepY;
 				int currentCol = startCol + i * stepX;
@@ -2082,6 +2112,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
    {
+	   if (boardFlipped)
+	   {
+		   kingRow = 7 - kingRow;
+		   kingCol = 7 - kingCol;
+	   }
+
 	   int pawnRow = pawnBox->row;
 	   int pawnCol = pawnBox->column;
 	   PieceColor pawnColor = pawnBox->check_color(pawnBox);
@@ -2105,6 +2141,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
    bool BoardForm::check_Knight_Attack(custom_picturebox^ knightBox, int kingRow, int kingCol)
    {
+
+	   if (boardFlipped)
+	   {
+		   kingRow = 7 - kingRow;
+		   kingCol = 7 - kingCol;
+	   }
 	   int knightRow = knightBox->row;
 	   int knightCol = knightBox->column;
 
@@ -2131,6 +2173,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Bishop_Attack(custom_picturebox^ bishopBox, int kingRow, int kingCol)
    {
+	   if (boardFlipped)
+	   {
+		   kingRow = 7 - kingRow;
+		   kingCol = 7 - kingCol;
+	   }
 	   int bishopRow = bishopBox->row;
 	   int bishopCol = bishopBox->column;
 
@@ -2155,6 +2202,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Rook_Attack(custom_picturebox^ rookBox, int kingRow, int kingCol)
    {
+	   if (boardFlipped)
+	   {
+		   kingRow = 7 - kingRow;
+		   kingCol = 7 - kingCol;
+	   }
 	   int rookRow = rookBox->row;
 	   int rookCol = rookBox->column;
 
@@ -2212,6 +2264,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
    bool BoardForm::check_Queen_Attack(custom_picturebox^ queenBox, int kingRow, int kingCol)
    {
+
 	   if (check_Rook_Attack(queenBox, kingRow, kingCol)||check_Bishop_Attack(queenBox, kingRow, kingCol))
 	   {
 		   return true;
