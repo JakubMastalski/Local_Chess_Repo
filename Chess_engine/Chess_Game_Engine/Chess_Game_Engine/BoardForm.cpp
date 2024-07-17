@@ -684,8 +684,16 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 	this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
 	grid_panel->BackgroundImage = nullptr;
 
+	whiteonMove = true;
+
 	white_king = nullptr;
 	black_king = nullptr;
+
+	white_king_on_checked = false;
+	black_king_on_checked = false;
+
+	black_king_moved = false;
+	white_king_moved = false;
 
 	boardFlipped = !boardFlipped; // Toggle board flipped status
 
@@ -1255,6 +1263,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 
 			if (king_checked(pictureBoxes, selectedPictureBox) || white_king_on_checked || black_king_on_checked) {
+				MessageBox::Show("111");
+				/*
 				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked)) {
 					selectedPictureBox->ImageLocation = imgLocation_selected;
 					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
@@ -1264,11 +1274,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
 					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
 
-					
 						white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 						black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-					
-				
+
+
 
 					whiteonMove = !whiteonMove;
 					return;
@@ -1293,13 +1302,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					if ((!whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (whiteonMove && is_checkmate(pictureBoxes, whiteKingBox))) {
 						MessageBox::Show("Checkmate!", "Game Over");
 						grid_panel->Enabled = false;
-						
+
 						// Reset game or any other logic for end game
 						return;
 					}
 				}
 			}
 		}
+		*/
+			}
+			}
 		game_started = true;
 	}
 	//swap pb
@@ -2061,10 +2073,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 					   else
 					   {
-						   if (is_king_under_attack(pictureBoxes[i][j], 0, 3))
+						   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
 						   {
 							   // Ustawienie obrazka na szachowanego króla
 							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+							   MessageBox::Show("white");
 							   // Ustaw ostatni¹ ruchom¹ figurê
 							   last_moved_piece = selected_piece;
 							   white_king_on_checked = true;
@@ -2076,6 +2089,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
+		   // MessageBox::Show("ccccc");
 			   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 	   }
 
@@ -2099,9 +2113,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 					   else
 					   {
-						   if (is_king_under_attack(pictureBoxes[i][j], 7, 3))
+						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
 							   // Ustawienie obrazka na szachowanego król
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+						   MessageBox::Show("black");
 						   // Ustaw ostatni¹ ruchom¹ figurê
 						   last_moved_piece = selected_piece;
 						   black_king_on_checked = true;
@@ -2112,7 +2127,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
-			   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+		    blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 	   }
 
 	   return false;

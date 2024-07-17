@@ -257,8 +257,15 @@ public:
         public:
         Piece check_piece(custom_picturebox^ pb_piece)
         {
+         /*
+            if (pb_piece == nullptr)
+            {
+                return ;
+            }
+            */
             return pb_piece->piece;
         }
+        
         public:
         PieceColor check_color(custom_picturebox^ pb_piececolor)
         {
