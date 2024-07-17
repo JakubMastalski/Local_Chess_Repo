@@ -760,6 +760,8 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			break;
 		case 3:
 			flipped_black_kingbox = pictureBoxes[7][i];
+			flipped_black_kingbox->row = 7;
+			flipped_black_kingbox->column = 3;
 			black_king = flipped_black_kingbox;
 			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KING);
 			break;
@@ -788,6 +790,8 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			break;
 		case 3:
 			flipped_white_kingbox = pictureBoxes[0][i];
+			flipped_white_kingbox->row = 0;
+			flipped_white_kingbox->column = 3;
 			white_king = flipped_white_kingbox;
 			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KING);
 			break;
@@ -1260,16 +1264,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
 					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
 
-					if (!boardFlipped)
-					{
+					
 						white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 						black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-					}
-					else
-					{
-						flipped_white_kingbox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-						flipped_black_kingbox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-					}
+					
+				
 
 					whiteonMove = !whiteonMove;
 					return;
@@ -1293,6 +1292,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 					if ((!whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (whiteonMove && is_checkmate(pictureBoxes, whiteKingBox))) {
 						MessageBox::Show("Checkmate!", "Game Over");
+						grid_panel->Enabled = false;
+						
 						// Reset game or any other logic for end game
 						return;
 					}
@@ -2020,17 +2021,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int whiteKingRow = -1, whiteKingCol = -1;
 	   int blackKingRow = -1, blackKingCol = -1;
 
-	   
-	   white_king_on_checked = false; 
-	   black_king_on_checked = false; 
+	   white_king_on_checked = false;
+	   black_king_on_checked = false;
 
-	  
 	   for (int i = 0; i < 8; i++) {
 		   for (int j = 0; j < 8; j++) {
-			   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING)
-			   {
-				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE)
-				   {
+			   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING) {
+				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE) {
 					   whiteKingBox = pictureBoxes[i][j];
 					   whiteKingRow = i;
 					   whiteKingCol = j;
@@ -2043,50 +2040,79 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
+	  
+	   // SprawdŸ szachowanie bia³ego króla
+	   if (whiteKingBox != nullptr) {
+		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
+		   for (int i = 0; i < 8; i++) {
+			   for (int j = 0; j < 8; j++) {
+				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == BLACK && pictureBoxes[i][j] != selected_piece) {
 
-	 
-	   if (whiteKingBox != nullptr) 
-	   {
-		   for (int i = 0; i < 8; i++) 
-		   {
-			   for (int j = 0; j < 8; j++) 
-			   {
-				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == BLACK && pictureBoxes[i][j] != selected_piece)
-				   {
-					   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) { 
-						   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-						   last_moved_piece = selected_piece;
-						   white_king_on_checked = true;
-						   return true;
+					   if (!boardFlipped)
+					   {
+						   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
+							   // Ustawienie obrazka na szachowanego króla
+							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+							   // Ustaw ostatni¹ ruchom¹ figurê
+							   last_moved_piece = selected_piece;
+							   white_king_on_checked = true;
+							   return true;
+						   }
+					   }
+					   else
+					   {
+						   if (is_king_under_attack(pictureBoxes[i][j], 0, 3))
+						   {
+							   // Ustawienie obrazka na szachowanego króla
+							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+							   // Ustaw ostatni¹ ruchom¹ figurê
+							   last_moved_piece = selected_piece;
+							   white_king_on_checked = true;
+							   return true;
+						   }
+
 					   }
 				   }
 			   }
 		   }
-		  if(!boardFlipped)whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png"; 
-		  if(boardFlipped)flipped_white_kingbox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
+			   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 	   }
 
-	   if (blackKingBox != nullptr) 
-	   {
-		   for (int i = 0; i < 8; i++)
-		   {
-			   for (int j = 0; j < 8; j++) 
-			   {
-				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) != BLACK && pictureBoxes[i][j] != selected_piece) 
-				   {
-					   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-					   { 
-						   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+	   // SprawdŸ szachowanie czarnego króla
+	   if (blackKingBox != nullptr) {
+		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
+		   for (int i = 0; i < 8; i++) {
+			   for (int j = 0; j < 8; j++) {
+				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE && pictureBoxes[i][j] != selected_piece) {
+
+					   if (!boardFlipped)
+					   {
+						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
+							   // Ustawienie obrazka na szachowanego król
+							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							   // Ustaw ostatni¹ ruchom¹ figurê
+							   last_moved_piece = selected_piece;
+							   black_king_on_checked = true;
+							   return true;
+						   }
+					   }
+					   else
+					   {
+						   if (is_king_under_attack(pictureBoxes[i][j], 7, 3))
+							   // Ustawienie obrazka na szachowanego król
+							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+						   // Ustaw ostatni¹ ruchom¹ figurê
 						   last_moved_piece = selected_piece;
 						   black_king_on_checked = true;
 						   return true;
 					   }
+					  
 				   }
 			   }
 		   }
-		   if (!boardFlipped)blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-		   if (boardFlipped)flipped_black_kingbox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-
+		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
+			   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 	   }
 
 	   return false;
@@ -2112,12 +2138,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
    {
-	   if (boardFlipped)
-	   {
-		   kingRow = 7 - kingRow;
-		   kingCol = 7 - kingCol;
-	   }
-
 	   int pawnRow = pawnBox->row;
 	   int pawnCol = pawnBox->column;
 	   PieceColor pawnColor = pawnBox->check_color(pawnBox);
@@ -2141,12 +2161,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
    bool BoardForm::check_Knight_Attack(custom_picturebox^ knightBox, int kingRow, int kingCol)
    {
-
-	   if (boardFlipped)
-	   {
-		   kingRow = 7 - kingRow;
-		   kingCol = 7 - kingCol;
-	   }
 	   int knightRow = knightBox->row;
 	   int knightCol = knightBox->column;
 
@@ -2173,11 +2187,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Bishop_Attack(custom_picturebox^ bishopBox, int kingRow, int kingCol)
    {
-	   if (boardFlipped)
-	   {
-		   kingRow = 7 - kingRow;
-		   kingCol = 7 - kingCol;
-	   }
 	   int bishopRow = bishopBox->row;
 	   int bishopCol = bishopBox->column;
 
@@ -2202,11 +2211,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Rook_Attack(custom_picturebox^ rookBox, int kingRow, int kingCol)
    {
-	   if (boardFlipped)
-	   {
-		   kingRow = 7 - kingRow;
-		   kingCol = 7 - kingCol;
-	   }
 	   int rookRow = rookBox->row;
 	   int rookCol = rookBox->column;
 
@@ -2264,7 +2268,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    }
    bool BoardForm::check_Queen_Attack(custom_picturebox^ queenBox, int kingRow, int kingCol)
    {
-
 	   if (check_Rook_Attack(queenBox, kingRow, kingCol)||check_Bishop_Attack(queenBox, kingRow, kingCol))
 	   {
 		   return true;
