@@ -2182,14 +2182,26 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 					   else
 					   {
+						   Piece jaki_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
+						   PieceColor jaki_kolor = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+
+						   Piece jaki_piece_S = selected_piece->check_piece(selected_piece);
+						   PieceColor jaki_kolor_S = selected_piece->check_color(selected_piece);
+
+						  pictureBoxes[i][j]->column = j;
+						  pictureBoxes[i][j]->row = i;
+						 
+
 						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
+						   {
 							   // Ustawienie obrazka na szachowanego król
-							blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-						   MessageBox::Show("black");
-						   // Ustaw ostatni¹ ruchom¹ figurê
-						   last_moved_piece = selected_piece;
-						   black_king_on_checked = true;
-						   return true;
+							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+							   MessageBox::Show("black");
+							   // Ustaw ostatni¹ ruchom¹ figurê
+							   last_moved_piece = selected_piece;
+							   black_king_on_checked = true;
+							   return true;
+						   }
 					   }
 					  
 				   }
