@@ -255,33 +255,58 @@ public:
        // Geter Piece piece
        // Geter PieceColor color
         public:
-        Piece check_piece(custom_picturebox^ pb_piece)
-        {
-         /*
-            if (pb_piece == nullptr)
+            
+            Piece check_piece(custom_picturebox^ pb_piece)
             {
-                return ;
+                if (pb_piece == nullptr)
+                {
+                    MessageBox::Show("Error: Picture box does not contain a valid piece");
+                    return Piece::EMPTY;
+                }
+                else
+                {
+                    return pb_piece->piece;
+                }
             }
-            */
-            return pb_piece->piece;
-        }
-        
+            
         public:
         PieceColor check_color(custom_picturebox^ pb_piececolor)
         {
-            return pb_piececolor->color;
+            if (pb_piececolor == nullptr)
+            {
+                return PieceColor::NONE;
+            }
+            else
+            {
+                return pb_piececolor->color;
+            }
         }
         public:
             void set_piece(custom_picturebox^ pb_piece, Piece newPiece)
             {
-                pb_piece->piece = newPiece;
+                if (pb_piece == nullptr)
+                {
+                    return;
+                }
+                else
+                {
+                    pb_piece->piece = newPiece;
+                }
             }
 
       public:
         void set_color(custom_picturebox^ pb_piececolor, PieceColor newColor)
-         {
-        pb_piececolor->color = newColor;
-         }
+        { 
+            if (pb_piececolor == nullptr)
+            {
+                return;
+            }
+            else
+            {
+                pb_piececolor->color = newColor;
+            }
+
+        }
 
         public: 
             int get_value(custom_picturebox^ getpiece_val)

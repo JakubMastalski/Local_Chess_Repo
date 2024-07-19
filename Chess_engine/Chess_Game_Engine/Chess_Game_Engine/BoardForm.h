@@ -91,6 +91,7 @@ namespace ChessGameEngine {
 	private:
 		Piece current_piece;
 		Piece target_piece;
+		PieceColor current_color;
 	private:
 		bool castle_move;
 	private:
@@ -112,6 +113,8 @@ namespace ChessGameEngine {
 		String^ imgLocation_target;
 		Point startLocation_target;
 
+		custom_picturebox^ new_selected;
+
 		int enPassantRow;
 		int enPassantCol;
 	private:
@@ -128,6 +131,8 @@ namespace ChessGameEngine {
 	private:
 		custom_picturebox^ flipped_black_kingbox;
 		custom_picturebox^ flipped_white_kingbox;
+
+		bool sucess = false;
 
 
 		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
@@ -165,7 +170,7 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private: System::Void grid_panel_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private: System::Void grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	private: System::Void grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
-	private: void change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb);
+	private: bool change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb);
 	private: bool check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
 	private:bool check_sent(custom_picturebox^ selected_pb);
 	private: bool check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
