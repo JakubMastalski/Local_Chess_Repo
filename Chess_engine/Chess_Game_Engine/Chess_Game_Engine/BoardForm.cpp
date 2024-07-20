@@ -681,165 +681,169 @@ namespace ChessGameEngine {
 	
 
 void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
-	grid_panel->BackgroundImage = nullptr;
 
-	whiteonMove = true;
-
-	white_king = nullptr;
-	black_king = nullptr;
-
-	white_king_on_checked = false;
-	black_king_on_checked = false;
-
-	black_king_moved = false;
-	white_king_moved = false;
-
-	boardFlipped = !boardFlipped; // Toggle board flipped status
-
-	if (boardFlipped) {
-		pictureBoxInstance->FlipBoard();
-		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg");
-	}
-	else {
-		pictureBoxInstance->InitializeBoard(); // Initialize the board normally
-		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
-	}
-	promote_panel->BackColor = System::Drawing::Color::Black;
-	promote_panel->Location = System::Drawing::Point(0, 0);
+	if (MessageBox::Show("Are you sure you want to flip the board? (If the board is flipped, the game will restart)",
+		"Confirm Flip Board", MessageBoxButtons::OKCancel, MessageBoxIcon::Information) == System::Windows::Forms::DialogResult::OK) {
 
 
-	this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
+		this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
+		grid_panel->BackgroundImage = nullptr;
 
-	if (boardFlipped) {
-		// Adjust indices when the board is flipped
-		array<array<custom_picturebox^>^>^ flippedPictureBoxes = gcnew array<array<custom_picturebox^>^>(8);
-		for (int i = 0; i < 8; i++) {
-			flippedPictureBoxes[i] = gcnew array<custom_picturebox^>(8);
+		whiteonMove = true;
+
+		white_king = nullptr;
+		black_king = nullptr;
+
+		white_king_on_checked = false;
+		black_king_on_checked = false;
+
+		black_king_moved = false;
+		white_king_moved = false;
+
+		boardFlipped = !boardFlipped; // Toggle board flipped status
+
+		if (!boardFlipped)
+		{
+			Application::Restart();
+		}
+
+		if (boardFlipped) {
+			pictureBoxInstance->FlipBoard();
+			grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg");
+		}
+		else {
+			pictureBoxInstance->InitializeBoard(); // Initialize the board normally
+			grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
+		}
+		promote_panel->BackColor = System::Drawing::Color::Black;
+		promote_panel->Location = System::Drawing::Point(0, 0);
+
+
+		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
+
+			// Adjust indices when the board is flipped
+			array<array<custom_picturebox^>^>^ flippedPictureBoxes = gcnew array<array<custom_picturebox^>^>(8);
+			for (int i = 0; i < 8; i++) {
+				flippedPictureBoxes[i] = gcnew array<custom_picturebox^>(8);
+				for (int j = 0; j < 8; j++) {
+					flippedPictureBoxes[i][j] = pictureBoxes[7 - i][7 - j];
+				}
+			}
+			this->pictureBoxes = flippedPictureBoxes;
+
+		// Setting pieces on the board
+		for (int i = 2; i < 6; i++) {
 			for (int j = 0; j < 8; j++) {
-				flippedPictureBoxes[i][j] = pictureBoxes[7 - i][7 - j];
+				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
+				pictureBoxes[i][j]->ImageLocation = "";
+				pictureBoxes[i][j]->Enabled = true;
+				pictureBoxes[i][j]->set_color(pictureBoxes[i][j], NONE);
+				pictureBoxes[i][j]->set_piece(pictureBoxes[i][j], EMPTY);
 			}
 		}
-		this->pictureBoxes = flippedPictureBoxes;
-	}
 
-	// Setting pieces on the board
-	for (int i = 2; i < 6; i++) {
-		for (int j = 0; j < 8; j++) {
-			this->grid_panel->Controls->Add(pictureBoxes[i][j]);
-			pictureBoxes[i][j]->ImageLocation = "";
-			pictureBoxes[i][j]->Enabled = true;
-			pictureBoxes[i][j]->set_color(pictureBoxes[i][j], NONE);
-			pictureBoxes[i][j]->set_piece(pictureBoxes[i][j], EMPTY);
+		for (int i = 0; i < 8; i++) {
+			pictureBoxes[1][i]->set_piece(pictureBoxes[1][i], PAWN);
+			pictureBoxes[1][i]->set_color(pictureBoxes[1][i], WHITE);
+			pictureBoxes[1][i]->BringToFront();
+			grid_panel->Controls->Add(pictureBoxes[1][i]);
 		}
-	}
 
-	for (int i = 0; i < 8; i++) {
-		pictureBoxes[1][i]->set_piece(pictureBoxes[1][i], PAWN);
-		pictureBoxes[1][i]->set_color(pictureBoxes[1][i], WHITE);
-		pictureBoxes[1][i]->BringToFront();
-		grid_panel->Controls->Add(pictureBoxes[1][i]);
-	}
-
-	for (int i = 0; i < 8; i++) {
-		pictureBoxes[6][i]->set_piece(pictureBoxes[6][i], PAWN);
-		pictureBoxes[6][i]->set_color(pictureBoxes[6][i], BLACK);
-		pictureBoxes[6][i]->BringToFront();
-		grid_panel->Controls->Add(pictureBoxes[6][i]);
-	}
-
-	// Set rooks, knights, bishops, queen, and king for both black and white
-	for (int i = 0; i < 8; i++) {
-		switch (i) {
-		case 0:
-		case 7:
-			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], ROOK);
-			break;
-		case 1:
-		case 6:
-			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KNIGHT);
-			break;
-		case 2:
-		case 5:
-			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], BISHOP);
-			break;
-		case 4:
-			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], QUEEN);
-			break;
-		case 3:
-			flipped_black_kingbox = pictureBoxes[7][i];
-			flipped_black_kingbox->row = 7;
-			flipped_black_kingbox->column = 3;
-			black_king = flipped_black_kingbox;
-			pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KING);
-			break;
+		for (int i = 0; i < 8; i++) {
+			pictureBoxes[6][i]->set_piece(pictureBoxes[6][i], PAWN);
+			pictureBoxes[6][i]->set_color(pictureBoxes[6][i], BLACK);
+		
+			pictureBoxes[6][i]->BringToFront();
+			grid_panel->Controls->Add(pictureBoxes[6][i]);
 		}
-		pictureBoxes[7][i]->set_color(pictureBoxes[7][i], BLACK);
-		pictureBoxes[7][1]->BringToFront();
-		grid_panel->Controls->Add(pictureBoxes[7][i]);
-	}
 
-	for (int i = 0; i < 8; i++) {
-		switch (i) {
-		case 0:
-		case 7:
-			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], ROOK);
-			break;
-		case 1:
-		case 6:
-			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KNIGHT);
-			break;
-		case 2:
-		case 5:
-			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], BISHOP);
-			break;
-		case 4:
-			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], QUEEN);
-			break;
-		case 3:
-			flipped_white_kingbox = pictureBoxes[0][i];
-			flipped_white_kingbox->row = 0;
-			flipped_white_kingbox->column = 3;
-			white_king = flipped_white_kingbox;
-			pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KING);
-			break;
+		// Set rooks, knights, bishops, queen, and king for both black and white
+		for (int i = 0; i < 8; i++) {
+			switch (i) {
+			case 0:
+			case 7:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], ROOK);
+				break;
+			case 1:
+			case 6:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KNIGHT);
+				break;
+			case 2:
+			case 5:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], BISHOP);
+				break;
+			case 4:
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], QUEEN);
+				break;
+			case 3:
+				
+					flipped_black_kingbox = pictureBoxes[7][i];
+					flipped_black_kingbox->row = 7;
+					flipped_black_kingbox->column = 3;
+					black_king = flipped_black_kingbox;
+			
+				pictureBoxes[7][i]->set_piece(pictureBoxes[7][i], KING);
+				break;
+			}
+			pictureBoxes[7][i]->set_color(pictureBoxes[7][i], BLACK);
+			pictureBoxes[7][1]->BringToFront();
+			grid_panel->Controls->Add(pictureBoxes[7][i]);
 		}
-		pictureBoxes[0][i]->set_color(pictureBoxes[0][i], WHITE);
-		pictureBoxes[0][i]->BringToFront();
-		grid_panel->Controls->Add(pictureBoxes[0][i]);
-	}
 
-	// Update the background image based on the flipped state
-	if (boardFlipped) {
-		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg");
-	}
-	else {
-		grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
-	}
-
-	this->grid_panel->Location = System::Drawing::Point(121, 5);
-	this->grid_panel->Name = L"grid_panel";
-	this->grid_panel->Size = System::Drawing::Size(460, 460);
-	this->grid_panel->Controls->Add(picturebox_bg);
-	this->grid_panel->Controls->Add(promote_panel);
-	this->grid_panel->TabIndex = 47;
-	this->grid_panel->Visible = true;
-
-
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			// Update PictureBox properties based on pictureBoxes array
-			pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
-			pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
-			pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
-			pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
-			grid_panel->Controls->Add(pictureBoxes[i][j]);
-			pictureBoxes[i][j]->BringToFront();
+		for (int i = 0; i < 8; i++) {
+			switch (i) {
+			case 0:
+			case 7:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], ROOK);
+				break;
+			case 1:
+			case 6:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KNIGHT);
+				break;
+			case 2:
+			case 5:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], BISHOP);
+				break;
+			case 4:
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], QUEEN);
+				break;
+			case 3:
+				flipped_white_kingbox = pictureBoxes[0][i];
+				flipped_white_kingbox->row = 0;
+				flipped_white_kingbox->column = 3;
+			
+				pictureBoxes[0][i]->set_piece(pictureBoxes[0][i], KING);
+				break;
+			}
+			pictureBoxes[0][i]->set_color(pictureBoxes[0][i], WHITE);
+		
+			pictureBoxes[0][i]->BringToFront();
+			grid_panel->Controls->Add(pictureBoxes[0][i]);
 		}
-	}
 
-	// Refresh the form
-	this->Refresh();
+		this->grid_panel->Location = System::Drawing::Point(121, 5);
+		this->grid_panel->Name = L"grid_panel";
+		this->grid_panel->Size = System::Drawing::Size(460, 460);
+		this->grid_panel->Controls->Add(picturebox_bg);
+		this->grid_panel->Controls->Add(promote_panel);
+		this->grid_panel->TabIndex = 47;
+		this->grid_panel->Visible = true;
+
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				// Update PictureBox properties based on pictureBoxes array
+				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
+				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
+				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
+				pictureBoxes[i][j]->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
+				grid_panel->Controls->Add(pictureBoxes[i][j]);
+				pictureBoxes[i][j]->BringToFront();
+			}
+		}
+		// Refresh the form
+		this->Refresh();
+	}
 }
 	   //open panel with time
 void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -2142,11 +2146,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 					   else
 					   {
+						   pictureBoxes[i][j]->column = j;
+						   pictureBoxes[i][j]->row = i;
+
 						   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
 						   {
 							   // Ustawienie obrazka na szachowanego króla
 							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   MessageBox::Show("white");
 							   // Ustaw ostatni¹ ruchom¹ figurê
 							   last_moved_piece = selected_piece;
 							   white_king_on_checked = true;
@@ -2169,6 +2175,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE && pictureBoxes[i][j] != selected_piece) {
 
+					   pictureBoxes[i][j]->column = j;
+					   pictureBoxes[i][j]->row = i;
+
 					   if (!boardFlipped)
 					   {
 						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
@@ -2182,21 +2191,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 					   else
 					   {
-						   Piece jaki_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
-						   PieceColor jaki_kolor = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
-
-						   Piece jaki_piece_S = selected_piece->check_piece(selected_piece);
-						   PieceColor jaki_kolor_S = selected_piece->check_color(selected_piece);
-
 						  pictureBoxes[i][j]->column = j;
 						  pictureBoxes[i][j]->row = i;
 						 
-
 						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
 						   {
 							   // Ustawienie obrazka na szachowanego król
 							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   MessageBox::Show("black");
 							   // Ustaw ostatni¹ ruchom¹ figurê
 							   last_moved_piece = selected_piece;
 							   black_king_on_checked = true;

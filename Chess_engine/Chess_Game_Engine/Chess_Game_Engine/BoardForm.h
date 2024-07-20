@@ -132,8 +132,8 @@ namespace ChessGameEngine {
 		custom_picturebox^ flipped_black_kingbox;
 		custom_picturebox^ flipped_white_kingbox;
 
-		bool sucess = false;
-
+	  bool sucess = false;
+	  //System::Windows::Forms::DialogResult = gcnew DialogResult();
 
 		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
 
