@@ -1398,6 +1398,28 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		if (target_pb->check_piece(target_pb) == chosen_piece_selected || selected_pb->check_piece(selected_pb) == NONE)
 		{
+
+			// Clear previous highlights
+
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+
+					Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
+					PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+
+					if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
+
+						pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
+						pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+						pictureBoxes[i][j]->Tag = nullptr;
+					}
+					else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
+					{
+						pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+						pictureBoxes[i][j]->Tag = nullptr;
+					}
+				}
+			}
 			return true;
 		}
 		else
@@ -2067,6 +2089,25 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
+	   for (int i = 0; i < 8; i++) {
+		   for (int j = 0; j < 8; j++) {
+
+			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
+			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+
+			   if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
+
+				   pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
+				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   pictureBoxes[i][j]->Tag = nullptr;
+			   }
+			   else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
+			   {
+				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   pictureBoxes[i][j]->Tag = nullptr;
+			   }
+		   }
+	   }
 	   if (e->Clicks == selectedPictureBox->check_piece(selectedPictureBox));
 	   {
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
@@ -2076,8 +2117,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   {
 				   highlight_possible_moves(selectedPictureBox);
 			   }
-			    //pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				//pictureBoxes[4][5]->Enabled = false;
 			   break;
 		   case KNIGHT:
 			   check_Knightmove(pictureBoxes, selectedPictureBox);
@@ -2099,18 +2138,78 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
    // pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
+
+
+	   for (int i = 0; i < 8; i++) {
+		   for (int j = 0; j < 8; j++) {
+
+			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
+			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+
+			   if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
+
+				   pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
+				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   pictureBoxes[i][j]->Tag = nullptr;
+			   }
+			   else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
+			   {
+				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   pictureBoxes[i][j]->Tag = nullptr;
+			   }
+		   }
+	   }
+
+	   // Get the position of the selected picture box
 	   Point startPos = selected_pb->Location;
 	   int startRow = startPos.Y / selected_pb->Height;
 	   int startCol = startPos.X / selected_pb->Width;
 	   int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
 
+	   // Ensure the row and column are within board limits
+	   startRow = Math::Min(startRow, 7);
+	   startCol = Math::Min(startCol, 7);
+
+	   // Check if indices are within the board range
+	   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
+		   return;
+	   }
+
+	   // Move forward by one square
 	   int targetRow = startRow + direction;
+	   if (targetRow >= 0 && targetRow < 8) {
+		   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
+			   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+			   pictureBoxes[targetRow][startCol]->Tag = "MoveHighlight";
+		   }
+	   }
 
-	  // if(startRow == )
+	   // Initial move by two squares forward
+	   if ((startRow == 1 && direction == 1) || (startRow == 6 && direction == -1)) {
+		   targetRow = startRow + 2 * direction;
+		   if (targetRow >= 0 && targetRow < 8) {
+			   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
+				   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
+				   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   pictureBoxes[targetRow][startCol]->Tag = "MoveHighlight";
+			   }
+		   }
+	   }
 
-	   pictureBoxes[startRow += direction][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-
-	  
+	   // Capture diagonally
+	   int cols[2] = { startCol - 1, startCol + 1 };
+	   for (int i = 0; i < 2; i++) {
+		   if (cols[i] >= 0 && cols[i] < 8) {
+			   targetRow = startRow + direction;
+			   if (targetRow >= 0 && targetRow < 8) {
+				   custom_picturebox^ target_pb = pictureBoxes[targetRow][cols[i]];
+				   if (target_pb->check_piece(target_pb) != EMPTY && target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
+					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+					   target_pb->Tag = "Capable";
+				   }
+			   }
+		   }
+	   }
    }
 
 
