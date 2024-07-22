@@ -2072,7 +2072,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
 		   {
 		   case PAWN:
-			   check_Pawnmove(pictureBoxes, selectedPictureBox);
+			   if(check_Pawnmove(pictureBoxes, selectedPictureBox));
+			   {
+				   highlight_possible_moves(selectedPictureBox);
+			   }
 			    //pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 				//pictureBoxes[4][5]->Enabled = false;
 			   break;
@@ -2095,6 +2098,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   }
 	}
    // pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+   void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
+	   Point startPos = selected_pb->Location;
+	   int startRow = startPos.Y / selected_pb->Height;
+	   int startCol = startPos.X / selected_pb->Width;
+	   int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
+
+	   int targetRow = startRow + direction;
+
+	  // if(startRow == )
+
+	   pictureBoxes[startRow += direction][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+
+	  
+   }
+
+
    void BoardForm::reset_pb(array<array<custom_picturebox^>^>^ pictureBoxes)
    {
 	  for (int i = 0; i < 8; i++) {
