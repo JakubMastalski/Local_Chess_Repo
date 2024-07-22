@@ -2139,28 +2139,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    // pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
 
-
-	   for (int i = 0; i < 8; i++) {
-		   for (int j = 0; j < 8; j++) {
-
-			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
-			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
-
-			   if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
-
-				   pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
-				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-				   pictureBoxes[i][j]->Tag = nullptr;
-			   }
-			   else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
-			   {
-				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-				   pictureBoxes[i][j]->Tag = nullptr;
-			   }
-		   }
-	   }
-
-	   // Get the position of the selected picture box
+      // Get the position of the selected picture box
 	   Point startPos = selected_pb->Location;
 	   int startRow = startPos.Y / selected_pb->Height;
 	   int startCol = startPos.X / selected_pb->Width;
