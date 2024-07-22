@@ -45,7 +45,6 @@ public:
         SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
         TabIndex = 6;
         TabStop = false;
-        attacked = false;
     };
 private:
     //square on the board
@@ -274,6 +273,7 @@ public:
         {
             if (pb_piececolor == nullptr)
             {
+                MessageBox::Show("Error: Picture box does not contain a valid piece");
                 return PieceColor::NONE;
             }
             else
@@ -286,6 +286,7 @@ public:
             {
                 if (pb_piece == nullptr)
                 {
+                    MessageBox::Show("Error: Picture box does not contain a valid piece");
                     return;
                 }
                 else
@@ -299,38 +300,20 @@ public:
         { 
             if (pb_piececolor == nullptr)
             {
+                MessageBox::Show("Error: Picture box does not contain a valid piece");
                 return;
             }
             else
             {
                 pb_piececolor->color = newColor;
             }
-
         }
-
-        public: 
-            int get_value(custom_picturebox^ getpiece_val)
-            {
-                return getpiece_val->piece_value;
-            }
-          public:
-              void set_value(custom_picturebox^ pb_piecevalue,int newValue)
-              {
-                  pb_piecevalue->piece_value = newValue;
-              }
-
-           public:
-               int get_counterval(custom_picturebox^ getpiece_val)
-               {
-                   return getpiece_val->pb_counterval;
-               }
 private:
     bool board_initialized;
     int pb_counterval;
-    public:
-        int row;
-        int column;
-        bool attacked;
+public:
+    int row;
+    int column;
 private:
     array<array<custom_picturebox^>^>^ pictureBoxes;
 };

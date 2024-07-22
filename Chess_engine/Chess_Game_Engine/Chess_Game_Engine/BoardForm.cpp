@@ -716,7 +716,8 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
 		}
 		promote_panel->BackColor = System::Drawing::Color::Black;
-		promote_panel->Location = System::Drawing::Point(0, 0);
+		promote_panel->Location = System::Drawing::Point(20, 20);
+
 
 
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
@@ -1124,7 +1125,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					selectedPictureBox->Capture = true;
 					selectedPictureBox->BringToFront();
 					new_selected = selectedPictureBox;
-					chosen_piece_val = selectedPictureBox->get_value(selectedPictureBox);
 					current_piece = selectedPictureBox->check_piece(selectedPictureBox);
 					current_color = selectedPictureBox->check_color(selectedPictureBox);
 					start_location = selectedPictureBox->Location;
@@ -1213,8 +1213,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
 
-			//new_selected->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
-			//selectedPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
 
 			if (targetPictureBox == nullptr || selectedPictureBox == nullptr) {
 				switch (current_piece)
@@ -1255,13 +1253,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 
 				new_selected->Location = startLocation_selected;
-				new_selected->BringToFront(); // Przywrócenie selectedPictureBox na górê
-				selectedPictureBox->Location = start_location; // Przywrócenie selectedPictureBox na swoj¹ startow¹ lokalizacjê
-				selectedPictureBox->BringToFront(); // Przywrócenie selectedPictureBox na górê
+				new_selected->BringToFront(); 
+				selectedPictureBox->Location = start_location; 
+				selectedPictureBox->BringToFront(); 
 				return;
 			}
 			
-			if (!whiteonMove) {
+			if (whiteonMove) {
 				promote_panel->BackColor = System::Drawing::Color::Black;
 				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
 				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
@@ -1327,7 +1325,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 
 			if (king_checked(pictureBoxes, selectedPictureBox) || white_king_on_checked || black_king_on_checked) {
-				//MessageBox::Show("111");
 				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked)) {
 					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
@@ -1407,24 +1404,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		{
 			return false;
 		}
-
 		return true;
-		
-		/*
-		if (timer_set)
-		{
-			if (!whiteonMove)
-			{
-				menu_timer_white->Stop();
-				menu_timer_black->Start();
-			}
-			if (whiteonMove )
-			{
-				menu_timer_white->Start();
-				menu_timer_black->Stop();
-			}
-		}
-		*/
 	}
 
 	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)
@@ -1665,7 +1645,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 
 		return false;
-		pb_value = selected_pb->get_value(selected_pb);
 	}
 	//check knight
 	bool BoardForm::check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
@@ -2088,8 +2067,34 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
-	   ;
+	   if (e->Clicks == selectedPictureBox->check_piece(selectedPictureBox));
+	   {
+		   switch (selectedPictureBox->check_piece(selectedPictureBox))
+		   {
+		   case PAWN:
+			   check_Pawnmove(pictureBoxes, selectedPictureBox);
+			    //pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				//pictureBoxes[4][5]->Enabled = false;
+			   break;
+		   case KNIGHT:
+			   check_Knightmove(pictureBoxes, selectedPictureBox);
+			   break;
+		   case BISHOP:
+			   check_Bishopmove(pictureBoxes, selectedPictureBox);
+			   break;
+		   case ROOK:
+			   check_Rookmove(pictureBoxes, selectedPictureBox);
+			   break;
+		   case QUEEN:
+			   check_Queenmove(pictureBoxes, selectedPictureBox);
+			   break;
+		   case KING:
+			   check_Kingmove(pictureBoxes, selectedPictureBox);
+			   break;
+		   }
+	   }
 	}
+   // pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
    void BoardForm::reset_pb(array<array<custom_picturebox^>^>^ pictureBoxes)
    {
 	  for (int i = 0; i < 8; i++) {
@@ -2125,7 +2130,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-	  
 	   // SprawdŸ szachowanie bia³ego króla
 	   if (whiteKingBox != nullptr) {
 		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
@@ -2133,8 +2137,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == BLACK && pictureBoxes[i][j] != selected_piece) {
 
-					   if (!boardFlipped)
-					   {
+					   pictureBoxes[i][j]->column = j;
+					   pictureBoxes[i][j]->row = i;
+
 						   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
 							   // Ustawienie obrazka na szachowanego króla
 							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
@@ -2142,24 +2147,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   last_moved_piece = selected_piece;
 							   white_king_on_checked = true;
 							   return true;
-						   }
-					   }
-					   else
-					   {
-						   pictureBoxes[i][j]->column = j;
-						   pictureBoxes[i][j]->row = i;
-
-						   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol))
-						   {
-							   // Ustawienie obrazka na szachowanego króla
-							   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-							   // Ustaw ostatni¹ ruchom¹ figurê
-							   last_moved_piece = selected_piece;
-							   white_king_on_checked = true;
-							   return true;
-						   }
-
-					   }
+			               }
 				   }
 			   }
 		   }
@@ -2178,8 +2166,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[i][j]->column = j;
 					   pictureBoxes[i][j]->row = i;
 
-					   if (!boardFlipped)
-					   {
 						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
 							   // Ustawienie obrazka na szachowanego król
 							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
@@ -2187,24 +2173,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   last_moved_piece = selected_piece;
 							   black_king_on_checked = true;
 							   return true;
-						   }
-					   }
-					   else
-					   {
-						  pictureBoxes[i][j]->column = j;
-						  pictureBoxes[i][j]->row = i;
-						 
-						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol))
-						   {
-							   // Ustawienie obrazka na szachowanego król
-							   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-							   // Ustaw ostatni¹ ruchom¹ figurê
-							   last_moved_piece = selected_piece;
-							   black_king_on_checked = true;
-							   return true;
-						   }
-					   }
-					  
+						   }			  
 				   }
 			   }
 		   }
@@ -2377,10 +2346,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   if (!whiteonMove)
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
+		   targetPictureBox->set_color(targetPictureBox, WHITE);
 	   }
-	   else if(whiteonMove)
+	   else
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+		   targetPictureBox->set_color(targetPictureBox, BLACK);
 	   }
 	   targetPictureBox->set_piece(targetPictureBox, BISHOP);
 	   grid_panel->Enabled = true;
@@ -2393,10 +2364,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   if (!whiteonMove)
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
+		   targetPictureBox->set_color(targetPictureBox, WHITE);
 	   }
-	   else if (whiteonMove)
+	   else
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+		   targetPictureBox->set_color(targetPictureBox, BLACK);
 	   }
 	   targetPictureBox->set_piece(targetPictureBox, ROOK);
 	   grid_panel->Enabled = true;
@@ -2409,10 +2382,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   if (!whiteonMove)
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
+		   targetPictureBox->set_color(targetPictureBox, WHITE);
 	   }
-	   else if (whiteonMove)
+	   else
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+		   targetPictureBox->set_color(targetPictureBox, BLACK);
 	   }
 
 	   targetPictureBox->set_piece(targetPictureBox, KNIGHT);
@@ -2426,10 +2401,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   if (!whiteonMove)
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
+		   targetPictureBox->set_color(targetPictureBox, WHITE);
 	   }
-	   else if (whiteonMove)
+	   else
 	   {
 		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+		   targetPictureBox->set_color(targetPictureBox, BLACK);
 	   }
 	   targetPictureBox->set_piece(targetPictureBox, QUEEN);
 	   grid_panel->Enabled = true;
