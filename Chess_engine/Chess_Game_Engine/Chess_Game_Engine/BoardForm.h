@@ -203,6 +203,7 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private:bool BoardForm::rook_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
 	private:bool BoardForm::queen_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
 	private:void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb);
+	private:void BoardForm::reset_highlight_moves();
 
 
 };

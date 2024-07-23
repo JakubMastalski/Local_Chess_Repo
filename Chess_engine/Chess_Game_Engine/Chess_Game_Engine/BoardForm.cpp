@@ -1398,28 +1398,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		if (target_pb->check_piece(target_pb) == chosen_piece_selected || selected_pb->check_piece(selected_pb) == NONE)
 		{
-
-			// Clear previous highlights
-
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
-
-					Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
-					PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
-
-					if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
-
-						pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
-						pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-						pictureBoxes[i][j]->Tag = nullptr;
-					}
-					else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
-					{
-						pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-						pictureBoxes[i][j]->Tag = nullptr;
-					}
-				}
-			}
+			reset_highlight_moves();
 			return true;
 		}
 		else
@@ -2089,34 +2068,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
-	   for (int i = 0; i < 8; i++) {
-		   for (int j = 0; j < 8; j++) {
+	   reset_highlight_moves();
 
-			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
-			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
-
-			   if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
-
-				   pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
-				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-				   pictureBoxes[i][j]->Tag = nullptr;
-			   }
-			   else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
-			   {
-				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-				   pictureBoxes[i][j]->Tag = nullptr;
-			   }
-		   }
-	   }
 	   if (e->Clicks == selectedPictureBox->check_piece(selectedPictureBox));
 	   {
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
 		   {
 		   case PAWN:
-			   if(check_Pawnmove(pictureBoxes, selectedPictureBox));
-			   {
-				   highlight_possible_moves(selectedPictureBox);
-			   }
+			   highlight_possible_moves(selectedPictureBox);
 			   break;
 		   case KNIGHT:
 			   check_Knightmove(pictureBoxes, selectedPictureBox);
@@ -2136,7 +2095,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 	}
-   // pictureBoxes[4][5]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
 
       // Get the position of the selected picture box
@@ -2186,6 +2144,29 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 					   target_pb->Tag = "Capable";
 				   }
+			   }
+		   }
+	   }
+   }
+
+   void BoardForm::reset_highlight_moves()
+   {
+	   for (int i = 0; i < 8; i++) {
+		   for (int j = 0; j < 8; j++) {
+
+			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
+			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+
+			   if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
+
+				   pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
+				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   pictureBoxes[i][j]->Tag = nullptr;
+			   }
+			   else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable")
+			   {
+				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   pictureBoxes[i][j]->Tag = nullptr;
 			   }
 		   }
 	   }
