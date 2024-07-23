@@ -1163,41 +1163,48 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				switch (current_piece) {
 				case PAWN:
 					if (!check_Pawnmove(pictureBoxes, selectedPictureBox)) {
+						reset_highlight_moves();
 						selectedPictureBox->Location = start_location;
 						return;
 					}
 					break;
 				case KNIGHT:
 					if (!check_Knightmove(pictureBoxes, selectedPictureBox)) {
+						reset_highlight_moves();
 						selectedPictureBox->Location = start_location;
 						return;
 					}
 					break;
 				case BISHOP:
 					if (!check_Bishopmove(pictureBoxes, selectedPictureBox)) {
+						reset_highlight_moves();
 						selectedPictureBox->Location = start_location;
 						return;
 					}
 					break;
 				case ROOK:
 					if (!check_Rookmove(pictureBoxes, selectedPictureBox)) {
+						reset_highlight_moves();
 						selectedPictureBox->Location = start_location;
 						return;
 					}
 					break;
 				case QUEEN:
 					if (!check_Queenmove(pictureBoxes, selectedPictureBox)) {
+						reset_highlight_moves();
 						selectedPictureBox->Location = start_location;
 						return;
 					}
 					break;
 				case KING:
 					if (!check_Kingmove(pictureBoxes, selectedPictureBox)) {
+						reset_highlight_moves();
 						selectedPictureBox->Location = start_location;
 						return;
 					}
 					break;
 				default:
+					reset_highlight_moves();
 					selectedPictureBox->Location = start_location;
 					return;
 				}
@@ -1403,6 +1410,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		}
 		else
 		{
+			reset_highlight_moves();
 			return false;
 		}
 		return true;
@@ -2068,8 +2076,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
-	   reset_highlight_moves();
-
+	    reset_highlight_moves();
 	   if (e->Clicks == selectedPictureBox->check_piece(selectedPictureBox));
 	   {
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
@@ -2097,7 +2104,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
 
-      // Get the position of the selected picture box
+	   // Get the position of the selected picture box
 	   Point startPos = selected_pb->Location;
 	   int startRow = startPos.Y / selected_pb->Height;
 	   int startCol = startPos.X / selected_pb->Width;
@@ -2115,14 +2122,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   // Move forward by one square
 	   int targetRow = startRow + direction;
 	   if (targetRow >= 0 && targetRow < 8) {
-		   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
+		   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY && selected_pb->Enabled) {
 			   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 			   pictureBoxes[targetRow][startCol]->Tag = "MoveHighlight";
 		   }
 	   }
 
 	   // Initial move by two squares forward
-	   if ((startRow == 1 && direction == 1) || (startRow == 6 && direction == -1)) {
+	   if ((startRow == 1 && direction == 1) || (startRow == 6 && direction == -1)&& selected_pb->Enabled) {
 		   targetRow = startRow + 2 * direction;
 		   if (targetRow >= 0 && targetRow < 8) {
 			   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
@@ -2140,9 +2147,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   targetRow = startRow + direction;
 			   if (targetRow >= 0 && targetRow < 8) {
 				   custom_picturebox^ target_pb = pictureBoxes[targetRow][cols[i]];
-				   if (target_pb->check_piece(target_pb) != EMPTY && target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
+				   custom_picturebox^ enPassant_pb = pictureBoxes[startRow][cols[i]];
+
+				   // Check for normal capture
+				   if (target_pb->check_piece(target_pb) != EMPTY &&
+					   target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
 					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 					   target_pb->Tag = "Capable";
+				   }
+				   // Check for en passant capture
+				   else if (target_pb->check_piece(target_pb) == EMPTY &&
+					   enPassant_pb->check_piece(enPassant_pb) == PAWN &&
+					   enPassant_pb->check_color(enPassant_pb) != selected_pb->check_color(selected_pb) &&
+					   enPassant_pb == passantable && selected_pb->Enabled == true) {
+
+					   target_pb->Tag = "MoveHighlight";
+					   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 				   }
 			   }
 		   }
