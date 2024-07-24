@@ -115,7 +115,10 @@ namespace ChessGameEngine {
 		String^ imgLocation_target;
 		Point startLocation_target;
 
+		custom_picturebox^ clicked_pb = nullptr;
+		custom_picturebox^ enPassant_pb = nullptr;
 		custom_picturebox^ new_selected;
+		custom_picturebox^ enPassantTarget_pb = nullptr;
 
 		int enPassantRow;
 		int enPassantCol;
