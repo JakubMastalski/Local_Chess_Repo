@@ -119,6 +119,7 @@ namespace ChessGameEngine {
 		custom_picturebox^ enPassant_pb = nullptr;
 		custom_picturebox^ new_selected;
 		custom_picturebox^ enPassantTarget_pb = nullptr;
+		custom_picturebox^ chosen_piece = nullptr;
 
 		int enPassantRow;
 		int enPassantCol;

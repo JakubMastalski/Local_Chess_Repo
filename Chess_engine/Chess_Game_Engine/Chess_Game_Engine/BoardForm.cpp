@@ -1069,7 +1069,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   if (pictureBoxes[i][j]->check_color(selected) == WHITE)
 					   {
 						   pictureBoxes[i][j]->Enabled = true;
-
+			
 						   if (timer_set)
 						   {
 							   menu_timer_black->Start();
@@ -1098,6 +1098,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 			   }
 		   }
+		   reset_highlight_moves();
 	   }
 
 	   //restart app
@@ -2080,79 +2081,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	{
 	   reset_highlight_moves();
 
-	   if (e->Clicks == 1) // Check for a single click
-	   {
-		   custom_picturebox^ target_pb = dynamic_cast<custom_picturebox^>(sender);
-
-		   // Check if the target picture box is valid
-		   if (target_pb == nullptr)
-		   {
-			   MessageBox::Show("Invalid target selected.");
-			   return;
-		   }
-
-		   // Check if the target picture box is empty and handle it
-		   if (target_pb->check_piece(target_pb) == EMPTY)
-		   {
-			   // Check if the image location is not the special "on_move" image
-			   if (target_pb->ImageLocation != "C:\\Users\\USER\\Desktop\\on_move.png")
-			   {
-				   MessageBox::Show("Empty square selected.");
-				   return;
-			   }
-		   }
-		   else
-		   {
-			   // Check if the target piece is valid for selection
-			   if (target_pb->BackColor != System::Drawing::Color::DarkGreen &&
-				   target_pb->check_color(target_pb) != NONE)
-			   {
-				   clicked_pb = target_pb;
-			   }
-			   else
-			   {
-				   MessageBox::Show("Invalid piece selected.");
-				   return;
-			   }
-		   }
-
-		   // Handle move or capture
-		   if (target_pb->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png" ||
-			   target_pb->BackColor == System::Drawing::Color::DarkGreen)
-		   {
-			   // En passant capture handling
-			   if (target_pb == enPassantTarget_pb && enPassantTarget_pb != nullptr)
-			   {
-				   int direction = clicked_pb->check_color(clicked_pb) == WHITE ? +1 : -1;
-				   int enPassantRow = enPassantTarget_pb->row + direction;
-				   int enPassantCol = enPassantTarget_pb->column;
-
-				   // Ensure enPassantRow and enPassantCol are within bounds
-				   if (enPassantRow >= 0 && enPassantRow < 8 && enPassantCol >= 0 && enPassantCol < 8)
-				   {
-					   // Remove the captured pawn from the board
-					   pictureBoxes[enPassantRow][enPassantCol]->set_color(pictureBoxes[enPassantRow][enPassantCol], NONE);
-					   pictureBoxes[enPassantRow][enPassantCol]->set_piece(pictureBoxes[enPassantRow][enPassantCol], EMPTY);
-					   enPassantTarget_pb = nullptr; // Reset the enPassant target
-				   }
-
-				   // Move the capturing pawn
-				   change_pb(clicked_pb, target_pb);
-			   }
-			   else
-			   {
-				   // Regular move or capture
-				   change_pb(clicked_pb, target_pb);
-			   }
-		   }
-	   }
-	   else
-	   {
-		   reset_highlight_moves();
-	   }
-
 	   // Handle highlighting of possible moves for the selected piece
-	   if (selectedPictureBox != nullptr && selectedPictureBox->check_piece(selectedPictureBox) != EMPTY)
+	   if (selectedPictureBox != nullptr)
 	   {
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
 		   {
@@ -2174,7 +2104,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   case KING:
 			   // check_Kingmove(pictureBoxes, selectedPictureBox);
 			   break;
-		   case NONE:
+		   case EMPTY:
+			   if (selectedPictureBox->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
+			   {
+				   change_pb(pictureBoxes[6][3], selectedPictureBox);
+			   }
 			   break;
 		   default:
 			   MessageBox::Show("Unknown piece type.");
@@ -2184,72 +2118,71 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	}
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
 
-	   // Get the position of the selected picture box
-	   Point startPos = selected_pb->Location;
-	   int startRow = startPos.Y / selected_pb->Height;
-	   int startCol = startPos.X / selected_pb->Width;
-	   int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
+	   if (selectedPictureBox->ImageLocation != "")
+	   {
+		   // Get the position of the selected picture box
+		   Point startPos = selected_pb->Location;
+		   int startRow = startPos.Y / selected_pb->Height;
+		   int startCol = startPos.X / selected_pb->Width;
+		   int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
 
-	   // Ensure the row and column are within board limits
-	   startRow = Math::Min(startRow, 7);
-	   startCol = Math::Min(startCol, 7);
+		   
+		   // Ensure the row and column are within board limits
+		   startRow = Math::Min(startRow, 7);
+		   startCol = Math::Min(startCol, 7);
 
-	   // Check if indices are within the board range
-	   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
-		   return;
-	   }
-
-	   // Move forward by one square
-	   int targetRow = startRow + direction;
-	   if (targetRow >= 0 && targetRow < 8) {
-		   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
-			   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-			   pictureBoxes[targetRow][startCol]->Tag = "MoveHighlight";
+		   // Check if indices are within the board range
+		   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
+			   return;
 		   }
-	   }
 
-	   // Initial move by two squares forward
-	   if ((startRow == 1 && direction == 1) || (startRow == 6 && direction == -1)) {
-		   targetRow = startRow + 2 * direction;
+		   // Move forward by one square
+		   int targetRow = startRow + direction;
 		   if (targetRow >= 0 && targetRow < 8) {
-			   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
-				   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
+			   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 				   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   pictureBoxes[targetRow][startCol]->Tag = "MoveHighlight";
 			   }
 		   }
-	   }
 
-	   // Capture diagonally
-	   int cols[2] = { startCol - 1, startCol + 1 };
-	   for (int i = 0; i < 2; i++) {
-		   if (cols[i] >= 0 && cols[i] < 8) {
-			   targetRow = startRow + direction;
+		   // Initial move by two squares forward
+		   if ((startRow == 1 && direction == 1) || (startRow == 6 && direction == -1)) {
+			   targetRow = startRow + 2 * direction;
 			   if (targetRow >= 0 && targetRow < 8) {
-				   custom_picturebox^ target_pb = pictureBoxes[targetRow][cols[i]];
-				   enPassant_pb = pictureBoxes[startRow][cols[i]];
-
-				   // Check for normal capture
-				   if (target_pb->check_piece(target_pb) != EMPTY &&
-					   target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
-					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
-					   target_pb->Tag = "Capable";
+				   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
+					   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
+					   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 				   }
-				   // Check for en passant capture
-				   else if (target_pb->check_piece(target_pb) == EMPTY &&
-					   enPassant_pb->check_piece(enPassant_pb) == PAWN &&
-					   enPassant_pb->check_color(enPassant_pb) != selected_pb->check_color(selected_pb) &&
-					   enPassant_pb == passantable) {
+			   }
+		   }
 
-					   target_pb->Tag = "MoveHighlight";
-					   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+		   // Capture diagonally
+		   int cols[2] = { startCol - 1, startCol + 1 };
+		   for (int i = 0; i < 2; i++) {
+			   if (cols[i] >= 0 && cols[i] < 8) {
+				   targetRow = startRow + direction;
+				   if (targetRow >= 0 && targetRow < 8) {
+					   custom_picturebox^ target_pb = pictureBoxes[targetRow][cols[i]];
+					   enPassant_pb = pictureBoxes[startRow][cols[i]];
 
-					   // Highlight the square behind the pawn that can be captured
-					   int enPassantRow = startRow + direction;
-					   if (enPassantRow >= 0 && enPassantRow < 8) {
-						   enPassantTarget_pb = pictureBoxes[enPassantRow][cols[i]];
-						   enPassantTarget_pb->Tag = "MoveHighlight";
-						   enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+					   // Check for normal capture
+					   if (target_pb->check_piece(target_pb) != EMPTY &&
+						   target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
+						   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+					   }
+					   // Check for en passant capture
+					   else if (target_pb->check_piece(target_pb) == EMPTY &&
+						   enPassant_pb->check_piece(enPassant_pb) == PAWN &&
+						   enPassant_pb->check_color(enPassant_pb) != selected_pb->check_color(selected_pb) &&
+						   enPassant_pb == passantable) {
+
+						   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+
+						   // Highlight the square behind the pawn that can be captured
+						   int enPassantRow = startRow + direction;
+						   if (enPassantRow >= 0 && enPassantRow < 8) {
+							   enPassantTarget_pb = pictureBoxes[enPassantRow][cols[i]];
+							   enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+						   }
 					   }
 				   }
 			   }
@@ -2265,14 +2198,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
 			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
 
-			   if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "MoveHighlight" && check_piece == EMPTY && check_if_empty == NONE) {
-				   pictureBoxes[i][j]->ImageLocation = ""; // Or set it to the default empty square image
+			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen) {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-				   pictureBoxes[i][j]->Tag = nullptr;
 			   }
-			   else if (pictureBoxes[i][j]->Tag != nullptr && pictureBoxes[i][j]->Tag->ToString() == "Capable") {
+			   else if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png") {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
-				   pictureBoxes[i][j]->Tag = nullptr;
+				   pictureBoxes[i][j]->ImageLocation = "";
 			   }
 		   }
 	   }
