@@ -110,6 +110,8 @@ namespace ChessGameEngine {
 
 		bool mouse_clicked = false;
 
+		custom_picturebox^ onMove_target;
+		custom_picturebox^ target_pb;
 		Piece pieceType_target;
 		PieceColor pieceColor_target;
 		String^ imgLocation_target;

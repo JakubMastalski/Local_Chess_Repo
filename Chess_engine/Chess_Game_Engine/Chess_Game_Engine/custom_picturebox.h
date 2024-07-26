@@ -314,6 +314,7 @@ private:
 public:
     int row;
     int column;
+    bool onMoveIMG = false;
 private:
     array<array<custom_picturebox^>^>^ pictureBoxes;
 };

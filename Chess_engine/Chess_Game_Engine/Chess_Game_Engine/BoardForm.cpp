@@ -2082,11 +2082,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   reset_highlight_moves();
 
 	   // Handle highlighting of possible moves for the selected piece
-	   if (selectedPictureBox != nullptr)
+	   if (selectedPictureBox != nullptr && selectedPictureBox->ImageLocation != nullptr)
 	   {
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
 		   {
 		   case PAWN:
+			   chosen_piece = selectedPictureBox;
 			   highlight_possible_moves(selectedPictureBox);
 			   break;
 		   case KNIGHT:
@@ -2104,10 +2105,30 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   case KING:
 			   // check_Kingmove(pictureBoxes, selectedPictureBox);
 			   break;
-		   case EMPTY:
-			   if (selectedPictureBox->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
+		   case EMPTY: 
+			   if (chosen_piece != nullptr && selectedPictureBox->onMoveIMG == true)
 			   {
-				   change_pb(pictureBoxes[6][3], selectedPictureBox);
+				   if (check_Pawnmove(pictureBoxes, chosen_piece));
+				   {
+					   change_pb(chosen_piece, onMove_target);
+				   }
+				   chosen_piece = nullptr;
+				   onMove_target = nullptr;
+				   for (int i = 0; i < 8; i++)
+				   {
+					   for (int j = 0; j < 8; j++)
+					   {
+						   pictureBoxes[i][j]->onMoveIMG = false;
+					   }
+				   }
+			   }
+			   else if (onMove_target == target_pb)
+			   {
+				   MessageBox::Show("ee");
+			   }
+			   else
+			   {
+				   reset_highlight_moves();
 			   }
 			   break;
 		   default:
@@ -2141,6 +2162,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   if (targetRow >= 0 && targetRow < 8) {
 			   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 				   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
+				   onMove_target = pictureBoxes[targetRow][startCol];
 			   }
 		   }
 
@@ -2151,6 +2174,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
 					   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 					   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+					   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
+					   //passantable = pictureBoxes[targetRow][startCol];
+					   onMove_target = pictureBoxes[targetRow][startCol];
 				   }
 			   }
 		   }
@@ -2161,7 +2187,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   if (cols[i] >= 0 && cols[i] < 8) {
 				   targetRow = startRow + direction;
 				   if (targetRow >= 0 && targetRow < 8) {
-					   custom_picturebox^ target_pb = pictureBoxes[targetRow][cols[i]];
+					   target_pb = pictureBoxes[targetRow][cols[i]];
 					   enPassant_pb = pictureBoxes[startRow][cols[i]];
 
 					   // Check for normal capture
@@ -2175,13 +2201,17 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   enPassant_pb->check_color(enPassant_pb) != selected_pb->check_color(selected_pb) &&
 						   enPassant_pb == passantable) {
 
+						   target_pb->onMoveIMG = true;
 						   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+						   onMove_target = target_pb;
 
 						   // Highlight the square behind the pawn that can be captured
 						   int enPassantRow = startRow + direction;
 						   if (enPassantRow >= 0 && enPassantRow < 8) {
 							   enPassantTarget_pb = pictureBoxes[enPassantRow][cols[i]];
 							   enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+							   enPassantTarget_pb->onMoveIMG = true;
+							   onMove_target = enPassantTarget_pb;
 						   }
 					   }
 				   }
