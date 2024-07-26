@@ -2111,6 +2111,19 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   if (check_Pawnmove(pictureBoxes, chosen_piece));
 				   {
 					   change_pb(chosen_piece, onMove_target);
+					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
+					   {
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+					   }
+					   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
+					   {
+
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
+					   }
 				   }
 				   chosen_piece = nullptr;
 				   onMove_target = nullptr;
@@ -2122,14 +2135,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 				   }
 			   }
-			   else if (onMove_target == target_pb)
-			   {
-				   MessageBox::Show("ee");
-			   }
-			   else
-			   {
 				   reset_highlight_moves();
-			   }
 			   break;
 		   default:
 			   MessageBox::Show("Unknown piece type.");
@@ -2175,7 +2181,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 					   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 					   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
-					   //passantable = pictureBoxes[targetRow][startCol];
 					   onMove_target = pictureBoxes[targetRow][startCol];
 				   }
 			   }
