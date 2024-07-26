@@ -116,12 +116,13 @@ namespace ChessGameEngine {
 		PieceColor pieceColor_target;
 		String^ imgLocation_target;
 		Point startLocation_target;
-
+		bool two_stepMove = false;
 		custom_picturebox^ clicked_pb = nullptr;
 		custom_picturebox^ enPassant_pb = nullptr;
 		custom_picturebox^ new_selected;
 		custom_picturebox^ enPassantTarget_pb = nullptr;
 		custom_picturebox^ chosen_piece = nullptr;
+		custom_picturebox^ onMove_target_twoSteps = nullptr;
 
 		int enPassantRow;
 		int enPassantCol;

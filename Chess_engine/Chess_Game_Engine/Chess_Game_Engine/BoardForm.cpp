@@ -2108,25 +2108,35 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   case EMPTY: 
 			   if (chosen_piece != nullptr && selectedPictureBox->onMoveIMG == true)
 			   {
-				   if (check_Pawnmove(pictureBoxes, chosen_piece));
+				   if (selectedPictureBox == onMove_target)
 				   {
 					   change_pb(chosen_piece, onMove_target);
-					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
-					   {
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
-					   }
-					   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
-					   {
-
-						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
-						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
-						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
-					   }
 				   }
+				   if (selectedPictureBox == onMove_target_twoSteps)
+				   {
+					   change_pb(chosen_piece, onMove_target_twoSteps);
+					   passantable = onMove_target_twoSteps;
+				   }
+
+				   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
+				   {
+					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
+					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
+					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+
+				   }
+				   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
+				   {
+
+					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
+					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
+					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
+				   }
+
 				   chosen_piece = nullptr;
 				   onMove_target = nullptr;
+				   onMove_target_twoSteps = nullptr;
+
 				   for (int i = 0; i < 8; i++)
 				   {
 					   for (int j = 0; j < 8; j++)
@@ -2181,7 +2191,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 					   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 					   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
-					   onMove_target = pictureBoxes[targetRow][startCol];
+					   pictureBoxes[targetRow-1][startCol]->onMoveIMG = true;
+					   onMove_target = pictureBoxes[targetRow - direction][startCol];
+					   onMove_target_twoSteps = pictureBoxes[targetRow][startCol];
 				   }
 			   }
 		   }
@@ -2199,6 +2211,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   if (target_pb->check_piece(target_pb) != EMPTY &&
 						   target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
 						   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+						   target_pb = onMove_target;
 					   }
 					   // Check for en passant capture
 					   else if (target_pb->check_piece(target_pb) == EMPTY &&
