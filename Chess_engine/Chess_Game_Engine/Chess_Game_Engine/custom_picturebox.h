@@ -30,7 +30,7 @@ std::string on_move = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\on_move.
 enum Piece { EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 
 // enum representing piece color or square color
-enum PieceColor { NONE, WHITE, BLACK };
+enum PieceColor { NONE, WHITE, BLACK,GREEN };
 
 
 

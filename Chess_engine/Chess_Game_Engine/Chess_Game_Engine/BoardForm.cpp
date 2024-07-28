@@ -1087,7 +1087,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   {
 					   if (pictureBoxes[i][j]->check_color(selected) == BLACK)
 					   {
-						   pictureBoxes[i][j]->Enabled = true;
+						  pictureBoxes[i][j]->Enabled = true;
 
 						   if (timer_set)
 						   {
@@ -1379,7 +1379,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//swap pb
 	bool BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
-     	Piece chosen_piece_selected = selected_pb->check_piece(selected_pb);
+		Piece chosen_piece_selected = selected_pb->check_piece(selected_pb);
 		Piece chosen_piece_target = target_pb->check_piece(target_pb);
 
 		PieceColor color_selected = selected_pb->check_color(selected_pb);
@@ -1405,6 +1405,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		target_pb->BringToFront();
 
 		whiteonMove = !whiteonMove;
+
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				pictureBoxes[i][j]->onMoveIMG = false;
+				if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == GREEN)
+				{
+					pictureBoxes[i][j]->set_color(pictureBoxes[i][j], color_before);
+					color_before = NONE;
+				}
+			}
+		}
+	
 
 		if (target_pb->check_piece(target_pb) == chosen_piece_selected || selected_pb->check_piece(selected_pb) == NONE)
 		{
@@ -1512,7 +1526,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		// Determine the direction of movement
 		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 forward, -1 backward
-		if (direction == 0) direction = 1;
 
 		// Determine row and column indices for initial and target positions
 		int startRow = startPos.Y / selected_pb->Height;
@@ -1637,7 +1650,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	{
 		int x = selected_pb->Location.X;
 		int y = selected_pb->Location.Y;
-		int pb_value;
 
 		int pbWidth = selected_pb->Width;
 		int pbHeight = selected_pb->Height;
@@ -2084,6 +2096,37 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   // Handle highlighting of possible moves for the selected piece
 	   if (selectedPictureBox != nullptr && selectedPictureBox->ImageLocation != nullptr)
 	   {
+		   if ((selectedPictureBox->check_color(selectedPictureBox) == GREEN) && onHit_target == selectedPictureBox)
+		   {
+			   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
+			   {
+				   change_pb(chosen_piece, selectedPictureBox);
+
+				   //passantable = nullptr;
+				  chosen_piece = nullptr;
+				  onHit_target = nullptr;
+				  passantable = nullptr;
+			   }
+			   else
+			   {
+				   for (int i = 0; i < 8; i++)
+				   {
+					   for (int j = 0; j < 8; j++)
+					   {
+						   pictureBoxes[i][j]->onMoveIMG = false;
+						   onMove_target = nullptr;
+						   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == GREEN)
+						   {
+							   pictureBoxes[i][j]->set_color(pictureBoxes[i][j], color_before);
+							   color_before = NONE;
+						   }
+					   }
+				   }
+			   }
+			   reset_highlight_moves();
+			   return;
+		   }
+
 		   switch (selectedPictureBox->check_piece(selectedPictureBox))
 		   {
 		   case PAWN:
@@ -2105,12 +2148,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   case KING:
 			   // check_Kingmove(pictureBoxes, selectedPictureBox);
 			   break;
-		   case EMPTY: 
+		   case EMPTY:
 			   if (chosen_piece != nullptr && selectedPictureBox->onMoveIMG == true)
 			   {
 				   if (selectedPictureBox == onMove_target)
 				   {
 					   change_pb(chosen_piece, onMove_target);
+					   passantable = nullptr;
 				   }
 				   if (selectedPictureBox == onMove_target_twoSteps)
 				   {
@@ -2123,29 +2167,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
 					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
 					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
-
+					   passantable = nullptr;
 				   }
 				   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
 				   {
-
 					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
 					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
 					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
+					   passantable = nullptr;
 				   }
 
-				   chosen_piece = nullptr;
-				   onMove_target = nullptr;
-				   onMove_target_twoSteps = nullptr;
-
-				   for (int i = 0; i < 8; i++)
-				   {
-					   for (int j = 0; j < 8; j++)
-					   {
-						   pictureBoxes[i][j]->onMoveIMG = false;
-					   }
-				   }
+				  chosen_piece = nullptr;
+				  onMove_target = nullptr;
+				  onMove_target_twoSteps = nullptr;
+				  color_before = NONE;
 			   }
-				   reset_highlight_moves();
+			   reset_highlight_moves();
 			   break;
 		   default:
 			   MessageBox::Show("Unknown piece type.");
@@ -2165,8 +2202,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		   
 		   // Ensure the row and column are within board limits
-		   startRow = Math::Min(startRow, 7);
-		   startCol = Math::Min(startCol, 7);
+		 startRow = Math::Min(startRow, 7);
+		 startCol = Math::Min(startCol, 7);
 
 		   // Check if indices are within the board range
 		   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
@@ -2192,7 +2229,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 					   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
 					   pictureBoxes[targetRow-1][startCol]->onMoveIMG = true;
-					   onMove_target = pictureBoxes[targetRow - direction][startCol];
+
 					   onMove_target_twoSteps = pictureBoxes[targetRow][startCol];
 				   }
 			   }
@@ -2210,8 +2247,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   // Check for normal capture
 					   if (target_pb->check_piece(target_pb) != EMPTY &&
 						   target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb)) {
+						   color_before = target_pb->check_color(target_pb);
 						   target_pb->BackColor = System::Drawing::Color::DarkGreen;
-						   target_pb = onMove_target;
+						   target_pb->set_color(target_pb, GREEN);
+						   onHit_target = target_pb;
 					   }
 					   // Check for en passant capture
 					   else if (target_pb->check_piece(target_pb) == EMPTY &&

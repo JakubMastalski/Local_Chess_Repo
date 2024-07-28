@@ -71,9 +71,10 @@ namespace ChessGameEngine {
 		int increment;
 		bool on_move;
 		bool isWithinBounds;
-
+		PieceColor color_before;
 		bool dragging;
 		Point scope;
+		custom_picturebox^ onHit_target = nullptr;
 
 		String^ file_path;
 		String^ start_filepath;
