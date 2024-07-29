@@ -2095,6 +2095,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
 	   reset_highlight_moves();
+
 	   if (e->Clicks == 1 && e->Button == System::Windows::Forms::MouseButtons::Left)
 	   {
 		   // Handle highlighting of possible moves for the selected piece
@@ -2104,9 +2105,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   {
 				   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
 				   {
-					   if(!change_pb(chosen_piece, selectedPictureBox)) return;
+					   if(!change_pb(chosen_piece, selectedPictureBox))
 					   reset_highlight_moves();
-					   //passantable = nullptr;
+					   passantable = nullptr;
 				   }
 				   else
 				   {
@@ -2115,7 +2116,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   for (int j = 0; j < 8; j++)
 						   {
 							   reset_highlight_moves();
-							   pictureBoxes[i][j]->onMoveIMG = false;
 							   onMove_target = nullptr;
 							   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == GREEN)
 							   {
@@ -2127,87 +2127,89 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 			   }
 
-			   switch (selectedPictureBox->check_piece(selectedPictureBox))
-			   {
-			   case PAWN:
-				   reset_highlight_moves();
-				   chosen_piece = selectedPictureBox;
-				   highlight_possible_moves(selectedPictureBox);
-				   break;
-			   case KNIGHT:
-				   reset_highlight_moves();
-				   // check_Knightmove(pictureBoxes, selectedPictureBox);
-				   break;
-			   case BISHOP:
-				   reset_highlight_moves();
-				   // check_Bishopmove(pictureBoxes, selectedPictureBox);
-				   break;
-			   case ROOK:
-				   reset_highlight_moves();
-				   // check_Rookmove(pictureBoxes, selectedPictureBox);
-				   break;
-			   case QUEEN:
-				   reset_highlight_moves();
-				   // check_Queenmove(pictureBoxes, selectedPictureBox);
-				   break;
-			   case KING:
-				   reset_highlight_moves();
-				   // check_Kingmove(pictureBoxes, selectedPictureBox);
-				   break;
-			   case EMPTY:
-				   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
-				   {
-					   if (selectedPictureBox == onMove_target && selectedPictureBox != nullptr)
-					   {
-						   reset_highlight_moves();
-						   if (!change_pb(chosen_piece, selectedPictureBox)) return;
-						   selectedPictureBox->BringToFront();
-						   passantable = nullptr;
-					   }
-					   if (selectedPictureBox == onMove_target_twoSteps && selectedPictureBox != nullptr)
-					   {
-						   reset_highlight_moves();
-						   if (!change_pb(chosen_piece, selectedPictureBox)) return;
-						   passantable = selectedPictureBox;
-					   }
-					   
-					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
-					   {
-						   reset_highlight_moves();
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
-						   passantable = nullptr;
-					   }
-					   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
-					   {
-						   reset_highlight_moves();
-						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
-						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
-						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
-						   passantable = nullptr;
-					   }
-					   else
-					   {
-						   reset_highlight_moves();
-						   return;
-					   }
-					   selectedPictureBox->BringToFront();
-					 //  color_before = NONE;
-					 //  onMove_target = nullptr;
-					 //  enPassantTarget_pb = nullptr;
-					   //onMove_target = nullptr;
-					   //onMove_target_twoSteps = nullptr;
-				   }
-				   break;
+			   bool inBounds = check_sent(selectedPictureBox);
 
-			   default:
-				   MessageBox::Show("Unknown piece type.");
-				   reset_highlight_moves();
-				   break;
+				   switch (selectedPictureBox->check_piece(selectedPictureBox))
+				   {
+				   case PAWN:
+					   reset_highlight_moves();
+					   chosen_piece = selectedPictureBox;
+					   highlight_possible_moves(selectedPictureBox);
+					   break;
+				   case KNIGHT:
+					   reset_highlight_moves();
+					   // check_Knightmove(pictureBoxes, selectedPictureBox);
+					   break;
+				   case BISHOP:
+					   reset_highlight_moves();
+					   // check_Bishopmove(pictureBoxes, selectedPictureBox);
+					   break;
+				   case ROOK:
+					   reset_highlight_moves();
+					   // check_Rookmove(pictureBoxes, selectedPictureBox);
+					   break;
+				   case QUEEN:
+					   reset_highlight_moves();
+					   // check_Queenmove(pictureBoxes, selectedPictureBox);
+					   break;
+				   case KING:
+					   reset_highlight_moves();
+					   // check_Kingmove(pictureBoxes, selectedPictureBox);
+					   break;
+				   case EMPTY:
+					   if (chosen_piece != nullptr && selectedPictureBox != nullptr && inBounds)
+					   {
+						   if (selectedPictureBox == onMove_target && selectedPictureBox != nullptr)
+						   {
+							   reset_highlight_moves();
+							   if (!change_pb(chosen_piece, selectedPictureBox)) return;
+							   selectedPictureBox->BringToFront();
+							   passantable = nullptr;
+						   }
+						   if (selectedPictureBox == onMove_target_twoSteps && selectedPictureBox != nullptr)
+						   {
+							   reset_highlight_moves();
+							   if (!change_pb(chosen_piece, selectedPictureBox)) return;
+							   passantable = selectedPictureBox;
+						   }
+
+						   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
+						   {
+							   reset_highlight_moves();
+							   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
+							   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
+							   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+							   passantable = nullptr;
+						   }
+						   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
+						   {
+							   reset_highlight_moves();
+							   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
+							   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
+							   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
+							   passantable = nullptr;
+						   }
+						   else
+						   {
+							   //reset_highlight_moves();
+							   return;
+						   }
+						   selectedPictureBox->BringToFront();
+						   color_before = NONE;
+						   onMove_target = nullptr;
+						   enPassantTarget_pb = nullptr;
+						   onMove_target = nullptr;
+						   onMove_target_twoSteps = nullptr;
+					   }
+					   break;
+
+				   default:
+					   MessageBox::Show("Unknown piece type.");
+					   reset_highlight_moves();
+					   break;
+				   }
 			   }
-		   }
-	   } 
+	   }
 	   else
 	   {
 		   reset_highlight_moves();
