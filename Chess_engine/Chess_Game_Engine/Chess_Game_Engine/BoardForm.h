@@ -76,6 +76,8 @@ namespace ChessGameEngine {
 		Point scope;
 		custom_picturebox^ onHit_target = nullptr;
 
+		bool one_piece = true;
+
 		String^ file_path;
 		String^ start_filepath;
 		custom_picturebox^ selectedPictureBox;

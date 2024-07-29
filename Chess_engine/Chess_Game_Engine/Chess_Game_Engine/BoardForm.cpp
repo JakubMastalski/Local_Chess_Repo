@@ -2106,8 +2106,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   {
 					   if(!change_pb(chosen_piece, selectedPictureBox)) return;
 					   reset_highlight_moves();
-					   passantable = nullptr;
-					   return;
+					   //passantable = nullptr;
 				   }
 				   else
 				   {
@@ -2156,19 +2155,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   // check_Kingmove(pictureBoxes, selectedPictureBox);
 				   break;
 			   case EMPTY:
-				   if (chosen_piece != nullptr)
+				   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
 				   {
-					   if (selectedPictureBox == onMove_target)
+					   if (selectedPictureBox == onMove_target && selectedPictureBox != nullptr)
 					   {
 						   reset_highlight_moves();
-						   if (!change_pb(chosen_piece, onMove_target)) return;
+						   if (!change_pb(chosen_piece, selectedPictureBox)) return;
+						   selectedPictureBox->BringToFront();
 						   passantable = nullptr;
 					   }
-					   if (selectedPictureBox == onMove_target_twoSteps)
+					   if (selectedPictureBox == onMove_target_twoSteps && selectedPictureBox != nullptr)
 					   {
 						   reset_highlight_moves();
-						   if (!change_pb(chosen_piece, onMove_target_twoSteps)) return;
-						   passantable = onMove_target_twoSteps;
+						   if (!change_pb(chosen_piece, selectedPictureBox)) return;
+						   passantable = selectedPictureBox;
 					   }
 					   
 					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
@@ -2192,11 +2192,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   reset_highlight_moves();
 						   return;
 					   }
-					   color_before = NONE;
-					   onMove_target = nullptr;
-					   enPassantTarget_pb = nullptr;
-					   onMove_target = nullptr;
-					   onMove_target_twoSteps = nullptr;
+					   selectedPictureBox->BringToFront();
+					 //  color_before = NONE;
+					 //  onMove_target = nullptr;
+					 //  enPassantTarget_pb = nullptr;
+					   //onMove_target = nullptr;
+					   //onMove_target_twoSteps = nullptr;
 				   }
 				   break;
 
@@ -2214,18 +2215,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   }
 	}
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
-	   
-	 //  reset_highlight_moves();
 
-	   if (chosen_piece->ImageLocation != "")
+	   if (chosen_piece->ImageLocation != "" && one_piece)
 	   {
-		   int startRow = -1;
-		   int startCol = -1;
+		   one_piece = false;
+		  // int startRow = -1;
+		   //int startCol = -1;
 		   // Get the position of the selected picture box
 		   Point startPos = selected_pb->Location;
-		   startRow = startPos.Y / selected_pb->Height;
-		   startCol = startPos.X / selected_pb->Width;
+		   int startRow = startPos.Y / selected_pb->Height;
+		   int startCol = startPos.X / selected_pb->Width;
 		   int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
+
+		   PieceColor start_color = selected_pb->check_color(selected_pb);
+		   Piece start_piece = selected_pb->check_piece(selected_pb);
+
+		   chosen_piece = selected_pb;
 
 		   
 		   // Ensure the row and column are within board limits
@@ -2245,12 +2250,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   if (targetRow >= 0 && targetRow < 8) {
 			   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 				   if(pictureBoxes[targetRow][startCol]->ImageLocation == "" && pictureBoxes[startRow][startCol] != nullptr)pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) != EMPTY)
-				   {
-					   (pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png");
-					   return;
-				   }
-				  // pictureBoxes[targetRow][startCol]->onMoveIMG = true;
+				   selected_pb->set_piece(selected_pb, start_piece);
+				   selected_pb->set_color(selected_pb, start_color);
 				   onMove_target = pictureBoxes[targetRow][startCol];
 			   }
 		   }
@@ -2261,13 +2262,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
 					   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
 					   if (pictureBoxes[targetRow][startCol]->ImageLocation == "" && pictureBoxes[startRow][startCol] != nullptr)pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-					   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) != EMPTY)
-					   {
-						   (pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png");
-						   return;
-					   }
-					   //pictureBoxes[targetRow][startCol]->onMoveIMG = true;
-
+					   selected_pb->set_piece(selected_pb, start_piece);
+					   selected_pb->set_color(selected_pb, start_color);
 					   onMove_target_twoSteps = pictureBoxes[targetRow][startCol];
 
 				   }
@@ -2298,14 +2294,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   enPassant_pb == passantable) {
 
 						   target_pb->onMoveIMG = true;
-						 //  if (target_pb->ImageLocation == "" && enPassant_pb != nullptr)target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+						   if (target_pb->ImageLocation == "" && enPassant_pb != nullptr)target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 						   onMove_target = target_pb;
 
 						   // Highlight the square behind the pawn that can be captured
 						   int enPassantRow = startRow + direction;
 						   if (enPassantRow >= 0 && enPassantRow < 8) {
 							   enPassantTarget_pb = pictureBoxes[enPassantRow][cols[i]];
-							//   if (target_pb->ImageLocation == "" && enPassant_pb != nullptr)enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+						  if (target_pb->ImageLocation == "" && enPassant_pb != nullptr)enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 							   enPassantTarget_pb->onMoveIMG = true;
 							   onMove_target = enPassantTarget_pb;
 						   }
@@ -2328,11 +2324,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
 			   {
-				   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) != EMPTY)
-				   {
-					   (pictureBoxes[i][j]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png");
-					   return;
-				   }
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 				   pictureBoxes[i][j]->ImageLocation = "";
 				  // pictureBoxes[i][j]->set_piece(pictureBoxes[i][j], EMPTY);
@@ -2340,6 +2331,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
+	   one_piece = true;
    }
 
 
