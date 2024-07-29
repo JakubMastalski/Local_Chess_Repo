@@ -38,6 +38,7 @@ namespace ChessGameEngine {
 		black_time_ended = false;
 		show = false;
 		boardFlipped = false;
+		reset_highlight_moves();
 	}
 
 	BoardForm::~BoardForm()
@@ -281,7 +282,6 @@ namespace ChessGameEngine {
 		picturebox_queen->Enabled = true;
 		picturebox_queen->TabStop = false;
 		picturebox_queen->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
-		//picturebox_queen->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
 
 		// promote_panel
 		promote_panel = gcnew System::Windows::Forms::Panel();
@@ -1069,6 +1069,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   if (pictureBoxes[i][j]->check_color(selected) == WHITE)
 					   {
 						   pictureBoxes[i][j]->Enabled = true;
+						   reset_highlight_moves();
 			
 						   if (timer_set)
 						   {
@@ -1088,6 +1089,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   if (pictureBoxes[i][j]->check_color(selected) == BLACK)
 					   {
 						  pictureBoxes[i][j]->Enabled = true;
+						  reset_highlight_moves();
 
 						   if (timer_set)
 						   {
@@ -1098,7 +1100,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 			   }
 		   }
-		   reset_highlight_moves();
 	   }
 
 	   //restart app
@@ -1142,6 +1143,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				selectedPictureBox->Enabled = false; 
 				return;
 			}
+			reset_highlight_moves();
 			player_turn(whiteonMove, pictureBoxes, selectedPictureBox);
 			Point new_location = selectedPictureBox->Parent->PointToClient(Control::MousePosition);
 			piece_clicked = false;
@@ -1379,6 +1381,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//swap pb
 	bool BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
 	{
+		reset_highlight_moves();
+
 		Piece chosen_piece_selected = selected_pb->check_piece(selected_pb);
 		Piece chosen_piece_target = target_pb->check_piece(target_pb);
 
@@ -1419,7 +1423,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 	
-
 		if (target_pb->check_piece(target_pb) == chosen_piece_selected || selected_pb->check_piece(selected_pb) == NONE)
 		{
 			reset_highlight_moves();
@@ -2092,115 +2095,129 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
 	   reset_highlight_moves();
-
-	   // Handle highlighting of possible moves for the selected piece
-	   if (selectedPictureBox != nullptr && selectedPictureBox->ImageLocation != nullptr)
+	   if (e->Clicks == 1 && e->Button == System::Windows::Forms::MouseButtons::Left)
 	   {
-		   if ((selectedPictureBox->check_color(selectedPictureBox) == GREEN) && onHit_target == selectedPictureBox)
+		   // Handle highlighting of possible moves for the selected piece
+		   if (selectedPictureBox != nullptr && selectedPictureBox->ImageLocation != nullptr)
 		   {
-			   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
+			   if ((selectedPictureBox->check_color(selectedPictureBox) == GREEN) && onHit_target == selectedPictureBox)
 			   {
-				   change_pb(chosen_piece, selectedPictureBox);
-				   chosen_piece = nullptr;
-				   onHit_target = nullptr;
-				   return;
-			   }
-			   else
-			   {
-				   for (int i = 0; i < 8; i++)
+				   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
 				   {
-					   for (int j = 0; j < 8; j++)
+					   if(!change_pb(chosen_piece, selectedPictureBox)) return;
+					   reset_highlight_moves();
+					   passantable = nullptr;
+					   return;
+				   }
+				   else
+				   {
+					   for (int i = 0; i < 8; i++)
 					   {
-						   pictureBoxes[i][j]->onMoveIMG = false;
-						   onMove_target = nullptr;
-						   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == GREEN)
+						   for (int j = 0; j < 8; j++)
 						   {
-							   pictureBoxes[i][j]->set_color(pictureBoxes[i][j], color_before);
-							   color_before = NONE;
-
-							   chosen_piece = nullptr;
-							   onHit_target = nullptr;
+							   reset_highlight_moves();
+							   pictureBoxes[i][j]->onMoveIMG = false;
+							   onMove_target = nullptr;
+							   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == GREEN)
+							   {
+								   pictureBoxes[i][j]->set_color(pictureBoxes[i][j], color_before);
+								   color_before = NONE;
+							   }
 						   }
 					   }
 				   }
 			   }
-			   reset_highlight_moves();
-			   return;
-		   }
 
-		   switch (selectedPictureBox->check_piece(selectedPictureBox))
-		   {
-		   case PAWN:
-			   chosen_piece = nullptr;
-			   onMove_target = nullptr;
-			   onMove_target_twoSteps = nullptr;
-			   onHit_target = nullptr;
-
-			   chosen_piece = selectedPictureBox;
-			   highlight_possible_moves(selectedPictureBox);
-			   break;
-		   case KNIGHT:
-			   // check_Knightmove(pictureBoxes, selectedPictureBox);
-			   break;
-		   case BISHOP:
-			   // check_Bishopmove(pictureBoxes, selectedPictureBox);
-			   break;
-		   case ROOK:
-			   // check_Rookmove(pictureBoxes, selectedPictureBox);
-			   break;
-		   case QUEEN:
-			   // check_Queenmove(pictureBoxes, selectedPictureBox);
-			   break;
-		   case KING:
-			   // check_Kingmove(pictureBoxes, selectedPictureBox);
-			   break;
-		   case EMPTY:
-			   if (chosen_piece != nullptr && selectedPictureBox->onMoveIMG == true)
+			   switch (selectedPictureBox->check_piece(selectedPictureBox))
 			   {
-				   if (selectedPictureBox == onMove_target)
+			   case PAWN:
+				   reset_highlight_moves();
+				   chosen_piece = selectedPictureBox;
+				   highlight_possible_moves(selectedPictureBox);
+				   break;
+			   case KNIGHT:
+				   reset_highlight_moves();
+				   // check_Knightmove(pictureBoxes, selectedPictureBox);
+				   break;
+			   case BISHOP:
+				   reset_highlight_moves();
+				   // check_Bishopmove(pictureBoxes, selectedPictureBox);
+				   break;
+			   case ROOK:
+				   reset_highlight_moves();
+				   // check_Rookmove(pictureBoxes, selectedPictureBox);
+				   break;
+			   case QUEEN:
+				   reset_highlight_moves();
+				   // check_Queenmove(pictureBoxes, selectedPictureBox);
+				   break;
+			   case KING:
+				   reset_highlight_moves();
+				   // check_Kingmove(pictureBoxes, selectedPictureBox);
+				   break;
+			   case EMPTY:
+				   if (chosen_piece != nullptr)
 				   {
-					   change_pb(chosen_piece, onMove_target);
-					   passantable = nullptr;
+					   if (selectedPictureBox == onMove_target)
+					   {
+						   reset_highlight_moves();
+						   if (!change_pb(chosen_piece, onMove_target)) return;
+						   passantable = nullptr;
+					   }
+					   if (selectedPictureBox == onMove_target_twoSteps)
+					   {
+						   reset_highlight_moves();
+						   if (!change_pb(chosen_piece, onMove_target_twoSteps)) return;
+						   passantable = onMove_target_twoSteps;
+					   }
+					   
+					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
+					   {
+						   reset_highlight_moves();
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+						   passantable = nullptr;
+					   }
+					   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
+					   {
+						   reset_highlight_moves();
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
+						   passantable = nullptr;
+					   }
+					   else
+					   {
+						   reset_highlight_moves();
+						   return;
+					   }
+					   color_before = NONE;
+					   onMove_target = nullptr;
+					   enPassantTarget_pb = nullptr;
+					   onMove_target = nullptr;
+					   onMove_target_twoSteps = nullptr;
 				   }
-				   if (selectedPictureBox == onMove_target_twoSteps)
-				   {
-					   change_pb(chosen_piece, onMove_target_twoSteps);
-					   passantable = onMove_target_twoSteps;
-				   }
+				   break;
 
-				   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE)
-				   {
-					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
-					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
-					   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
-					   passantable = nullptr;
-				   }
-				   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK)
-				   {
-					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
-					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
-					   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
-					   passantable = nullptr;
-				   }
-
-				  chosen_piece = nullptr;
-				  onMove_target = nullptr;
-				  onMove_target_twoSteps = nullptr;
-				  onHit_target = nullptr;
-				  
-				  color_before = NONE;
+			   default:
+				   MessageBox::Show("Unknown piece type.");
+				   reset_highlight_moves();
+				   break;
 			   }
-			   reset_highlight_moves();
-			   break;
-		   default:
-			   MessageBox::Show("Unknown piece type.");
-			   break;
 		   }
+	   } 
+	   else
+	   {
+		   reset_highlight_moves();
+		   return;
 	   }
 	}
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
+	   
+	 //  reset_highlight_moves();
 
-	   if (selectedPictureBox->ImageLocation != "")
+	   if (chosen_piece->ImageLocation != "")
 	   {
 		   int startRow = -1;
 		   int startCol = -1;
@@ -2227,8 +2244,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		   if (targetRow >= 0 && targetRow < 8) {
 			   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
-				   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
+				   if(pictureBoxes[targetRow][startCol]->ImageLocation == "" && pictureBoxes[startRow][startCol] != nullptr)pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) != EMPTY)
+				   {
+					   (pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png");
+					   return;
+				   }
+				  // pictureBoxes[targetRow][startCol]->onMoveIMG = true;
 				   onMove_target = pictureBoxes[targetRow][startCol];
 			   }
 		   }
@@ -2238,8 +2260,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   if (targetRow >= 0 && targetRow < 8) {
 				   if (pictureBoxes[startRow + direction][startCol]->check_piece(pictureBoxes[startRow + direction][startCol]) == EMPTY &&
 					   pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) == EMPTY) {
-					   pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-					   pictureBoxes[targetRow][startCol]->onMoveIMG = true;
+					   if (pictureBoxes[targetRow][startCol]->ImageLocation == "" && pictureBoxes[startRow][startCol] != nullptr)pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+					   if (pictureBoxes[targetRow][startCol]->check_piece(pictureBoxes[targetRow][startCol]) != EMPTY)
+					   {
+						   (pictureBoxes[targetRow][startCol]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png");
+						   return;
+					   }
+					   //pictureBoxes[targetRow][startCol]->onMoveIMG = true;
 
 					   onMove_target_twoSteps = pictureBoxes[targetRow][startCol];
 
@@ -2271,14 +2298,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   enPassant_pb == passantable) {
 
 						   target_pb->onMoveIMG = true;
-						   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+						 //  if (target_pb->ImageLocation == "" && enPassant_pb != nullptr)target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 						   onMove_target = target_pb;
 
 						   // Highlight the square behind the pawn that can be captured
 						   int enPassantRow = startRow + direction;
 						   if (enPassantRow >= 0 && enPassantRow < 8) {
 							   enPassantTarget_pb = pictureBoxes[enPassantRow][cols[i]];
-							   enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+							//   if (target_pb->ImageLocation == "" && enPassant_pb != nullptr)enPassantTarget_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 							   enPassantTarget_pb->onMoveIMG = true;
 							   onMove_target = enPassantTarget_pb;
 						   }
@@ -2291,18 +2318,25 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::reset_highlight_moves()
    {
-	   for (int i = 0; i < 8; i++) {
-		   for (int j = 0; j < 8; j++) {
-
-			   Piece check_piece = pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]);
-			   PieceColor check_if_empty = pictureBoxes[i][j]->check_color(pictureBoxes[i][j]);
+	   for (int i = 0; i < 8; ++i) {
+		   for (int j = 0; j < 8; ++j) {
 
 			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen) {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
+				   //pictureBoxes[i][j]->set_piece(pictureBoxes[i][j], EMPTY);
+				   //pictureBoxes[i][j]->set_color(pictureBoxes[i][j], NONE);
 			   }
-			   else if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png") {
+			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
+			   {
+				   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) != EMPTY)
+				   {
+					   (pictureBoxes[i][j]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png");
+					   return;
+				   }
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 				   pictureBoxes[i][j]->ImageLocation = "";
+				  // pictureBoxes[i][j]->set_piece(pictureBoxes[i][j], EMPTY);
+				   //pictureBoxes[i][j]->set_color(pictureBoxes[i][j], NONE);
 			   }
 		   }
 	   }
