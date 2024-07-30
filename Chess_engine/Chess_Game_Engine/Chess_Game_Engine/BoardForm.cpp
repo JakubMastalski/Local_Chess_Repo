@@ -2184,9 +2184,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   {
 							   int row = selectedPictureBox->row;
 							   int row2 = chosen_piece->row;
-							   if (chosen_piece->check_piece(chosen_piece) == PAWN && row == 0 || row == 7)
+							   if (selectedPictureBox->check_piece(selectedPictureBox) == PAWN && row == 0 || row == 7)
 							   {
-								   if (whiteonMove) {
+								   if (!whiteonMove) {
+									   targetPictureBox = selectedPictureBox;
 									   promote_panel->BackColor = System::Drawing::Color::Black;
 									   picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
 									   picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
@@ -2194,6 +2195,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 									   picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
 								   }
 								   else {
+									   targetPictureBox = selectedPictureBox;
 									   promote_panel->BackColor = System::Drawing::Color::White;
 									   picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
 									   picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
@@ -2206,6 +2208,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   }
 							   selectedPictureBox->Enabled = false;
 							   passantable = nullptr;
+							   return;
 						   }
 					   }
 					   if (selectedPictureBox == onMove_target_twoSteps && selectedPictureBox != nullptr && inBounds)
