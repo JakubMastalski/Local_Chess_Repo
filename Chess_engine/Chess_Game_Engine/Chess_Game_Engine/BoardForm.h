@@ -78,6 +78,8 @@ namespace ChessGameEngine {
 
 		bool one_piece = true;
 
+		custom_picturebox^ hiddenPictureBox = nullptr;
+
 		String^ file_path;
 		String^ start_filepath;
 		custom_picturebox^ selectedPictureBox;
