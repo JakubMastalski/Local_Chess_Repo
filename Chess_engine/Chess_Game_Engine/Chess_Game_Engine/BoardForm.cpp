@@ -2119,6 +2119,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   }
 					   else
 					   {
+						   onHit_target = nullptr;
 						   selectedPictureBox->Enabled = false;
 						   passantable = nullptr;
 					   }
@@ -2170,6 +2171,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   // check_Kingmove(pictureBoxes, selectedPictureBox);
 				   break;
 			   case EMPTY:
+				   MessageBox::Show("ee");
 				   if (chosen_piece != nullptr && selectedPictureBox != nullptr)
 				   {
 					   if (selectedPictureBox == onMove_target && selectedPictureBox != nullptr && inBounds)
@@ -2183,7 +2185,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						   else
 						   {
 							   int row = selectedPictureBox->row;
-							   int row2 = chosen_piece->row;
 							   if (selectedPictureBox->check_piece(selectedPictureBox) == PAWN && row == 0 || row == 7)
 							   {
 								   if (!whiteonMove) {
@@ -2208,7 +2209,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   }
 							   selectedPictureBox->Enabled = false;
 							   passantable = nullptr;
-							   return;
 						   }
 					   }
 					   if (selectedPictureBox == onMove_target_twoSteps && selectedPictureBox != nullptr && inBounds)
@@ -2225,22 +2225,45 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   passantable = selectedPictureBox;
 						   }
 					   }
-
+					   bool chuj = false;
 					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE && inBounds)
 					   {
-						   reset_highlight_moves();
+
+						   if (!change_pb(chosen_piece, selectedPictureBox))
+						   {
+							   selectedPictureBox->Location = start_location;
+							   return;
+						   }
+
+						   /*
+						   pictureBoxes[3][2]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+						   pictureBoxes[3][2]->BringToFront();
+						   pictureBoxes[3][2]->Location = start_location;
+
 						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
 						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
-						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+
+						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column], PAWN);
+						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column], WHITE);
+						   */
+
 						   passantable = nullptr;
+						   reset_highlight_moves();
+						  return;
 					   }
 					   else if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == BLACK && inBounds)
 					   {
-						   reset_highlight_moves();
 						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->ImageLocation = "";
 						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], EMPTY);
 						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], NONE);
+
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], PAWN);
+						   pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row - 1][enPassantTarget_pb->column], BLACK);
+
 						   passantable = nullptr;
+						   reset_highlight_moves();
+						   return;
 					   }
 					   else if (!inBounds)
 					   {
@@ -2266,7 +2289,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   }
 	}
    void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
-
 	   if (chosen_piece->ImageLocation != "" && one_piece)
 	   {
 		   one_piece = false;
