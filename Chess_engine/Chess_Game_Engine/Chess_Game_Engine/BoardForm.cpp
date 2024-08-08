@@ -2225,7 +2225,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   passantable = selectedPictureBox;
 						   }
 					   }
-					   bool chuj = false;
 					   if (onMove_target == enPassantTarget_pb && selectedPictureBox->check_color(selectedPictureBox) == WHITE && inBounds)
 					   {
 
@@ -2235,18 +2234,17 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   return;
 						   }
 
-						   /*
-						   pictureBoxes[3][2]->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
-						   pictureBoxes[3][2]->BringToFront();
-						   pictureBoxes[3][2]->Location = start_location;
-
 						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->ImageLocation = "";
 						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], EMPTY);
-						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
+						   pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row + 1][enPassantTarget_pb->column], NONE);
 
-						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column]->set_piece(pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column], PAWN);
-						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column]->set_color(pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column], WHITE);
-						   */
+						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column + 1]->ImageLocation = "";
+						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column + 1]->set_piece(pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column + 1], EMPTY);
+						   pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column + 1]->set_color(pictureBoxes[enPassantTarget_pb->row][enPassantTarget_pb->column + 1], NONE);
+
+						   selectedPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+						   
+
 
 						   passantable = nullptr;
 						   reset_highlight_moves();
