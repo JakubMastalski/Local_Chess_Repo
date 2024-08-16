@@ -1134,6 +1134,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
+	   void HandlePieceUp(custom_picturebox^ selectedPictureBox)
+	   {
+		   ;
+	   }
+
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
 		if (e->Button == System::Windows::Forms::MouseButtons::Left)
 		{

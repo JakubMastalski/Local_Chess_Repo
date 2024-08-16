@@ -217,7 +217,7 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private:void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb);
 	private:void BoardForm::reset_highlight_moves();
 	private:void BoardForm::HandlePieceSelection(custom_picturebox^ selectedPictureBox);
-
+    private:void BoardForm::HandlePieceUp(custom_picturebox^ selectedPictureBox);
 
 };
 }
