@@ -1134,9 +1134,257 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
-	   void HandlePieceUp(custom_picturebox^ selectedPictureBox)
+	   void BoardForm::HandlePieceUp(custom_picturebox^ selectedPictureBox, custom_picturebox^ targetPictureBox)
 	   {
-		   ;
+		   selectedPictureBox->Capture = false;
+		   selectedPictureBox->Tag = "";
+
+		   isWithinBounds = check_sent(selectedPictureBox);
+
+		   if (selectedPictureBox->Location != start_location && isWithinBounds)
+		   {
+			   switch (current_piece)
+			   {
+			   case PAWN:
+				   if (!check_Pawnmove(pictureBoxes, selectedPictureBox))
+				   {
+					   reset_highlight_moves();
+					   selectedPictureBox->Location = start_location;
+					   return;
+				   }
+				   break;
+			   case KNIGHT:
+				   if (!check_Knightmove(pictureBoxes, selectedPictureBox))
+				   {
+					   reset_highlight_moves();
+					   selectedPictureBox->Location = start_location;
+					   return;
+				   }
+				   break;
+			   case BISHOP:
+				   if (!check_Bishopmove(pictureBoxes, selectedPictureBox))
+				   {
+					   reset_highlight_moves();
+					   selectedPictureBox->Location = start_location;
+					   return;
+				   }
+				   break;
+			   case ROOK:
+				   if (!check_Rookmove(pictureBoxes, selectedPictureBox))
+				   {
+					   reset_highlight_moves();
+					   selectedPictureBox->Location = start_location;
+					   return;
+				   }
+				   break;
+			   case QUEEN:
+				   if (!check_Queenmove(pictureBoxes, selectedPictureBox))
+				   {
+					   reset_highlight_moves();
+					   selectedPictureBox->Location = start_location;
+					   return;
+				   }
+				   break;
+			   case KING:
+				   if (!check_Kingmove(pictureBoxes, selectedPictureBox))
+				   {
+					   reset_highlight_moves();
+					   selectedPictureBox->Location = start_location;
+					   return;
+				   }
+				   break;
+			   default:
+				   reset_highlight_moves();
+				   selectedPictureBox->Location = start_location;
+				   return;
+			   }
+
+			   selectedPictureBox->SendToBack();
+		   }
+		   else
+		   {
+			   selectedPictureBox->Location = start_location;
+			   selectedPictureBox->ImageLocation = file_path;
+			   return;
+		   }
+
+		   controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
+
+		   if (targetPictureBox == nullptr)
+		   {
+			   targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+		   }
+
+		   if (targetPictureBox == nullptr || selectedPictureBox == nullptr)
+		   {
+			   switch (current_piece)
+			   {
+			   case PAWN:
+				   new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png" :
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+				   break;
+			   case KNIGHT:
+				   new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png" :
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+				   break;
+			   case BISHOP:
+				   new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png" :
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+				   break;
+			   case ROOK:
+				   new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png" :
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+				   break;
+			   case QUEEN:
+				   new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png" :
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+				   break;
+			   case KING:
+				   new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png" :
+					   "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+				   break;
+			   default:
+				   MessageBox::Show("Error");
+				   return;
+			   }
+
+			   new_selected->Location = startLocation_selected;
+			   new_selected->BringToFront();
+			   selectedPictureBox->Location = start_location;
+			   selectedPictureBox->BringToFront();
+			   return;
+		   }
+
+		   if (whiteonMove)
+		   {
+			   promote_panel->BackColor = System::Drawing::Color::Black;
+			   picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
+			   picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
+			   picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
+			   picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
+		   }
+		   else
+		   {
+			   promote_panel->BackColor = System::Drawing::Color::White;
+			   picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
+			   picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
+			   picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
+			   picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+		   }
+		   promote_panel->BringToFront();
+
+		   pieceType_selected = selectedPictureBox->check_piece(selectedPictureBox);
+		   pieceColor_selected = selectedPictureBox->check_color(selectedPictureBox);
+		   imgLocation_selected = selectedPictureBox->ImageLocation;
+		   startLocation_selected = start_location;
+
+		   pieceType_target = targetPictureBox->check_piece(targetPictureBox);
+		   pieceColor_target = targetPictureBox->check_color(targetPictureBox);
+		   imgLocation_target = targetPictureBox->ImageLocation;
+
+		   if (!castle_move)
+		   {
+			   if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox && selectedPictureBox != nullptr)
+			   {
+				   if (!BoardForm::change_pb(selectedPictureBox, targetPictureBox))
+				   {
+					   selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
+					   selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
+					   selectedPictureBox->ImageLocation = imgLocation_selected;
+					   selectedPictureBox->Location = start_location;
+
+					   targetPictureBox->set_piece(targetPictureBox, pieceType_target);
+					   targetPictureBox->set_color(targetPictureBox, pieceColor_target);
+					   targetPictureBox->ImageLocation = imgLocation_target;
+				   }
+			   }
+		   }
+
+		   if (castle_move)
+		   {
+			   castle_move = false;
+		   }
+
+		   if (white_king_on_checked || black_king_on_checked)
+		   {
+			   if (!king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
+			   {
+				   white_king_on_checked = false;
+				   black_king_on_checked = false;
+			   }
+			   else if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece))
+			   {
+				   white_king_on_checked = true;
+				   black_king_on_checked = true;
+
+				   selectedPictureBox->ImageLocation = imgLocation_selected;
+				   selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
+				   selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
+
+				   targetPictureBox->ImageLocation = imgLocation_target;
+				   targetPictureBox->set_color(targetPictureBox, pieceColor_target);
+				   targetPictureBox->set_piece(targetPictureBox, pieceType_target);
+				   whiteonMove = !whiteonMove;
+			   }
+		   }
+
+		   if (king_checked(pictureBoxes, selectedPictureBox) || white_king_on_checked || black_king_on_checked)
+		   {
+			   if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked))
+			   {
+				   white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+				   black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+				   selectedPictureBox->ImageLocation = imgLocation_selected;
+				   selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
+				   selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
+
+				   targetPictureBox->ImageLocation = imgLocation_target;
+				   targetPictureBox->set_color(targetPictureBox, pieceColor_target);
+				   targetPictureBox->set_piece(targetPictureBox, pieceType_target);
+
+				   whiteonMove = !whiteonMove;
+				   return;
+			   }
+			   else
+			   {
+				   custom_picturebox^ whiteKingBox = nullptr;
+				   custom_picturebox^ blackKingBox = nullptr;
+
+				   for (int i = 0; i < 8; i++)
+				   {
+					   for (int j = 0; j < 8; j++)
+					   {
+						   if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING)
+						   {
+							   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE)
+							   {
+								   whiteKingBox = pictureBoxes[i][j];
+							   }
+							   else
+							   {
+								   blackKingBox = pictureBoxes[i][j];
+							   }
+						   }
+					   }
+				   }
+				   if ((!whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (whiteonMove && is_checkmate(pictureBoxes, whiteKingBox)))
+				   {
+					   MessageBox::Show("Checkmate!", "Game Over");
+					   grid_panel->Enabled = false;
+
+					   // Reset game or any other logic for end game
+					   return;
+				   }
+			   }
+		   }
+
+		   game_started = true;
 	   }
 
     void BoardForm::grid_panel_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e){
@@ -1166,227 +1414,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 
 	void BoardForm::grid_panel_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging") {
-			selectedPictureBox->Capture = false;
-			selectedPictureBox->Tag = "";
-
-			isWithinBounds = check_sent(selectedPictureBox);
-
-			if (selectedPictureBox->Location != start_location && isWithinBounds) {
-				switch (current_piece) {
-				case PAWN:
-					if (!check_Pawnmove(pictureBoxes, selectedPictureBox)) {
-						reset_highlight_moves();
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-					break;
-				case KNIGHT:
-					if (!check_Knightmove(pictureBoxes, selectedPictureBox)) {
-						reset_highlight_moves();
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-					break;
-				case BISHOP:
-					if (!check_Bishopmove(pictureBoxes, selectedPictureBox)) {
-						reset_highlight_moves();
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-					break;
-				case ROOK:
-					if (!check_Rookmove(pictureBoxes, selectedPictureBox)) {
-						reset_highlight_moves();
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-					break;
-				case QUEEN:
-					if (!check_Queenmove(pictureBoxes, selectedPictureBox)) {
-						reset_highlight_moves();
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-					break;
-				case KING:
-					if (!check_Kingmove(pictureBoxes, selectedPictureBox)) {
-						reset_highlight_moves();
-						selectedPictureBox->Location = start_location;
-						return;
-					}
-					break;
-				default:
-					reset_highlight_moves();
-					selectedPictureBox->Location = start_location;
-					return;
-				}
-
-				selectedPictureBox->SendToBack();
-			}
-			else {
-				selectedPictureBox->Location = start_location;
-				selectedPictureBox->ImageLocation = file_path;
-				return;
-			}
-
-			controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
-			targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-
-
-			if (targetPictureBox == nullptr || selectedPictureBox == nullptr) {
-				switch (current_piece)
-				{
-				case PAWN:
-					new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_pawn.png" :
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
-					break;
-				case KNIGHT:
-					new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png" :
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
-					break;
-				case BISHOP:
-					new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png" :
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
-					break;
-				case ROOK:
-					new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png" :
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
-					break;
-				case QUEEN:
-					new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png" :
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
-					break;
-				case KING:
-					new_selected->ImageLocation = (current_color == PieceColor::WHITE) ?
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png" :
-						"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-					break;
-				default:
-					MessageBox::Show("Error");
-					return;
-				}
-
-				new_selected->Location = startLocation_selected;
-				new_selected->BringToFront(); 
-				selectedPictureBox->Location = start_location; 
-				selectedPictureBox->BringToFront(); 
-				return;
-			}
-			
-			if (whiteonMove) {
-				promote_panel->BackColor = System::Drawing::Color::Black;
-				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_bishop.png";
-				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_knight.png";
-				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_rook.png";
-				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
-			}
-			else {
-				promote_panel->BackColor = System::Drawing::Color::White;
-				picturebox_bishop->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_bishop.png";
-				picturebox_knight->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_knight.png";
-				picturebox_rook->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_rook.png";
-				picturebox_queen->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
-			}
-			promote_panel->BringToFront();
-
-			pieceType_selected = selectedPictureBox->check_piece(selectedPictureBox);
-			pieceColor_selected = selectedPictureBox->check_color(selectedPictureBox);
-			imgLocation_selected = selectedPictureBox->ImageLocation;
-			startLocation_selected = start_location;
-
-			pieceType_target = targetPictureBox->check_piece(targetPictureBox);
-			pieceColor_target = targetPictureBox->check_color(targetPictureBox);
-			imgLocation_target = targetPictureBox->ImageLocation;
-
-			if (!castle_move) {
-				if (targetPictureBox != nullptr && targetPictureBox != selectedPictureBox && selectedPictureBox != nullptr) {
-					if (!BoardForm::change_pb(selectedPictureBox, targetPictureBox))
-					{
-						selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
-						selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
-						selectedPictureBox->ImageLocation = imgLocation_selected;
-						selectedPictureBox->Location = start_location;
-
-						targetPictureBox->set_piece(targetPictureBox, pieceType_target);
-						targetPictureBox->set_color(targetPictureBox, pieceColor_target);
-						targetPictureBox->ImageLocation = imgLocation_target;
-					}
-				}
-			}
-
-			if (castle_move) {
-				castle_move = false;
-			}
-
-			if (white_king_on_checked || black_king_on_checked) {
-				if (!king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece)) {
-					white_king_on_checked = false;
-					black_king_on_checked = false;
-				}
-				else if (king_still_checked(pictureBoxes, selectedPictureBox, targetPictureBox, last_moved_piece)) {
-					white_king_on_checked = true;
-					black_king_on_checked = true;
-
-					selectedPictureBox->ImageLocation = imgLocation_selected;
-					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
-					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
-
-					targetPictureBox->ImageLocation = imgLocation_target;
-					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
-					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
-					whiteonMove = !whiteonMove;
-				}
-			}
-
-			if (king_checked(pictureBoxes, selectedPictureBox) || white_king_on_checked || black_king_on_checked) {
-				if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked)) {
-					white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-					black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
-					selectedPictureBox->ImageLocation = imgLocation_selected;
-					selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
-					selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
-
-					targetPictureBox->ImageLocation = imgLocation_target;
-					targetPictureBox->set_color(targetPictureBox, pieceColor_target);
-					targetPictureBox->set_piece(targetPictureBox, pieceType_target);
-
-					whiteonMove = !whiteonMove;
-					return;
-				}
-				else
-				{
-					custom_picturebox^ whiteKingBox = nullptr;
-					custom_picturebox^ blackKingBox = nullptr;
-
-					for (int i = 0; i < 8; i++) {
-						for (int j = 0; j < 8; j++) {
-							if (pictureBoxes[i][j]->check_piece(pictureBoxes[i][j]) == KING) {
-								if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE) {
-									whiteKingBox = pictureBoxes[i][j];
-								}
-								else {
-									blackKingBox = pictureBoxes[i][j];
-								}
-							}
-						}
-					}
-					if ((!whiteonMove && is_checkmate(pictureBoxes, blackKingBox)) || (whiteonMove && is_checkmate(pictureBoxes, whiteKingBox))) {
-						MessageBox::Show("Checkmate!", "Game Over");
-						grid_panel->Enabled = false;
-
-						// Reset game or any other logic for end game
-						return;
-					}
-				}
-			}
+		if (e->Button == System::Windows::Forms::MouseButtons::Left && selectedPictureBox != nullptr && selectedPictureBox->Tag->ToString() == "Dragging")
+		{
+			HandlePieceUp(selectedPictureBox,targetPictureBox);
 		}
-		game_started = true;
 	}
 	//swap pb
 	bool BoardForm::change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb)
@@ -2109,23 +2140,36 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			selectedPictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (selectedPictureBox != nullptr)
 			{
-				HandlePieceSelection(selectedPictureBox);
-				highlight_possible_moves(selectedPictureBox);
-			}
-			custom_picturebox^ chosen_piece = selectedPictureBox;
-		}
-		else if (chosen_piece != nullptr)
-		{
-			if (e->Button == System::Windows::Forms::MouseButtons::Right && e->Clicks == 1)
-			{
+					HandlePieceSelection(selectedPictureBox);
 
+					switch (current_piece)
+					{
+					case PAWN:
+						chosen_piece = selectedPictureBox;
+						highlight_possible_moves(selectedPictureBox);
+						break;
+					case KNIGHT:
+					case BISHOP:
+					case ROOK:
+					case QUEEN:
+					case KING:
+					case EMPTY:
+						if (chosen_piece != nullptr && selectedPictureBox->ImageLocation != "")
+						{
+							HandlePieceSelection(chosen_piece);
+							HandlePieceUp(chosen_piece,selectedPictureBox);
+						}
+						//HandlePieceUp(selectedPictureBox, targetPictureBox);
+						break;
+					default:
+						MessageBox::Show("Invalid piece selected");
+						break;
+					}
 			}
 		}
-
 		else
 		{
-			chosen_piece = nullptr;
-			reset_highlight_moves();  
+			reset_highlight_moves();
 			return;
 		}
 	}
