@@ -2140,6 +2140,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			selectedPictureBox = dynamic_cast<custom_picturebox^>(sender);
 			if (selectedPictureBox != nullptr)
 			{
+				// First click selects the piece and highlights it visually
+				if (chosen_piece == nullptr)  // If no piece is currently selected
+				{
 					HandlePieceSelection(selectedPictureBox);
 
 					switch (current_piece)
@@ -2147,29 +2150,42 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					case PAWN:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves(selectedPictureBox);
-						break;
+						selectedPictureBox->BackColor = System::Drawing::Color::Gray;
 					case KNIGHT:
 					case BISHOP:
 					case ROOK:
 					case QUEEN:
 					case KING:
-					case EMPTY:
-						if (chosen_piece != nullptr && selectedPictureBox->ImageLocation != "")
-						{
-							HandlePieceSelection(chosen_piece);
-							HandlePieceUp(chosen_piece,selectedPictureBox);
-						}
-						//HandlePieceUp(selectedPictureBox, targetPictureBox);
 						break;
 					default:
 						MessageBox::Show("Invalid piece selected");
 						break;
 					}
+				}
+				else  // If a piece is already selected
+				{
+
+					if (selectedPictureBox == chosen_piece)
+					{
+						reset_highlight_moves();
+						chosen_piece->BackColor = System::Drawing::Color::Transparent;
+						chosen_piece = nullptr;
+					}
+					else
+					{
+						// Optionally, you can handle a move or other logic here if clicking on a different piece
+					}
+				}
 			}
 		}
 		else
 		{
 			reset_highlight_moves();
+			if (chosen_piece != nullptr)
+			{
+				chosen_piece->BackColor = System::Drawing::Color::Transparent;  // Reset background color
+				chosen_piece = nullptr;  // Deselect the piece
+			}
 			return;
 		}
 	}
