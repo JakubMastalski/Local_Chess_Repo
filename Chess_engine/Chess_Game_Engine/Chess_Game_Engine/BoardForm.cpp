@@ -1210,10 +1210,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		   controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 
-		   if (targetPictureBox == nullptr)
-		   {
-			   targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-		   }
+
+		targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+		  
 
 		   if (targetPictureBox == nullptr || selectedPictureBox == nullptr)
 		   {
@@ -2150,13 +2149,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					case PAWN:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves(selectedPictureBox);
-						selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						if(selectedPictureBox->ImageLocation != "")selectedPictureBox->BackColor = System::Drawing::Color::Gray;
 						break;
 					case KNIGHT:
 					case BISHOP:
 					case ROOK:
 					case QUEEN:
 					case KING:
+					case EMPTY:
 						break;
 					default:
 						MessageBox::Show("Invalid piece selected");
@@ -2174,7 +2174,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					else
 					{	
 					   HandlePieceSelection(chosen_piece);
+					   chosen_piece->Location = selectedPictureBox->Location;
+					   targetPictureBox = selectedPictureBox;
 					   HandlePieceUp(chosen_piece, selectedPictureBox);
+					   chosen_piece = nullptr;
 					}
 				}
 			}
@@ -2291,7 +2294,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   for (int i = 0; i < 8; ++i) {
 		   for (int j = 0; j < 8; ++j) {
 
-			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen) {
+			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen || pictureBoxes[i][j]->BackColor == System::Drawing::Color::Gray) {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 			   }
 			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
