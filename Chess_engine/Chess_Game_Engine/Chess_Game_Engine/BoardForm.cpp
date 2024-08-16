@@ -2151,6 +2151,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves(selectedPictureBox);
 						selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						break;
 					case KNIGHT:
 					case BISHOP:
 					case ROOK:
@@ -2164,7 +2165,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 				else  // If a piece is already selected
 				{
-
 					if (selectedPictureBox == chosen_piece)
 					{
 						reset_highlight_moves();
@@ -2172,8 +2172,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						chosen_piece = nullptr;
 					}
 					else
-					{
-						// Optionally, you can handle a move or other logic here if clicking on a different piece
+					{	
+					   HandlePieceSelection(chosen_piece);
+					   HandlePieceUp(chosen_piece, selectedPictureBox);
 					}
 				}
 			}
