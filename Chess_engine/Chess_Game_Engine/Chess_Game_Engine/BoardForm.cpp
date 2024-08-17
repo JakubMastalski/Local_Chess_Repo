@@ -1862,7 +1862,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return false;
 		}
 
-		// Check for Rook move
 		if (dx == 0 || dy == 0) {
 			int stepX = (targetCol - startCol) == 0 ? 0 : (targetCol - startCol) / abs(targetCol - startCol);
 			int stepY = (targetRow - startRow) == 0 ? 0 : (targetRow - startRow) / abs(targetRow - startRow);
@@ -2137,10 +2136,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		if (e->Button == System::Windows::Forms::MouseButtons::Right && e->Clicks == 1)
 		{
 			selectedPictureBox = dynamic_cast<custom_picturebox^>(sender);
-			if (selectedPictureBox != nullptr)
+
+			if (selectedPictureBox != nullptr && selectedPictureBox->Enabled == true)
 			{
-				// First click selects the piece and highlights it visually
-				if (chosen_piece == nullptr)  // If no piece is currently selected
+				current_color = selectedPictureBox->check_color(selectedPictureBox);
+
+				if ((whiteonMove && current_color != WHITE) || (!whiteonMove && current_color != BLACK))
+				{
+					if (current_color != EMPTY && chosen_piece == nullptr)
+					{
+						return;
+					}
+				}
+
+				if (chosen_piece == nullptr) 
 				{
 					HandlePieceSelection(selectedPictureBox);
 
@@ -2148,18 +2157,47 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					{
 					case PAWN:
 						chosen_piece = selectedPictureBox;
-						highlight_possible_moves(selectedPictureBox);
-						if(selectedPictureBox->ImageLocation != "")selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						highlight_possible_moves_PAWM(selectedPictureBox);
+						if (selectedPictureBox->ImageLocation != "")
+							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
 						break;
 					case KNIGHT:
+						chosen_piece = selectedPictureBox;
+						highlight_possible_moves_KNIGHT(selectedPictureBox);
+						if (selectedPictureBox->ImageLocation != "")
+							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						break;
 					case BISHOP:
+						chosen_piece = selectedPictureBox;
+						highlight_possible_moves_BISHOP(selectedPictureBox);
+						if (selectedPictureBox->ImageLocation != "")
+							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						break;
 					case ROOK:
+						chosen_piece = selectedPictureBox;
+						highlight_possible_moves_ROOK(selectedPictureBox);
+
+						if (selectedPictureBox->ImageLocation != "")
+							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						break;
 					case QUEEN:
+						chosen_piece = selectedPictureBox;
+						highlight_possible_moves_QUEEN(selectedPictureBox);
+
+						if (selectedPictureBox->ImageLocation != "")
+							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						break;
 					case KING:
+						chosen_piece = selectedPictureBox;
+						highlight_possible_moves_KING(selectedPictureBox);
+
+						if (selectedPictureBox->ImageLocation != "")
+							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+						break;
 					case EMPTY:
 						break;
 					default:
-						MessageBox::Show("Invalid piece selected");
+						MessageBox::Show("Nieprawid³owa figura.");
 						break;
 					}
 				}
@@ -2172,12 +2210,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						chosen_piece = nullptr;
 					}
 					else
-					{	
-					   HandlePieceSelection(chosen_piece);
-					   chosen_piece->Location = selectedPictureBox->Location;
-					   targetPictureBox = selectedPictureBox;
-					   HandlePieceUp(chosen_piece, selectedPictureBox);
-					   chosen_piece = nullptr;
+					{
+						HandlePieceSelection(chosen_piece);
+						chosen_piece->Location = selectedPictureBox->Location;
+						targetPictureBox = selectedPictureBox;
+						HandlePieceUp(chosen_piece, selectedPictureBox);
+						chosen_piece = nullptr;
 					}
 				}
 			}
@@ -2193,7 +2231,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return;
 		}
 	}
-   void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb) {
+   void BoardForm::highlight_possible_moves_PAWM(custom_picturebox^ selected_pb) {
 	   // Resetuj podœwietlenia i cele ruchów
 	   reset_highlight_moves();
 
@@ -2289,14 +2327,299 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   }
    }
 
+   void BoardForm::highlight_possible_moves_KNIGHT(custom_picturebox^ selected_pb)
+   {
+	   reset_highlight_moves();
+
+	   Point startPos = selected_pb->Location;
+	   int startRow = startPos.Y / selected_pb->Height;
+	   int startCol = startPos.X / selected_pb->Width;
+
+	   startRow = Math::Min(startRow, 7);
+	   startCol = Math::Min(startCol, 7);
+
+	   int knightMoves[8][2] = { {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2} };
+
+	   for (int i = 0; i < 8; i++)
+	   {
+		   int targetRow = startRow + knightMoves[i][0];
+		   int targetCol = startCol + knightMoves[i][1];
+
+		   if (targetRow >= 0 && targetRow < 8 && targetCol >= 0 && targetCol < 8)
+		   {
+			   custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
+
+			   if (target_pb->check_piece(target_pb) == EMPTY || target_pb->check_color(target_pb) != selected_pb->check_color(selected_pb))
+			   {
+				   if (target_pb->ImageLocation == "")
+				   {
+					   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; 
+				   }
+			   }
+		   }
+	   }
+   }
+
+   void BoardForm::highlight_possible_moves_BISHOP(custom_picturebox^ selected_pb)
+   {
+	   reset_highlight_moves();
+
+	   Point startPos = selected_pb->Location;
+	   int startRow = startPos.Y / selected_pb->Height;
+	   int startCol = startPos.X / selected_pb->Width;
+
+	   startRow = Math::Min(startRow, 7);
+	   startCol = Math::Min(startCol, 7);
+
+	   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
+		   return; 
+	   }
+
+	   PieceColor bishopColor = selected_pb->check_color(selected_pb);
+
+	   int directions[4][2] = {
+		   {-1, -1}, 
+		   {-1,  1}, 
+		   { 1, -1}, 
+		   { 1,  1}  
+	   };
+
+	   for (int d = 0; d < 4; ++d) {
+		   int row = startRow;
+		   int col = startCol;
+
+		   while (true) {
+			   row += directions[d][0];
+			   col += directions[d][1];
+
+			   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
+				   break;
+			   }
+
+			   custom_picturebox^ target_pb = pictureBoxes[row][col];
+
+			   if (target_pb->check_piece(target_pb) == EMPTY) {
+				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+			   }
+			   else if (target_pb->check_color(target_pb) != bishopColor) {
+				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   break;
+			   }
+			   else {
+				   break;
+			   }
+		   }
+	   }
+   }
+
+   void BoardForm::highlight_possible_moves_ROOK(custom_picturebox^ selected_pb)
+   {
+	   reset_highlight_moves();
+
+	   Point startPos = selected_pb->Location;
+	   int startRow = startPos.Y / selected_pb->Height;
+	   int startCol = startPos.X / selected_pb->Width;
+
+	   startRow = Math::Min(startRow, 7);
+	   startCol = Math::Min(startCol, 7);
+
+
+	   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
+		   return;  
+	   }
+
+	   PieceColor rookColor = selected_pb->check_color(selected_pb);
+
+	   int directions[4][2] = {
+		   {-1,  0},
+		   { 1,  0}, 
+		   { 0, -1},
+		   { 0,  1} 
+	   };
+
+	   for (int d = 0; d < 4; ++d) {
+		   int row = startRow;
+		   int col = startCol;
+
+		   while (true) {
+			   row += directions[d][0];
+			   col += directions[d][1];
+
+			   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
+				   break;
+			   }
+
+			   custom_picturebox^ target_pb = pictureBoxes[row][col];
+
+			   if (target_pb->check_piece(target_pb) == EMPTY) {
+				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+			   }
+
+			   else if (target_pb->check_color(target_pb) != rookColor) {
+				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   break;
+			   }
+			   else {
+				   break;
+			   }
+		   }
+	   }
+   }
+
+   void BoardForm::highlight_possible_moves_QUEEN(custom_picturebox^ selected_pb)
+   {
+	   reset_highlight_moves();
+
+	   Point startPos = selected_pb->Location;
+	   int startRow = startPos.Y / selected_pb->Height;
+	   int startCol = startPos.X / selected_pb->Width;
+
+	   startRow = Math::Min(startRow, 7);
+	   startCol = Math::Min(startCol, 7);
+
+
+	   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
+		   return;  
+	   }
+
+	   PieceColor queenColor = selected_pb->check_color(selected_pb);
+
+	   int bishopDirections[4][2] = {
+		   {-1, -1}, 
+		   {-1,  1}, 
+		   { 1, -1}, 
+		   { 1,  1}  
+	   };
+
+	   int rookDirections[4][2] = {
+		   {-1,  0}, 
+		   { 1,  0}, 
+		   { 0, -1}, 
+		   { 0,  1}  
+	   };
+
+
+	   for (int d = 0; d < 4; ++d) {
+		   int row = startRow;
+		   int col = startCol;
+
+		   while (true) {
+			   row += bishopDirections[d][0];
+			   col += bishopDirections[d][1];
+
+			   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
+				   break;
+			   }
+
+			   custom_picturebox^ target_pb = pictureBoxes[row][col];
+
+			   if (target_pb->check_piece(target_pb) == EMPTY) {
+				   target_pb->BackColor = System::Drawing::Color::LightYellow;
+				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+			   }
+
+			   else if (target_pb->check_color(target_pb) != queenColor) {
+				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   break;
+			   }
+
+			   else {
+				   break;
+			   }
+		   }
+	   }
+
+	   for (int d = 0; d < 4; ++d) {
+		   int row = startRow;
+		   int col = startCol;
+
+		   while (true) {
+			   row += rookDirections[d][0];
+			   col += rookDirections[d][1];
+
+			   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
+				   break;
+			   }
+
+			   custom_picturebox^ target_pb = pictureBoxes[row][col];
+
+			   if (target_pb->check_piece(target_pb) == EMPTY) {
+				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+			   }
+
+			   else if (target_pb->check_color(target_pb) != queenColor) {
+				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   break;
+			   }
+
+			   else {
+				   break;
+			   }
+		   }
+	   }
+   }
+
+   void BoardForm::highlight_possible_moves_KING(custom_picturebox^ selected_pb)
+   {
+	   reset_highlight_moves();
+
+	   Point startPos = selected_pb->Location;
+	   int startRow = startPos.Y / selected_pb->Height;
+	   int startCol = startPos.X / selected_pb->Width;
+
+	   startRow = Math::Min(startRow, 7);
+	   startCol = Math::Min(startCol, 7);
+
+	   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
+		   return;
+	   }
+
+	   PieceColor kingColor = selected_pb->check_color(selected_pb);
+
+	   int kingDirections[8][2] = {
+		   {-1, -1}, 
+		   {-1,  0},
+		   {-1,  1}, 
+		   { 0, -1}, 
+		   { 0,  1}, 
+		   { 1, -1}, 
+		   { 1,  0},
+		   { 1,  1} 
+	   };
+
+	   for (int d = 0; d < 8; ++d) {
+		   int row = startRow + kingDirections[d][0];
+		   int col = startCol + kingDirections[d][1];
+
+		   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
+			   continue;
+		   }
+
+		   custom_picturebox^ target_pb = pictureBoxes[row][col];
+
+		   if (target_pb->check_piece(target_pb) == EMPTY) {
+			   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+		   }
+
+		   else if (target_pb->check_color(target_pb) != kingColor) {
+			   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+		   }
+	   }
+   }
+
    void BoardForm::reset_highlight_moves()
    {
 	   for (int i = 0; i < 8; ++i) {
 		   for (int j = 0; j < 8; ++j) {
 
-			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen || pictureBoxes[i][j]->BackColor == System::Drawing::Color::Gray) {
+			   // Reset t³a, jeœli pole by³o podœwietlone na zielono lub szaro
+			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen ||
+				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::Gray ||
+				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::LightGreen) {
+
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 			   }
+			   // Resetowanie obrazka dla pól podœwietlonych jako mo¿liwe ruchy
 			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
 			   {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
@@ -2304,7 +2627,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-	   one_piece = true;
+
+	   one_piece = true; // Reset stanu, by pozwoliæ na wybór nowej figury
    }
 
 

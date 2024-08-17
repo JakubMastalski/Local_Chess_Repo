@@ -214,7 +214,13 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
     private:bool BoardForm::bishop_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
 	private:bool BoardForm::rook_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
 	private:bool BoardForm::queen_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
-	private:void BoardForm::highlight_possible_moves(custom_picturebox^ selected_pb);
+	private:void BoardForm::highlight_possible_moves_PAWM(custom_picturebox^ selected_pb);
+	private:void BoardForm::highlight_possible_moves_KNIGHT(custom_picturebox^ selected_pb);
+	private:void BoardForm::highlight_possible_moves_BISHOP(custom_picturebox^ selected_pb);
+	private:void BoardForm::highlight_possible_moves_ROOK(custom_picturebox^ selected_pb);
+	private:void BoardForm::highlight_possible_moves_QUEEN(custom_picturebox^ selected_pb);
+	private:void BoardForm::highlight_possible_moves_KING(custom_picturebox^ selected_pb);
+
 	private:void BoardForm::reset_highlight_moves();
 	private:void BoardForm::HandlePieceSelection(custom_picturebox^ selectedPictureBox);
     private:void BoardForm::HandlePieceUp(custom_picturebox^ selectedPictureBox,custom_picturebox^ targetPictureBox);
