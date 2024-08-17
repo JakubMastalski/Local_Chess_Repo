@@ -134,6 +134,8 @@ namespace ChessGameEngine {
 	private:
 		bool white_king_moved;
 		bool black_king_moved;
+
+		bool black_queenside_rook_moved = false, black_kingside_rook_moved = false, white_queenside_rook_moved = false, white_kingside_rook_moved =  false;
 	private:
 		custom_picturebox^ passantable = nullptr;
 	private:

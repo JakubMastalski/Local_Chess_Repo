@@ -1305,6 +1305,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
+		   if (current_piece == ROOK && pieceColor_selected == WHITE) {
+			   if (start_location.X == 0 && start_location.Y == 7 * selectedPictureBox->Height) {
+				   white_queenside_rook_moved = true;
+			   }
+			   else if (start_location.X == 7 * selectedPictureBox->Width && start_location.Y == 7 * selectedPictureBox->Height) {
+				   white_kingside_rook_moved = true;
+			   }
+		   }
+
+		   if (current_piece == ROOK && pieceColor_selected == BLACK) {
+			   if (start_location.X == 0 && start_location.Y == 0) {
+				   black_queenside_rook_moved = true;
+			   }
+			   else if (start_location.X == 7 * selectedPictureBox->Width && start_location.Y == 0) {
+				   black_kingside_rook_moved = true;
+			   }
+		   }
+
 		   if (castle_move)
 		   {
 			   castle_move = false;
@@ -2120,7 +2138,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				king->Enabled = false;
 				rook->Enabled = false;
 
-
 				king->Location = start_king;
 				rook->Location = start_rook;
 
@@ -2355,6 +2372,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   {
 					   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; 
 				   }
+				   else
+				   {
+					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   }
+
 			   }
 		   }
 	   }
@@ -2514,7 +2536,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   custom_picturebox^ target_pb = pictureBoxes[row][col];
 
 			   if (target_pb->check_piece(target_pb) == EMPTY) {
-				   target_pb->BackColor = System::Drawing::Color::LightYellow;
 				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 			   }
 
@@ -2605,6 +2626,81 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 		   }
 	   }
+
+	   if (kingColor == WHITE && !white_king_moved) {
+		   // Roszada po stronie króla
+		   custom_picturebox^ kingsideRook = pictureBoxes[startRow][7];
+		   if (kingsideRook->check_piece(kingsideRook) == ROOK && kingsideRook->check_color(kingsideRook) == WHITE && !white_kingside_rook_moved) {
+			   bool pathClear = true;
+			   for (int i = startCol + 1; i < 7; i++) {
+				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
+					   pathClear = false;
+					   break;
+				   }
+			   }
+			   if (pathClear) {
+				   // Podœwietlenie drogi do wie¿y (dla roszady)
+				   for (int i = startCol + 1; i < 7; i++) {
+					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   }
+				   // Podœwietlenie samej wie¿y
+				   kingsideRook->BackColor = System::Drawing::Color::LightBlue;
+			   }
+		   }
+
+
+		   custom_picturebox^ queensideRook = pictureBoxes[startRow][0];
+		   if (queensideRook->check_piece(queensideRook) == ROOK && queensideRook->check_color(queensideRook) == WHITE && !white_queenside_rook_moved) {
+			   bool pathClear = true;
+			   for (int i = startCol - 1; i > 0; i--) {
+				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
+					   pathClear = false;
+					   break;
+				   }
+			   }
+			   if (pathClear) {
+				   for (int i = startCol - 1; i > 0; i--) {
+					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   }
+				   queensideRook->BackColor = System::Drawing::Color::LightBlue;
+			   }
+		   }
+	   }
+	   else if (kingColor == BLACK && !black_king_moved) {
+		   custom_picturebox^ kingsideRook = pictureBoxes[startRow][7];
+		   if (kingsideRook->check_piece(kingsideRook) == ROOK && kingsideRook->check_color(kingsideRook) == BLACK && !black_kingside_rook_moved) {
+			   bool pathClear = true;
+			   for (int i = startCol + 1; i < 7; i++) {
+				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
+					   pathClear = false;
+					   break;
+				   }
+			   }
+			   if (pathClear) {
+				   for (int i = startCol + 1; i < 7; i++) {
+					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   }
+				   kingsideRook->BackColor = System::Drawing::Color::LightBlue;
+			   }
+		   }
+
+		   custom_picturebox^ queensideRook = pictureBoxes[startRow][0];
+		   if (queensideRook->check_piece(queensideRook) == ROOK && queensideRook->check_color(queensideRook) == BLACK && !black_queenside_rook_moved) {
+			   bool pathClear = true;
+			   for (int i = startCol - 1; i > 0; i--) {
+				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
+					   pathClear = false;
+					   break;
+				   }
+			   }
+			   if (pathClear) {
+				   for (int i = startCol - 1; i > 0; i--) {
+					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   }
+				   queensideRook->BackColor = System::Drawing::Color::LightBlue;
+			   }
+		   }
+	   }
    }
 
    void BoardForm::reset_highlight_moves()
@@ -2615,7 +2711,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   // Reset t³a, jeœli pole by³o podœwietlone na zielono lub szaro
 			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen ||
 				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::Gray ||
-				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::LightGreen) {
+				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::LightBlue) {
 
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 			   }
