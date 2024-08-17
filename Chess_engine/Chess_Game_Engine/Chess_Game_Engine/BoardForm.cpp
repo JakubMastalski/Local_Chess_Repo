@@ -1305,24 +1305,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
-		   if (current_piece == ROOK && pieceColor_selected == WHITE) {
-			   if (start_location.X == 0 && start_location.Y == 7 * selectedPictureBox->Height) {
-				   white_queenside_rook_moved = true;
-			   }
-			   else if (start_location.X == 7 * selectedPictureBox->Width && start_location.Y == 7 * selectedPictureBox->Height) {
-				   white_kingside_rook_moved = true;
-			   }
-		   }
-
-		   if (current_piece == ROOK && pieceColor_selected == BLACK) {
-			   if (start_location.X == 0 && start_location.Y == 0) {
-				   black_queenside_rook_moved = true;
-			   }
-			   else if (start_location.X == 7 * selectedPictureBox->Width && start_location.Y == 0) {
-				   black_kingside_rook_moved = true;
-			   }
-		   }
-
 		   if (castle_move)
 		   {
 			   castle_move = false;
@@ -1901,6 +1883,17 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece(target_pb);
 
 			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
+
+				if (selected_pb->check_color(selected_pb) == WHITE)
+				{
+					if(startCol >= 7)white_kingside_rook_moved = true;
+					if (startCol <= 7)white_queenside_rook_moved = true;
+				}
+				else
+				{
+					if (startCol >= 7)black_kingside_rook_moved = true;
+					if (startCol <= 7)black_queenside_rook_moved = true;
+				}
 				return true;
 			}
 			else {
@@ -2049,11 +2042,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved)
+					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved && !white_kingside_rook_moved)
 					{
 						castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
 					}
-					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved)
+					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved && !black_kingside_rook_moved)
 					{
 						castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
 					}
@@ -2078,11 +2071,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved)
+					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved && !white_queenside_rook_moved)
 					{
 						castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
 					}
-					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved)
+					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved && !black_queenside_rook_moved)
 					{
 						castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
 					}
