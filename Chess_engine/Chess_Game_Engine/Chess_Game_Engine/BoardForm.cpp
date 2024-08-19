@@ -1349,7 +1349,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
-
 		   custom_picturebox^ whiteKingBox = nullptr;
 		   custom_picturebox^ blackKingBox = nullptr;
 
@@ -2804,6 +2803,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int whiteKingRow = -1, whiteKingCol = -1;
 	   int blackKingRow = -1, blackKingCol = -1;
 
+	   whiteKingRow = std::min(whiteKingRow, 7);
+	   whiteKingCol = std::min(whiteKingCol, 7);
+
+	   blackKingRow = std::min(blackKingRow, 7);
+	   blackKingCol = std::min(blackKingCol, 7);
+
 	   white_king_on_checked = false;
 	   black_king_on_checked = false;
 
@@ -2823,15 +2828,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-
 	   // SprawdŸ szachowanie bia³ego króla
 	   if (whiteKingBox != nullptr) {
+		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 		   for (int i = 0; i < 8; i++) {
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == BLACK && pictureBoxes[i][j] != selected_piece) {
 
+					   pictureBoxes[i][j]->column = j;
+					   pictureBoxes[i][j]->row = i;
+
 					   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
+						   // Ustawienie obrazka na szachowanego króla
 						   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
+						   // Ustaw ostatni¹ ruchom¹ figurê
 						   last_moved_piece = selected_piece;
 						   white_king_on_checked = true;
 						   return true;
@@ -2840,27 +2850,41 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
+		   whiteKingBox->row = whiteKingRow;
+		   whiteKingBox->column = whiteKingCol;
 		   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+
+
 	   }
 
 	   // SprawdŸ szachowanie czarnego króla
 	   if (blackKingBox != nullptr) {
+		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 		   for (int i = 0; i < 8; i++) {
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE && pictureBoxes[i][j] != selected_piece) {
 
+					   pictureBoxes[i][j]->column = j;
+					   pictureBoxes[i][j]->row = i;
+
 					   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
+						   // Ustawienie obrazka na szachowanego król
 						   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
+						   // Ustaw ostatni¹ ruchom¹ figurê
 						   last_moved_piece = selected_piece;
 						   black_king_on_checked = true;
 						   return true;
 					   }
 				   }
 			   }
-		   }
 
+		   }
+		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
+		   blackKingBox->row = blackKingRow;
+		   blackKingBox->column = blackKingCol;
 		   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 	   }
+
 
 	   return false;
    }
