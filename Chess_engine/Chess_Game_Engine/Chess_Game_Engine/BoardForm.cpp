@@ -1056,7 +1056,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   show = true;
 			   }
 		   }
-}
+       }
 
 	   void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected)
 	   {
@@ -1101,6 +1101,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
+
+	   void BoardForm::player_turnClick()
+	   {
+		   if (whiteonMove)
+		   {
+			   menu_timer_white->Start();
+			   menu_timer_black->Stop();
+		   }
+		   else
+		   {
+			   menu_timer_black->Start();
+			   menu_timer_white->Stop();
+		   }
+
+	   }
+
 
 	   //restart app
 	   void BoardForm::restartToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -2237,6 +2253,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						chosen_piece->Location = selectedPictureBox->Location;
 						targetPictureBox = selectedPictureBox;
 						HandlePieceUp(chosen_piece, selectedPictureBox);
+
+						player_turnClick();
 						chosen_piece = nullptr;
 					}
 				}
@@ -2264,7 +2282,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   Point startPos = selected_pb->Location;
 		   startRow = startPos.Y / selected_pb->Height;
 		   startCol = startPos.X / selected_pb->Width;
-		   const int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
+		   int direction = selected_pb->check_color(selected_pb) == WHITE ? -1 : 1;
+
+		   if(boardFlipped)direction = selected_pb->check_color(selected_pb) == WHITE ? 1 : -1;
 
 		   PieceColor start_color = selected_pb->check_color(selected_pb);
 		   Piece start_piece = selected_pb->check_piece(selected_pb);

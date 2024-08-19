@@ -226,6 +226,7 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
 	private:void BoardForm::HandlePieceSelection(custom_picturebox^ selectedPictureBox);
     private:void BoardForm::HandlePieceUp(custom_picturebox^ selectedPictureBox,custom_picturebox^ targetPictureBox);
 	private:bool BoardForm::is_square_under_attack(int row, int col, PieceColor kingColor);
+	private:void BoardForm::player_turnClick();
 
 };
 }
