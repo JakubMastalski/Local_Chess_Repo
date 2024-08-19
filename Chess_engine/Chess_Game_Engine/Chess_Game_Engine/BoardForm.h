@@ -89,8 +89,8 @@ namespace ChessGameEngine {
 		Control^ controlUnderCursor;
 		custom_picturebox^ targetPictureBox;
 	private:
-		custom_picturebox^ white_king;
-		custom_picturebox^ black_king;
+		custom_picturebox^ white_king = nullptr;
+		custom_picturebox^ black_king = nullptr;
 	private:
 		array<array<custom_picturebox^>^>^ pictureBoxes;
 	private:

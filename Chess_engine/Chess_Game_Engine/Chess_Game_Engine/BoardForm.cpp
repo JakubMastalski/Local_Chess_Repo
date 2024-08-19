@@ -1333,12 +1333,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
+		   int white_row = -1;
+		   int white_column = -1;
+
+		   int black_row = -1;
+		   int black_column = -1;
+
 		   if (king_checked(pictureBoxes, selectedPictureBox) || white_king_on_checked || black_king_on_checked)
 		   {
 			   if ((whiteonMove && black_king_on_checked) || (!whiteonMove && white_king_on_checked))
 			   {
-				   white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-				   black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 				   selectedPictureBox->ImageLocation = imgLocation_selected;
 				   selectedPictureBox->set_color(selectedPictureBox, pieceColor_selected);
 				   selectedPictureBox->set_piece(selectedPictureBox, pieceType_selected);
@@ -1346,6 +1350,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   targetPictureBox->ImageLocation = imgLocation_target;
 				   targetPictureBox->set_color(targetPictureBox, pieceColor_target);
 				   targetPictureBox->set_piece(targetPictureBox, pieceType_target);
+
+				   if(white_king_on_checked)white_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+
+				   else if(black_king_on_checked)black_king->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 
 				   whiteonMove = !whiteonMove;
 				   return;
@@ -1473,6 +1481,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			reset_highlight_moves();
 			return false;
 		}
+		reset_highlight_moves();
 		return true;
 	}
 
@@ -1547,6 +1556,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					if (pb[actualRow][actualCol]->check_color(pb[actualRow][actualCol]) == WHITE) {
 						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
 						if (is_king_under_attack(pb[actualRow][actualCol], blackKingRow, blackKingCol)) {
+							reset_highlight_moves();
 							return true;
 						}
 					}
@@ -2143,6 +2153,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	void BoardForm::grid_panel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 	{
+		reset_highlight_moves();
+
 		if (e->Button == System::Windows::Forms::MouseButtons::Right && e->Clicks == 1)
 		{
 			selectedPictureBox = dynamic_cast<custom_picturebox^>(sender);
@@ -2575,12 +2587,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::highlight_possible_moves_KING(custom_picturebox^ selected_pb)
    {
-	   reset_highlight_moves();
+	   reset_highlight_moves(); // Resetuj poprzednie podœwietlenia ruchów
 
+	   // Ustal pozycjê startow¹ króla
 	   Point startPos = selected_pb->Location;
 	   int startRow = startPos.Y / selected_pb->Height;
 	   int startCol = startPos.X / selected_pb->Width;
 
+	   // Upewnij siê, ¿e pozycje startowe s¹ w zakresie planszy
 	   startRow = Math::Min(startRow, 7);
 	   startCol = Math::Min(startCol, 7);
 
@@ -2590,41 +2604,46 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	   PieceColor kingColor = selected_pb->check_color(selected_pb);
 
+	   // Kierunki ruchów króla (wszystkie 8 mo¿liwych)
 	   int kingDirections[8][2] = {
-		   {-1, -1},
-		   {-1,  0},
-		   {-1,  1},
-		   { 0, -1},
-		   { 0,  1},
-		   { 1, -1},
-		   { 1,  0},
-		   { 1,  1}
+		   {-1, -1}, {-1,  0}, {-1,  1},
+		   { 0, -1},          { 0,  1},
+		   { 1, -1}, { 1,  0}, { 1,  1}
 	   };
 
+	   // SprawdŸ wszystkie mo¿liwe ruchy dla króla
 	   for (int d = 0; d < 8; ++d) {
 		   int row = startRow + kingDirections[d][0];
 		   int col = startCol + kingDirections[d][1];
 
+		   // SprawdŸ czy pozycja znajduje siê w zakresie planszy
 		   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
 			   continue;
 		   }
 
 		   custom_picturebox^ target_pb = pictureBoxes[row][col];
 
+		   // SprawdŸ czy pole nie jest pod atakiem
 		   if (!is_square_under_attack(row, col, kingColor)) {
+			   // Jeœli pole jest puste, podœwietl jako mo¿liwy ruch
 			   if (target_pb->check_piece(target_pb) == EMPTY) {
 				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 			   }
+			   // Jeœli na polu jest przeciwnik, podœwietl jako mo¿liwoœæ zbicia
 			   else if (target_pb->check_color(target_pb) != kingColor) {
 				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 			   }
 		   }
 	   }
 
-	   if (kingColor == WHITE && !white_king_moved) {
-		   // Roszada po stronie króla
+	   // Obs³uga roszady
+	   if (kingColor == WHITE && !white_king_moved && !white_king_on_checked) {
+		   // SprawdŸ roszadê po stronie królewskiej (król w prawo)
 		   custom_picturebox^ kingsideRook = pictureBoxes[startRow][7];
-		   if (kingsideRook->check_piece(kingsideRook) == ROOK && kingsideRook->check_color(kingsideRook) == WHITE && !white_kingside_rook_moved) {
+		   if (kingsideRook->check_piece(kingsideRook) == ROOK &&
+			   kingsideRook->check_color(kingsideRook) == WHITE &&
+			   !white_kingside_rook_moved) {
+
 			   bool pathClear = true;
 			   for (int i = startCol + 1; i < 7; i++) {
 				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -2632,19 +2651,23 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   break;
 				   }
 			   }
-			   if (pathClear && !is_square_under_attack(startRow, startCol + 2, WHITE) && !is_square_under_attack(startRow, startCol + 3, WHITE)) {
-				   // Podœwietlenie drogi do wie¿y (dla roszady)
-				   for (int i = startCol + 1; i < 7; i++) {
-					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   }
-				   // Podœwietlenie samej wie¿y
-				   kingsideRook->BackColor = System::Drawing::Color::LightBlue;
+
+			   // Upewnij siê, ¿e pola miêdzy królem a wie¿¹ s¹ wolne i nie s¹ pod atakiem
+			   if (pathClear &&
+				   !is_square_under_attack(startRow, startCol + 1, WHITE) &&
+				   !is_square_under_attack(startRow, startCol + 2, WHITE)) {
+
+				   pictureBoxes[startRow][startCol + 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
+				   kingsideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
 			   }
 		   }
 
-		   // Roszada po stronie hetmañskiej
+		   // SprawdŸ roszadê po stronie hetmañskiej (król w lewo)
 		   custom_picturebox^ queensideRook = pictureBoxes[startRow][0];
-		   if (queensideRook->check_piece(queensideRook) == ROOK && queensideRook->check_color(queensideRook) == WHITE && !white_queenside_rook_moved) {
+		   if (queensideRook->check_piece(queensideRook) == ROOK &&
+			   queensideRook->check_color(queensideRook) == WHITE &&
+			   !white_queenside_rook_moved) {
+
 			   bool pathClear = true;
 			   for (int i = startCol - 1; i > 0; i--) {
 				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -2652,20 +2675,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   break;
 				   }
 			   }
-			   if (pathClear && !is_square_under_attack(startRow, startCol - 2, WHITE) && !is_square_under_attack(startRow, startCol - 3, WHITE)) {
-				   // Podœwietlenie drogi do wie¿y (dla roszady)
-				   for (int i = startCol - 1; i > 0; i--) {
-					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   }
-				   // Podœwietlenie samej wie¿y
-				   queensideRook->BackColor = System::Drawing::Color::LightBlue;
+
+			   // Upewnij siê, ¿e pola miêdzy królem a wie¿¹ s¹ wolne i nie s¹ pod atakiem
+			   if (pathClear &&
+				   !is_square_under_attack(startRow, startCol - 1, WHITE) &&
+				   !is_square_under_attack(startRow, startCol - 2, WHITE)) {
+
+				   pictureBoxes[startRow][startCol - 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
+				   queensideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
 			   }
 		   }
 	   }
-	   else if (kingColor == BLACK && !black_king_moved) {
-		   // Roszada po stronie króla
+	   else if (kingColor == BLACK && !black_king_moved && !black_king_on_checked) {
+		   // Analogiczna obs³uga roszady dla czarnego króla
 		   custom_picturebox^ kingsideRook = pictureBoxes[startRow][7];
-		   if (kingsideRook->check_piece(kingsideRook) == ROOK && kingsideRook->check_color(kingsideRook) == BLACK && !black_kingside_rook_moved) {
+		   if (kingsideRook->check_piece(kingsideRook) == ROOK &&
+			   kingsideRook->check_color(kingsideRook) == BLACK &&
+			   !black_kingside_rook_moved) {
+
 			   bool pathClear = true;
 			   for (int i = startCol + 1; i < 7; i++) {
 				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -2673,18 +2700,21 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   break;
 				   }
 			   }
-			   if (pathClear && !is_square_under_attack(startRow, startCol + 2, BLACK) && !is_square_under_attack(startRow, startCol + 3, BLACK)) {
-				   // Podœwietlenie drogi do wie¿y (dla roszady)
-				   for (int i = startCol + 1; i < 7; i++) {
-					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   }
-				   // Podœwietlenie samej wie¿y
-				   kingsideRook->BackColor = System::Drawing::Color::LightBlue;
+
+			   if (pathClear &&
+				   !is_square_under_attack(startRow, startCol + 1, BLACK) &&
+				   !is_square_under_attack(startRow, startCol + 2, BLACK)) {
+
+				   pictureBoxes[startRow][startCol + 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
+				   kingsideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
 			   }
 		   }
 
 		   custom_picturebox^ queensideRook = pictureBoxes[startRow][0];
-		   if (queensideRook->check_piece(queensideRook) == ROOK && queensideRook->check_color(queensideRook) == BLACK && !black_queenside_rook_moved) {
+		   if (queensideRook->check_piece(queensideRook) == ROOK &&
+			   queensideRook->check_color(queensideRook) == BLACK &&
+			   !black_queenside_rook_moved) {
+
 			   bool pathClear = true;
 			   for (int i = startCol - 1; i > 0; i--) {
 				   if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -2692,13 +2722,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   break;
 				   }
 			   }
-			   if (pathClear && !is_square_under_attack(startRow, startCol - 2, BLACK) && !is_square_under_attack(startRow, startCol - 3, BLACK)) {
-				   // Podœwietlenie drogi do wie¿y (dla roszady)
-				   for (int i = startCol - 1; i > 0; i--) {
-					   pictureBoxes[startRow][i]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
-				   }
-				   // Podœwietlenie samej wie¿y
-				   queensideRook->BackColor = System::Drawing::Color::LightBlue;
+
+			   if (pathClear &&
+				   !is_square_under_attack(startRow, startCol - 1, BLACK) &&
+				   !is_square_under_attack(startRow, startCol - 2, BLACK)) {
+
+				   pictureBoxes[startRow][startCol - 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
+				   queensideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
 			   }
 		   }
 	   }
@@ -2761,6 +2791,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int whiteKingRow = -1, whiteKingCol = -1;
 	   int blackKingRow = -1, blackKingCol = -1;
 
+	   whiteKingRow = std::min(whiteKingRow, 7);
+	   whiteKingCol = std::min(whiteKingCol, 7);
+
+	   blackKingRow = std::min(blackKingRow, 7);
+	   blackKingCol = std::min(blackKingCol, 7);
+
 	   white_king_on_checked = false;
 	   black_king_on_checked = false;
 
@@ -2787,8 +2823,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == BLACK && pictureBoxes[i][j] != selected_piece) {
 
-					   pictureBoxes[i][j]->column = j;
-					   pictureBoxes[i][j]->row = i;
+					   pictureBoxes[i][j]->column = std::min(j, 7);
+					   pictureBoxes[i][j]->row = std::min(i, 7);
 
 						   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
 							   // Ustawienie obrazka na szachowanego króla
@@ -2801,9 +2837,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 			   }
 		   }
+
 		   whiteKingBox->row = whiteKingRow;
 		   whiteKingBox->column = whiteKingCol;
 		   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+
+
 	   }
 
 	   // SprawdŸ szachowanie czarnego króla
@@ -2813,8 +2852,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color(pictureBoxes[i][j]) == WHITE && pictureBoxes[i][j] != selected_piece) {
 
-					   pictureBoxes[i][j]->column = j;
-					   pictureBoxes[i][j]->row = i;
+					   pictureBoxes[i][j]->column = std::min(j, 7);
+					   pictureBoxes[i][j]->row = std::min(i, 7);
 
 						   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
 							   // Ustawienie obrazka na szachowanego król
@@ -2829,8 +2868,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		   }
 		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
-		    blackKingBox->row = blackKingRow;
-			blackKingBox->column = blackKingCol;
+		    blackKingBox->row = std::min(blackKingRow, 7);
+		    blackKingBox->column = std::min(blackKingCol, 7);
 		    blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 	   }
 
