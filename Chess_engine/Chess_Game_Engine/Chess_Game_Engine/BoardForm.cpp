@@ -2003,14 +2003,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check king
 	bool BoardForm::check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		Point startPos = start_location; 
-		Point targetPos = selected_pb->Location; 
+		reset_highlight_moves();
 
-		
+		Point startPos = start_location;
+		Point targetPos = selected_pb->Location;
+
 		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width;
-		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; 
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height;
 
-		
 		int startRow = startPos.Y / selected_pb->Height;
 		int startCol = startPos.X / selected_pb->Width;
 		int targetRow = targetPos.Y / selected_pb->Height;
@@ -2021,7 +2021,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		targetRow = Math::Max(0, Math::Min(targetRow, 7));
 		targetCol = Math::Max(0, Math::Min(targetCol, 7));
 
-	
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return false;
@@ -2033,27 +2032,48 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece(target_pb);
 
 			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color(selected_pb) && target_piece != KING)) {
-				PieceColor king_piece = selected_pb->check_color(selected_pb);
+				// Tymczasowo wykonaj ruch
+				custom_picturebox^ previous_pb = pictureBoxes[startRow][startCol];
+				pictureBoxes[targetRow][targetCol] = selected_pb;
+				pictureBoxes[startRow][startCol] = gcnew custom_picturebox(); // Ustawienie pustego pola
 
-				if (king_piece == WHITE)
-				{
-					white_king_moved = true;
+				// SprawdŸ, czy król jest pod szachem po wykonaniu ruchu
+				if (king_checked(pictureBoxes, selected_pb)) {
+					// Cofnij ruch, jeœli król jest pod szachem
+					pictureBoxes[startRow][startCol] = previous_pb;
+					pictureBoxes[targetRow][targetCol] = target_pb; // Przywrócenie pierwotnej figury na miejsce
+
+					// Ustawienie obrazu szachowanego króla
+					if (selected_pb->check_color(selected_pb) == WHITE) {
+						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
+					}
+					else if (selected_pb->check_color(selected_pb) == BLACK) {
+						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
+					}
+
+					return false;
 				}
-				else if(king_piece == BLACK)
-				{
+
+				// ZatwierdŸ ruch, jeœli król nie jest pod szachem
+				PieceColor king_piece = selected_pb->check_color(selected_pb);
+				if (king_piece == WHITE) {
+					white_king_moved = true;
+					selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png"; // Obraz dla bia³ego króla
+				}
+				else if (king_piece == BLACK) {
 					black_king_moved = true;
+					selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png"; // Obraz dla czarnego króla
 				}
 				return true;
 			}
 		}
 
-		
+		// Logika roszady
 		if (dy == 0 && dx == 2 && targetCol > startCol) {
 			custom_picturebox^ rook_pb = pictureBoxes[startRow][7];
 			Piece rook_piece = rook_pb->check_piece(rook_pb);
-			if (rook_piece == ROOK && rook_pb->check_color(rook_pb) == selected_pb->check_color(selected_pb)) 
+			if (rook_piece == ROOK && rook_pb->check_color(rook_pb) == selected_pb->check_color(selected_pb))
 			{
-	
 				bool pathClear = true;
 				for (int i = startCol + 1; i < 7; i++) {
 					if (pictureBoxes[startRow][i]->check_piece(pictureBoxes[startRow][i]) != EMPTY) {
@@ -2062,22 +2082,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved && !white_kingside_rook_moved)
-					{
+					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved && !white_kingside_rook_moved) {
 						castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
+						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 					}
-					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved && !black_kingside_rook_moved)
-					{
+					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved && !black_kingside_rook_moved) {
 						castle(selected_pb, pictureBoxes[startRow][startCol + 2], rook_pb, pictureBoxes[startRow][startCol + 1]);
+						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 					}
-					else
-					{
+					else {
 						return false;
 					}
-
 				}
 			}
 		}
+
+		// Logika roszady po stronie hetmañskiej
 		if (dy == 0 && (dx == 3 || dx == 4) && targetCol < startCol) {
 			custom_picturebox^ Qside_rook = pictureBoxes[startRow][0];
 			Piece rook_piece2 = Qside_rook->check_piece(Qside_rook);
@@ -2091,23 +2111,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					}
 				}
 				if (pathClear) {
-					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved && !white_queenside_rook_moved)
-					{
+					if (selected_pb->check_color(selected_pb) == WHITE && !white_king_moved && !white_queenside_rook_moved) {
 						castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
+						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 					}
-					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved && !black_queenside_rook_moved)
-					{
+					else if (selected_pb->check_color(selected_pb) == BLACK && !black_king_moved && !black_queenside_rook_moved) {
 						castle(selected_pb, pictureBoxes[startRow][startCol - 2], Qside_rook, pictureBoxes[startRow][startCol - 1]);
+						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 					}
-					else
-					{
+					else {
 						return false;
 					}
 				}
 			}
 		}
 
-		
+		// Przywrócenie wygl¹du figur na planszy
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -2229,7 +2248,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					case EMPTY:
 						break;
 					default:
-						MessageBox::Show("Nieprawid³owa figura.");
+						MessageBox::Show("incorrect pieces.");
 						break;
 					}
 				}
@@ -2902,6 +2921,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   return check_Rook_Attack(piece, kingRow, kingCol);
 	   case QUEEN:
 		   return check_Queen_Attack(piece, kingRow, kingCol);
+	
 	   default:
 		   return false;
 	   }
