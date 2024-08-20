@@ -50,10 +50,9 @@ namespace ChessGameEngine {
 	{
 		//init grid panel
 		this->grid_panel = (gcnew System::Windows::Forms::Panel());
-		//array of board classes objects
-		pictureBoxInstance->InitializeBoard(); // init board in pb_instance
+		pictureBoxInstance->InitializeBoard();
 		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); 
-		//add picture boxed to form
+
 		for (int row = 2; row < 6; ++row) {
 			for (int col = 0; col < 8; ++col) {
 				this->grid_panel->Controls->Add(pictureBoxes[row][col]);
@@ -225,7 +224,6 @@ namespace ChessGameEngine {
 		//
 		// promote_panel
 		// 
-		// Ustawienia dla picturebox_bishop
 		picturebox_bishop = gcnew System::Windows::Forms::PictureBox();
 		picturebox_bishop->Location = System::Drawing::Point(20, 20);
 		picturebox_bishop->Size = System::Drawing::Size(50, 50);
@@ -237,9 +235,7 @@ namespace ChessGameEngine {
 		picturebox_bishop->Enabled = true;
 		picturebox_bishop->TabStop = false;
 		picturebox_bishop->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
-		//picturebox_bishop->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
 
-		// Ustawienia dla picturebox_knight
 		picturebox_knight = gcnew System::Windows::Forms::PictureBox();
 		picturebox_knight->Location = System::Drawing::Point(80, 20);
 		picturebox_knight->Size = System::Drawing::Size(50, 50);
@@ -251,10 +247,7 @@ namespace ChessGameEngine {
 		picturebox_knight->Enabled = true;
 		picturebox_knight->TabStop = false;
 		picturebox_knight->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
-		//picturebox_knight->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
 
-
-		// Ustawienia dla picturebox_rook
 		picturebox_rook = gcnew System::Windows::Forms::PictureBox();
 		picturebox_rook->Location = System::Drawing::Point(20, 80);
 		picturebox_rook->Size = System::Drawing::Size(50, 50);
@@ -266,9 +259,7 @@ namespace ChessGameEngine {
 		picturebox_rook->Enabled = true;
 		picturebox_rook->TabStop = false;
 		picturebox_rook->MouseClick += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseClick);
-		//picturebox_rook->MouseEnter += gcnew EventHandler(this, &BoardForm::picturebox_MouseEnter);
 
-		// Ustawienia dla picturebox_queen
 		picturebox_queen = gcnew System::Windows::Forms::PictureBox();
 		picturebox_queen->Location = System::Drawing::Point(80, 80);
 		picturebox_queen->Size = System::Drawing::Size(50, 50);
@@ -596,10 +587,9 @@ namespace ChessGameEngine {
 		// 
 		this->menu_timer_white->Interval = 1000;
 		this->menu_timer_white->Tick += gcnew System::EventHandler(this, &BoardForm::menu_timer_white_Tick);
-		//PB TESTOWE CUSTOM
         //picture box bg
-		this->picturebox_bg->Location = System::Drawing::Point(0, 0); // Ustawienie lokalizacji
-		this->picturebox_bg->Size = System::Drawing::Size(460, 460); // Ustawienie rozmiaru
+		this->picturebox_bg->Location = System::Drawing::Point(0, 0);
+		this->picturebox_bg->Size = System::Drawing::Size(460, 460);
 		this->picturebox_bg->ImageLocation = L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg";
 		this->picturebox_bg->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		this->picturebox_bg->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -609,7 +599,6 @@ namespace ChessGameEngine {
 		// 
 		// grid_panel
 		// 
-		//this->grid_panel->BackColor = System::Drawing::Color::Transparent;
 		this->grid_panel->Location = System::Drawing::Point(121, 5);
 		this->grid_panel->Name = L"grid_panel";
 		this->grid_panel->Size = System::Drawing::Size(460, 460);
@@ -619,7 +608,6 @@ namespace ChessGameEngine {
 		if(boardFlipped)grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1");
 		this->grid_panel->TabIndex = 47;
 		this->grid_panel->Visible = true;
-		//this->grid_panel->BringToFront();
 		this->grid_panel->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 		this->grid_panel->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 		this->grid_panel->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
@@ -676,15 +664,13 @@ namespace ChessGameEngine {
 	//chess board init
 
 		//flip board
-	
-
 void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	if (MessageBox::Show("Are you sure you want to flip the board? (If the board is flipped, the game will restart)",
 		"Confirm Flip Board", MessageBoxButtons::OKCancel, MessageBoxIcon::Information) == System::Windows::Forms::DialogResult::OK) {
 
 
-		this->grid_panel->Controls->Clear(); // Clear existing PictureBoxes from grid_panel
+		this->grid_panel->Controls->Clear();
 		grid_panel->BackgroundImage = nullptr;
 
 		whiteonMove = true;
@@ -698,7 +684,7 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 		black_king_moved = false;
 		white_king_moved = false;
 
-		boardFlipped = !boardFlipped; // Toggle board flipped status
+		boardFlipped = !boardFlipped;
 
 		if (!boardFlipped)
 		{
@@ -710,17 +696,14 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\flipedboard1.jpg");
 		}
 		else {
-			pictureBoxInstance->InitializeBoard(); // Initialize the board normally
+			pictureBoxInstance->InitializeBoard(); 
 			grid_panel->BackgroundImage = Image::FromFile(L"C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\ChessBoard1.jpg");
 		}
 		promote_panel->BackColor = System::Drawing::Color::Black;
 		promote_panel->Location = System::Drawing::Point(20, 20);
 
+		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes();
 
-
-		this->pictureBoxes = pictureBoxInstance->GetPictureBoxes(); // Update pictureBoxes array
-
-			// Adjust indices when the board is flipped
 			array<array<custom_picturebox^>^>^ flippedPictureBoxes = gcnew array<array<custom_picturebox^>^>(8);
 			for (int i = 0; i < 8; i++) {
 				flippedPictureBoxes[i] = gcnew array<custom_picturebox^>(8);
@@ -730,7 +713,6 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			}
 			this->pictureBoxes = flippedPictureBoxes;
 
-		// Setting pieces on the board
 		for (int i = 2; i < 6; i++) {
 			for (int j = 0; j < 8; j++) {
 				this->grid_panel->Controls->Add(pictureBoxes[i][j]);
@@ -756,7 +738,6 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 			grid_panel->Controls->Add(pictureBoxes[6][i]);
 		}
 
-		// Set rooks, knights, bishops, queen, and king for both black and white
 		for (int i = 0; i < 8; i++) {
 			switch (i) {
 			case 0:
@@ -831,7 +812,6 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				// Update PictureBox properties based on pictureBoxes array
 				pictureBoxes[i][j]->MouseDown += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseDown);
 				pictureBoxes[i][j]->MouseMove += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseMove);
 				pictureBoxes[i][j]->MouseUp += gcnew MouseEventHandler(this, &BoardForm::grid_panel_MouseUp);
@@ -840,7 +820,6 @@ void BoardForm::flipBoardToolStripMenuItem1_Click(System::Object^ sender, System
 				pictureBoxes[i][j]->BringToFront();
 			}
 		}
-		// Refresh the form
 		this->Refresh();
 	}
 }
@@ -849,28 +828,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	timeset_panel->Visible = true;
 	timeset_panel->Enabled = true;
 }
-	   //set button set time 
 	   int seconds, seconds_white;
 	   int increment;
-	   //on move true == white on move
 	   bool on_move = true;
 
 	   void BoardForm::button1_Click(System::Object^ sender, System::EventArgs^ e) {
 	timeset_panel->Visible = false;
-	//set time for black pieces
 	if (time_options_box->Text == "Real time")
 	{
-		//test time
-		//black
 		menu_timer_black->Enabled = true;
 		label_blacktime->Visible = true;
 		time_black->Visible = true;
 		//white
 		menu_timer_white->Enabled = true;
-		//menu_timer_white->Enabled = false;
 		label_whitetime->Visible = true;
 		time_white->Visible = true;
-		//switch black
+
 		switch (trackbar_minperside->Value)
 		{
 		case 0:
@@ -907,20 +880,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			seconds = 10800;
 			break;
 		}
-		//switch white
 		seconds_white = seconds;
-		//add increment
 		increment = trackbar_secincrement->Value;
 		timer_set = true;
 		show = false;
 	}
 	else
 	{
-		//black
 		menu_timer_black->Enabled = false;
 		label_blacktime->Visible = false;
 		time_black->Visible = false;
-		//white
 		menu_timer_white->Enabled = false;
 		label_whitetime->Visible = false;
 		time_white->Visible = false;
@@ -1013,7 +982,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		break;
 	}
 }
-
 	   //black timer tick
 	   void BoardForm::menu_timer_Tick(System::Object^ sender, System::EventArgs^ e) {
 		   if (game_started && seconds > 0) {
@@ -1033,8 +1001,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   show = true;
 			   }
 		   }
-
-}
+        }
 	   //white timer tick
 	   void BoardForm::menu_timer_white_Tick(System::Object^ sender, System::EventArgs^ e) {
 		   if (game_started && seconds_white > 0) {
@@ -1055,7 +1022,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
        }
-
 	   void BoardForm::player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected)
 	   {
 		   if (onMove)
@@ -1115,7 +1081,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-
 	   //restart app
 	   void BoardForm::restartToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
 	Application::Restart();
@@ -1394,7 +1359,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   MessageBox::Show("Checkmate!", "Game Over");
 					   grid_panel->Enabled = false;
 
-					   // Reset game or any other logic for end game
 					   return;
 				   }
 			   }
@@ -1495,7 +1459,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	bool BoardForm::king_still_checked(array<array<custom_picturebox^>^>^ pb,custom_picturebox^ selected, custom_picturebox^ target,custom_picturebox^ last_moved)
 	{
-		// ZnajdŸ pola króla bia³ego i czarnego oraz ich pozycje
 		custom_picturebox^ whiteKingBox = nullptr;
 		custom_picturebox^ blackKingBox = nullptr;
 		int whiteKingRow = -1, whiteKingCol = -1;
@@ -1524,10 +1487,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
-
-		// SprawdŸ szachowanie bia³ego króla
 		if (whiteKingBox != nullptr) {
-			// Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
 					int actualRow = i;
@@ -1536,10 +1496,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						actualRow = 7 - i;
 						actualCol = 7 - j;
 					}
-
-					// SprawdŸ czy figura nale¿y do przeciwnika
 					if (pb[actualRow][actualCol]->check_color() == BLACK) {
-						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
 						if (is_king_under_attack(pb[actualRow][actualCol], whiteKingRow, whiteKingCol)) {
 							return true;
 						}
@@ -1547,10 +1504,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
-
-		// SprawdŸ szachowanie czarnego króla
 		if (blackKingBox != nullptr) {
-			// Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
 					int actualRow = i;
@@ -1559,10 +1513,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						actualRow = 7 - i;
 						actualCol = 7 - j;
 					}
-
-					// SprawdŸ czy figura nale¿y do przeciwnika
 					if (pb[actualRow][actualCol]->check_color() == WHITE) {
-						// Jeœli figura mo¿e zaatakowaæ króla, zwróæ true
 						if (is_king_under_attack(pb[actualRow][actualCol], blackKingRow, blackKingCol)) {
 							reset_highlight_moves();
 							return true;
@@ -1571,30 +1522,24 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
-
-		// Jeœli król nie jest szachowany, zwróæ false
 		return false;
 	}
 	//check pawn
 	bool BoardForm::check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes,custom_picturebox^ selected_pb)
 	{
-		Point startPos = start_location; // Initial position of the pawn
-		Point targetPos = selected_pb->Location; // New position of the pawn
+		Point startPos = start_location;
+		Point targetPos = selected_pb->Location;
 
-		// Calculate position differences
-		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // Column difference
-		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // Row difference
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width;
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height;
 
-		// Determine the direction of movement
-		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height; // 1 forward, -1 backward
+		int direction = (targetPos.Y - startPos.Y) / selected_pb->Height;
 
-		// Determine row and column indices for initial and target positions
 		int startRow = startPos.Y / selected_pb->Height;
 		int startCol = startPos.X / selected_pb->Width;
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
-		// Constrain indices to the board range (0-7)
 		startRow = Math::Min(startRow, 7);
 		startCol = Math::Min(startCol, 7);
 		targetRow = Math::Min(targetRow, 7);
@@ -1603,19 +1548,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		custom_picturebox^ intermediate_pb = nullptr;
 		custom_picturebox^ target_pb = nullptr;
 
-		// Check if the pawn is moving backward for black pawns
 		if (selected_pb->check_color() == BLACK && targetRow < startRow && !boardFlipped) {
 			passantable = nullptr;
 			return false;
 		}
 
-		// Check if the pawn is moving backward for white pawns
 		if (selected_pb->check_color() == WHITE && targetRow > startRow && !boardFlipped) {
 			passantable = nullptr;
 			return false;
 		}
 
-		// Check for flipped board state
 		if (boardFlipped)
 		{
 			if (selected_pb->check_color() == WHITE && targetRow < startRow)
@@ -1630,13 +1572,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
-		// Check if indices are within the board range
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return true;
 		}
 
-		// Move forward by one square and no obstacles
 		if (dx == 0 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
 			if (target_pb->check_piece() == EMPTY) {
@@ -1650,7 +1590,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				return true;
 			}
 		}
-		// Initial move by two squares forward
+
 		else if (dx == 0 && dy == 2 && (startRow == 1 || startRow == 6)) {
 			intermediate_pb = pictureBoxes[startRow + direction][startCol];
 			target_pb = pictureBoxes[targetRow][targetCol];
@@ -1659,13 +1599,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				return true;
 			}
 		}
-		// Capture diagonally
+
 		else if (dx == 1 && dy == 1) {
 			target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color();
 			Piece check_piece = target_pb->check_piece();
 
-			// Normal capture
 			if (check_targetpb != EMPTY && selected_pb->check_color() != check_targetpb && check_piece != KING) {
 				if (targetRow == 7 || targetRow == 0)
 				{
@@ -1677,7 +1616,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				return true;
 			}
 
-			// En passant capture
+			// en passant capture
 			else if (check_targetpb == EMPTY) {
 				int enPassantRow = 0;
 				if (boardFlipped) {
@@ -1689,16 +1628,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 				custom_picturebox^ enPassant_pb = pictureBoxes[enPassantRow][targetCol];
 				if (enPassant_pb->check_piece() == PAWN && enPassant_pb->check_color() != selected_pb->check_color() && passantable == enPassant_pb) {
-					// Perform en passant capture
-					enPassant_pb->ImageLocation = ""; // Remove captured pawn image (optional)
-					enPassant_pb->set_color(NONE); // Set color to NONE (optional)
-					enPassant_pb->set_piece(EMPTY); // Set piece type to EMPTY (optional)
+					enPassant_pb->ImageLocation = ""; 
+					enPassant_pb->set_color(NONE); 
+					enPassant_pb->set_piece(EMPTY);
 					return true;
 				}
 			}
 		}
-
-		// Check if the king is safe after the move
 		bool king_safe_place = king_still_checked(pictureBoxes, selected_pb, target_pb, last_moved_piece);
 		if (!king_safe_place) {
 			return false;
@@ -1706,7 +1642,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		return false;
 	}
-	//check does pb in board border
+
 	bool BoardForm::check_sent(custom_picturebox^ selected_pb)
 	{
 		int x = selected_pb->Location.X;
@@ -1718,9 +1654,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		int panelHeight = 460;
 		int cellSize = 50;
 
-		// Check if pb is within the panel boundaries
+
 		if (x >= 0 && x + pbWidth <= panelWidth && y >= 0 && y + pbHeight <= panelHeight) {
-			// Check if pb is not on the edge of a cell
 			bool notOnEdgeX = (x % cellSize) != 0 && ((x + pbWidth) % cellSize) != 0;
 			bool notOnEdgeY = (y % cellSize) != 0 && ((y + pbHeight) % cellSize) != 0;
 
@@ -1734,32 +1669,27 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	//check knight
 	bool BoardForm::check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
-		Point startPos = start_location; // Original position of the piece
-		Point targetPos = selected_pb->Location; // New position of the piece
+		Point startPos = start_location; 
+		Point targetPos = selected_pb->Location; 
 
-		// Calculate the difference in positions
-		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width; // difference in columns
-		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; // difference in rows
+		int dx = abs(targetPos.X - startPos.X) / selected_pb->Width;
+		int dy = abs(targetPos.Y - startPos.Y) / selected_pb->Height; 
 
-		// Determine the row and column indices of the start and target positions
 		int startRow = startPos.Y / selected_pb->Height;
 		int startCol = startPos.X / selected_pb->Width;
 		int targetRow = targetPos.Y / selected_pb->Height;
 		int targetCol = targetPos.X / selected_pb->Width;
 
-		// Constrain indices to the board range (0-7)
 		startRow = Math::Min(startRow, 7);
 		startCol = Math::Min(startCol, 7);
 		targetRow = Math::Min(targetRow, 7);
 		targetCol = Math::Min(targetCol, 7);
 
-		// Check if indices are within bounds
 		if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8 ||
 			targetRow < 0 || targetRow >= 8 || targetCol < 0 || targetCol >= 8) {
 			return false;
 		}
 
-		// Adjust coordinates for a flipped board
 		if (boardFlipped) {
 			startRow = 7 - startRow;
 			startCol = 7 - startCol;
@@ -1767,13 +1697,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			targetCol = 7 - targetCol;
 		}
 
-		// Check if the move is a valid knight move: L-shaped movement
 		if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2)) {
 			custom_picturebox^ target_pb = pictureBoxes[targetRow][targetCol];
 			PieceColor check_targetpb = target_pb->check_color();
 			Piece target_piece = target_pb->check_piece();
 
-			// Check if the target position is empty or occupied by an opponent's piece
 			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color() && target_piece != KING)) {
 				return true;
 			}
@@ -1782,7 +1710,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
-		// If the move is not valid, bring all pieces to the front
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -1791,7 +1718,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 		return false;
 	}
-	//check bishop
 	bool BoardForm::check_Bishopmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb)
 	{
 		Point startPos = start_location;
@@ -1815,7 +1741,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return false;
 		}
 
-		// Check for Bishop move
 		if (dx == dy) {
 			if (!dx || !dy)
 			{
@@ -1848,7 +1773,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
-		// If the move is not valid, bring all pieces to front
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -1919,7 +1843,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
-		// If the move is not valid, bring all pieces to front
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -1951,7 +1874,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			return false;
 		}
 
-		// Rook-like move (horizontal or vertical)
 		if (dx == 0 || dy == 0) {
 			int stepX = (targetCol - startCol) == 0 ? 0 : (targetCol - startCol) / abs(targetCol - startCol);
 			int stepY = (targetRow - startRow) == 0 ? 0 : (targetRow - startRow) / abs(targetRow - startRow);
@@ -1968,7 +1890,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
-		// Bishop-like move (diagonal)
+
 		else if (dx == dy) {
 			int stepX = (targetCol - startCol) / dx;
 			int stepY = (targetRow - startRow) / dy;
@@ -2030,18 +1952,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			Piece target_piece = target_pb->check_piece();
 
 			if (target_piece == EMPTY || (check_targetpb != selected_pb->check_color() && target_piece != KING)) {
-				// Tymczasowo wykonaj ruch
 				custom_picturebox^ previous_pb = pictureBoxes[startRow][startCol];
 				pictureBoxes[targetRow][targetCol] = selected_pb;
-				pictureBoxes[startRow][startCol] = gcnew custom_picturebox(); // Ustawienie pustego pola
+				pictureBoxes[startRow][startCol] = gcnew custom_picturebox();
 
-				// SprawdŸ, czy król jest pod szachem po wykonaniu ruchu
 				if (king_checked(pictureBoxes, selected_pb)) {
-					// Cofnij ruch, jeœli król jest pod szachem
 					pictureBoxes[startRow][startCol] = previous_pb;
-					pictureBoxes[targetRow][targetCol] = target_pb; // Przywrócenie pierwotnej figury na miejsce
+					pictureBoxes[targetRow][targetCol] = target_pb; 
 
-					// Ustawienie obrazu szachowanego króla
 					if (selected_pb->check_color() == WHITE) {
 						selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 					}
@@ -2051,22 +1969,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 					return false;
 				}
-
-				// ZatwierdŸ ruch, jeœli król nie jest pod szachem
 				PieceColor king_piece = selected_pb->check_color();
 				if (king_piece == WHITE) {
 					white_king_moved = true;
-					selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png"; // Obraz dla bia³ego króla
+					selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
 				}
 				else if (king_piece == BLACK) {
 					black_king_moved = true;
-					selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png"; // Obraz dla czarnego króla
+					selected_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
 				}
 				return true;
 			}
 		}
 
-		// Logika roszady
+		// castle
 		if (dy == 0 && dx == 2 && targetCol > startCol) {
 			custom_picturebox^ rook_pb = pictureBoxes[startRow][7];
 			Piece rook_piece = rook_pb->check_piece();
@@ -2093,7 +2009,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
-		// Logika roszady po stronie hetmañskiej
 		if (dy == 0 && (dx == 3 || dx == 4) && targetCol < startCol) {
 			custom_picturebox^ Qside_rook = pictureBoxes[startRow][0];
 			Piece rook_piece2 = Qside_rook->check_piece();
@@ -2120,7 +2035,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			}
 		}
 
-		// Przywrócenie wygl¹du figur na planszy
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -2246,7 +2160,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						break;
 					}
 				}
-				else  // If a piece is already selected
+				else 
 				{
 					if (selectedPictureBox == chosen_piece)
 					{
@@ -2272,20 +2186,19 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			reset_highlight_moves();
 			if (chosen_piece != nullptr)
 			{
-				chosen_piece->BackColor = System::Drawing::Color::Transparent;  // Reset background color
-				chosen_piece = nullptr;  // Deselect the piece
+				chosen_piece->BackColor = System::Drawing::Color::Transparent;  
+				chosen_piece = nullptr;  
 			}
 			return;
 		}
 	}
    void BoardForm::highlight_possible_moves_PAWM(custom_picturebox^ selected_pb) {
-	   // Resetuj podœwietlenia i cele ruchów
 	   reset_highlight_moves();
 
 	   if (selected_pb->ImageLocation != "") {
 		   int startRow = -1;
 		   int startCol = -1;
-		   // Pobierz pozycjê wybranego pola
+
 		   Point startPos = selected_pb->Location;
 		   startRow = startPos.Y / selected_pb->Height;
 		   startCol = startPos.X / selected_pb->Width;
@@ -2296,16 +2209,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   PieceColor start_color = selected_pb->check_color();
 		   Piece start_piece = selected_pb->check_piece();
 
-		   // Upewnij siê, ¿e wiersz i kolumna s¹ w granicach planszy
 		   startRow = Math::Min(startRow, 7);
 		   startCol = Math::Min(startCol, 7);
 
-		   // SprawdŸ, czy indeksy s¹ w zakresie planszy
 		   if (startRow < 0 || startRow >= 8 || startCol < 0 || startCol >= 8) {
 			   return;
 		   }
 
-		   // Przesuniêcie do przodu o jedno pole
 		   int targetRow = startRow + direction;
 		   targetRow = Math::Min(targetRow, 7);
 
@@ -2319,7 +2229,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
-		   // Przesuniêcie o dwa pola przy pierwszym ruchu
 		   if ((startRow == 1 && direction == 1) || (startRow == 6 && direction == -1)) {
 			   targetRow = startRow + 2 * direction;
 			   if (targetRow >= 0 && targetRow < 8) {
@@ -2334,7 +2243,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 
-		   // Zbicie po skosie
 		   int cols[2] = { startCol - 1, startCol + 1 };
 		   for (int i = 0; i < 2; i++) {
 			   if (cols[i] >= 0 && cols[i] < 8) {
@@ -2343,14 +2251,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   target_pb = pictureBoxes[targetRow][cols[i]];
 					   enPassant_pb = pictureBoxes[startRow][cols[i]];
 
-					   // SprawdŸ normalne zbicie
 					   if (target_pb->check_piece() != EMPTY &&
 						   target_pb->check_color() != selected_pb->check_color()) {
 						   color_before = target_pb->check_color();
 						   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 						   target_pb->set_color(GREEN);
 					   }
-					   // SprawdŸ bicie w przelocie
+
 					   else if (target_pb->check_piece() == EMPTY &&
 						   enPassant_pb->check_piece() == PAWN &&
 						   enPassant_pb->check_color() != selected_pb->check_color() &&
@@ -2361,7 +2268,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 							   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 						   }
 
-						   // Podœwietl pole za pionkiem, który mo¿na zbiæ
 						   int enPassantRow = startRow + direction;
 						   if (enPassantRow >= 0 && enPassantRow < 8) {
 							   enPassantTarget_pb = pictureBoxes[enPassantRow][cols[i]];
@@ -2375,7 +2281,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
    }
-
    void BoardForm::highlight_possible_moves_KNIGHT(custom_picturebox^ selected_pb)
    {
 	   reset_highlight_moves();
@@ -2408,7 +2313,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   {
 					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 				   }
-
 			   }
 		   }
 	   }
@@ -2614,14 +2518,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    void BoardForm::highlight_possible_moves_KING(custom_picturebox^ selected_pb)
    {
-	   reset_highlight_moves(); // Resetuj poprzednie podœwietlenia ruchów
+	   reset_highlight_moves();
 
-	   // Ustal pozycjê startow¹ króla
 	   Point startPos = selected_pb->Location;
 	   int startRow = startPos.Y / selected_pb->Height;
 	   int startCol = startPos.X / selected_pb->Width;
 
-	   // Upewnij siê, ¿e pozycje startowe s¹ w zakresie planszy
 	   startRow = Math::Min(startRow, 7);
 	   startCol = Math::Min(startCol, 7);
 
@@ -2649,7 +2551,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   if (target_pb->check_piece() == EMPTY) {
 					   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 				   }
-				   // Jeœli na polu jest przeciwnik, podœwietl jako mo¿liwoœæ zbicia
 				   else if (target_pb->check_color() != kingColor) {
 					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
 				   }
@@ -2657,9 +2558,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
-	   // Obs³uga roszady
 	   if (kingColor == WHITE && !white_king_moved && !white_king_on_checked) {
-		   // SprawdŸ roszadê po stronie królewskiej (król w prawo)
 		   custom_picturebox^ kingsideRook = pictureBoxes[startRow][7];
 		   if (kingsideRook->check_piece() == ROOK &&
 			   kingsideRook->check_color() == WHITE &&
@@ -2673,17 +2572,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 			   }
 
-			   // Upewnij siê, ¿e pola miêdzy królem a wie¿¹ s¹ wolne i nie s¹ pod atakiem
 			   if (pathClear &&
 				   !is_square_under_attack(startRow, startCol + 1, WHITE) &&
 				   !is_square_under_attack(startRow, startCol + 2, WHITE)) {
 
-				   pictureBoxes[startRow][startCol + 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
-				   kingsideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
+				   pictureBoxes[startRow][startCol + 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; 
+				   kingsideRook->BackColor = System::Drawing::Color::LightBlue; 
 			   }
 		   }
 
-		   // SprawdŸ roszadê po stronie hetmañskiej (król w lewo)
 		   custom_picturebox^ queensideRook = pictureBoxes[startRow][0];
 		   if (queensideRook->check_piece() == ROOK &&
 			   queensideRook->check_color() == WHITE &&
@@ -2697,18 +2594,16 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 			   }
 
-			   // Upewnij siê, ¿e pola miêdzy królem a wie¿¹ s¹ wolne i nie s¹ pod atakiem
 			   if (pathClear &&
 				   !is_square_under_attack(startRow, startCol - 1, WHITE) &&
 				   !is_square_under_attack(startRow, startCol - 2, WHITE)) {
 
-				   pictureBoxes[startRow][startCol - 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
-				   queensideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
+				   pictureBoxes[startRow][startCol - 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
+				   queensideRook->BackColor = System::Drawing::Color::LightBlue;
 			   }
 		   }
 	   }
 	   else if (kingColor == BLACK && !black_king_moved && !black_king_on_checked) {
-		   // Analogiczna obs³uga roszady dla czarnego króla
 		   custom_picturebox^ kingsideRook = pictureBoxes[startRow][7];
 		   if (kingsideRook->check_piece() == ROOK &&
 			   kingsideRook->check_color() == BLACK &&
@@ -2726,8 +2621,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   !is_square_under_attack(startRow, startCol + 1, BLACK) &&
 				   !is_square_under_attack(startRow, startCol + 2, BLACK)) {
 
-				   pictureBoxes[startRow][startCol + 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
-				   kingsideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
+				   pictureBoxes[startRow][startCol + 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; 
+				   kingsideRook->BackColor = System::Drawing::Color::LightBlue; 
 			   }
 		   }
 
@@ -2748,8 +2643,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   !is_square_under_attack(startRow, startCol - 1, BLACK) &&
 				   !is_square_under_attack(startRow, startCol - 2, BLACK)) {
 
-				   pictureBoxes[startRow][startCol - 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; // Podœwietlenie pola na roszadê
-				   queensideRook->BackColor = System::Drawing::Color::LightBlue; // Podœwietlenie wie¿y
+				   pictureBoxes[startRow][startCol - 2]->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png"; 
+				   queensideRook->BackColor = System::Drawing::Color::LightBlue; 
 			   }
 		   }
 	   }
@@ -2759,15 +2654,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    {
 	   for (int i = 0; i < 8; ++i) {
 		   for (int j = 0; j < 8; ++j) {
-
-			   // Reset t³a, jeœli pole by³o podœwietlone na zielono lub szaro
 			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen ||
 				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::Gray ||
 				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::LightBlue) {
 
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 			   }
-			   // Resetowanie obrazka dla pól podœwietlonych jako mo¿liwe ruchy
+
 			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
 			   {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
@@ -2775,22 +2668,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-
-	   one_piece = true; // Reset stanu, by pozwoliæ na wybór nowej figury
+	   one_piece = true;
    }
 
    bool BoardForm::is_square_under_attack(int row, int col, PieceColor kingColor)
    {
 	   if (row < 0 || row >= 8 || col < 0 || col >= 8) {
-		   return false; // Pozycja poza zakresem planszy nie mo¿e byæ atakowana
+		   return false;
 	   }
 
-	   // Iterate through all squares on the board
 	   for (int r = 0; r < 8; ++r) {
 		   for (int c = 0; c < 8; ++c) {
 			   custom_picturebox^ pieceBox = pictureBoxes[r][c];
 			   if (pieceBox->check_color() != kingColor && pieceBox->check_piece() != EMPTY) {
-				   // If the piece is an opponent piece and not empty, check if it attacks the square
+
 				   if (is_king_under_attack(pieceBox, row, col)) {
 					   return true;
 				   }
@@ -2841,9 +2732,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-	   // SprawdŸ szachowanie bia³ego króla
 	   if (whiteKingBox != nullptr) {
-		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 		   for (int i = 0; i < 8; i++) {
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color() == BLACK && pictureBoxes[i][j] != selected_piece) {
@@ -2852,9 +2741,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[i][j]->row = i;
 
 					   if (is_king_under_attack(pictureBoxes[i][j], whiteKingRow, whiteKingCol)) {
-						   // Ustawienie obrazka na szachowanego króla
 						   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king_checked.png";
-						   // Ustaw ostatni¹ ruchom¹ figurê
 						   last_moved_piece = selected_piece;
 						   white_king_on_checked = true;
 						   return true;
@@ -2866,13 +2753,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   whiteKingBox->row = whiteKingRow;
 		   whiteKingBox->column = whiteKingCol;
 		   whiteKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_king.png";
-
-
 	   }
 
-	   // SprawdŸ szachowanie czarnego króla
 	   if (blackKingBox != nullptr) {
-		   // Przejrzyj wszystkie pola, aby znaleŸæ figury przeciwnika
 		   for (int i = 0; i < 8; i++) {
 			   for (int j = 0; j < 8; j++) {
 				   if (pictureBoxes[i][j]->check_color() == WHITE && pictureBoxes[i][j] != selected_piece) {
@@ -2881,18 +2764,14 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pictureBoxes[i][j]->row = i;
 
 					   if (is_king_under_attack(pictureBoxes[i][j], blackKingRow, blackKingCol)) {
-						   // Ustawienie obrazka na szachowanego król
 						   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king_checked.png";
-						   // Ustaw ostatni¹ ruchom¹ figurê
 						   last_moved_piece = selected_piece;
 						   black_king_on_checked = true;
 						   return true;
 					   }
 				   }
 			   }
-
 		   }
-		   // Powrót do normalnego obrazka króla po wyjœciu ze szacha
 		   blackKingBox->row = blackKingRow;
 		   blackKingBox->column = blackKingCol;
 		   blackKingBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_king.png";
@@ -2971,42 +2850,34 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
    bool BoardForm::check_Bishop_Attack(custom_picturebox^ bishopBox, int kingRow, int kingCol)
    {
-	   // Pobranie pozycji goñca
 	   int bishopRow = bishopBox->row;
 	   int bishopCol = bishopBox->column;
 
-	   // Ograniczenie do zakresu planszy
 	   bishopRow = Math::Min(Math::Max(bishopRow, 0), 7);
 	   bishopCol = Math::Min(Math::Max(bishopCol, 0), 7);
 
-	   // Sprawdzenie, czy król i goniec znajduj¹ siê na tej samej przek¹tnej
 	   if (abs(kingRow - bishopRow) == abs(kingCol - bishopCol)) {
-		   // Okreœlenie kierunku ruchu
 		   int rowDirection = (kingRow > bishopRow) ? 1 : -1;
 		   int colDirection = (kingCol > bishopCol) ? 1 : -1;
 
 		   int currentRow = bishopRow + rowDirection;
 		   int currentCol = bishopCol + colDirection;
 
-		   // Sprawdzenie wszystkich pól miêdzy goñcem a królem
 		   while (currentRow != kingRow || currentCol != kingCol) {
-			   // Upewnienie siê, ¿e wartoœci s¹ w zakresie planszy
 			   if (currentRow < 0 || currentRow > 7 || currentCol < 0 || currentCol > 7) {
-				   return false; // Jeœli wychodzi poza planszê, to goniec nie atakuje króla
+				   return false;
 			   }
 
-			   // Sprawdzenie, czy pole jest zajête
 			   if (pictureBoxes[currentRow][currentCol]->check_piece() != NONE) {
-				   return false; // Jeœli cokolwiek stoi na drodze, goniec nie mo¿e atakowaæ króla
+				   return false;
 			   }
 
 			   currentRow += rowDirection;
 			   currentCol += colDirection;
 		   }
 
-		   // Sprawdzenie, czy pole, na które zmierza goniec, jest równe polu króla
 		   if (currentRow == kingRow && currentCol == kingCol) {
-			   return true; // Jeœli droga jest wolna i goniec mo¿e dotrzeæ do króla
+			   return true; 
 		   }
 	   }
 
@@ -3156,7 +3027,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    //check is king chechmated
 
    bool BoardForm::is_king_still_in_check_after_move(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target) {
-	   // Temporarily make the move
 	   Piece originalPiece = target->check_piece();
 	   PieceColor originalColor = target->check_color();
 	   String^ originalImageLocation = target->ImageLocation;
@@ -3171,7 +3041,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 
 	   bool stillInCheck = king_still_checked(pb, selected, target, nullptr);
 
-	   // Revert the move
 	   selected->set_piece(target->check_piece());
 	   selected->set_color(target->check_color());
 	   selected->ImageLocation = target->ImageLocation;
@@ -3189,13 +3058,10 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int col = currentBox->column;
 	   PieceColor pieceColor = currentBox->check_color();
 
-	   // Kierunek ruchu pionka zale¿y od koloru (bia³e pionki id¹ w górê, czarne w dó³)
 	   int direction = (pieceColor == WHITE) ? -1 : 1;
 
-	   // Sprawdzamy ruch do przodu o jedno pole
 	   if (row + direction >= 0 && row + direction < 8) {
 		   if (pb[row + direction][col]->check_piece() == EMPTY) {
-			   // Symulujemy ruch pionka
 			   custom_picturebox^ originalBox = pb[row + direction][col];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3209,9 +3075,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzamy, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr)) {
-				   // Przywracamy pierwotny stan
 				   currentBox->ImageLocation = pb[row + direction][col]->ImageLocation;
 				   currentBox->set_piece(pb[row + direction][col]->check_piece());
 				   currentBox->set_color(pb[row + direction][col]->check_color());
@@ -3220,10 +3084,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[row + direction][col]->set_piece(originalPiece);
 				   pb[row + direction][col]->set_color(originalColor);
 
-				   return true; // Pionek mo¿e zas³oniæ szacha
+				   return true;
 			   }
-
-			   // Przywracamy pierwotny stan
 			   currentBox->ImageLocation = pb[row + direction][col]->ImageLocation;
 			   currentBox->set_piece(pb[row + direction][col]->check_piece());
 			   currentBox->set_color(pb[row + direction][col]->check_color());
@@ -3234,11 +3096,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
-	   // Sprawdzamy ruch do przodu o dwa pola (tylko z pozycji pocz¹tkowej)
 	   if ((pieceColor == WHITE && row == 6) || (pieceColor == BLACK && row == 1)) {
 		   if (pb[row + direction][col]->check_piece() == EMPTY &&
 			   pb[row + 2 * direction][col]->check_piece() == EMPTY) {
-			   // Symulujemy ruch pionka
 			   custom_picturebox^ originalBox = pb[row + 2 * direction][col];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3252,9 +3112,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzamy, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr)) {
-				   // Przywracamy pierwotny stan
 				   currentBox->ImageLocation = pb[row + 2 * direction][col]->ImageLocation;
 				   currentBox->set_piece(pb[row + 2 * direction][col]->check_piece());
 				   currentBox->set_color(pb[row + 2 * direction][col]->check_color());
@@ -3263,10 +3121,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[row + 2 * direction][col]->set_piece(originalPiece);
 				   pb[row + 2 * direction][col]->set_color(originalColor);
 
-				   return true; // Pionek mo¿e zas³oniæ szacha
+				   return true;
 			   }
 
-			   // Przywracamy pierwotny stan
 			   currentBox->ImageLocation = pb[row + 2 * direction][col]->ImageLocation;
 			   currentBox->set_piece(pb[row + 2 * direction][col]->check_piece());
 			   currentBox->set_color(pb[row + 2 * direction][col]->check_color());
@@ -3277,11 +3134,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
-	   // Sprawdzamy ruchy bij¹ce (po skosie)
 	   if (col > 0 && row + direction >= 0 && row + direction < 8) {
 		   if (pb[row + direction][col - 1]->check_piece() != EMPTY &&
 			   pb[row + direction][col - 1]->check_color() != pieceColor) {
-			   // Symulujemy ruch pionka
 			   custom_picturebox^ originalBox = pb[row + direction][col - 1];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3295,9 +3150,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzamy, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr)) {
-				   // Przywracamy pierwotny stan
 				   currentBox->ImageLocation = pb[row + direction][col - 1]->ImageLocation;
 				   currentBox->set_piece(pb[row + direction][col - 1]->check_piece());
 				   currentBox->set_color(pb[row + direction][col - 1]->check_color());
@@ -3306,10 +3159,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[row + direction][col - 1]->set_piece(originalPiece);
 				   pb[row + direction][col - 1]->set_color(originalColor);
 
-				   return true; // Pionek mo¿e zas³oniæ szacha
+				   return true; 
 			   }
 
-			   // Przywracamy pierwotny stan
 			   currentBox->ImageLocation = pb[row + direction][col - 1]->ImageLocation;
 			   currentBox->set_piece(pb[row + direction][col - 1]->check_piece());
 			   currentBox->set_color(pb[row + direction][col - 1]->check_color());
@@ -3323,7 +3175,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   if (col < 7 && row + direction >= 0 && row + direction < 8) {
 		   if (pb[row + direction][col + 1]->check_piece() != EMPTY &&
 			   pb[row + direction][col + 1]->check_color() != pieceColor) {
-			   // Symulujemy ruch pionka
 			   custom_picturebox^ originalBox = pb[row + direction][col + 1];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3337,9 +3188,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzamy, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr)) {
-				   // Przywracamy pierwotny stan
 				   currentBox->ImageLocation = pb[row + direction][col + 1]->ImageLocation;
 				   currentBox->set_piece(pb[row + direction][col + 1]->check_piece());
 				   currentBox->set_color(pb[row + direction][col + 1]->check_color());
@@ -3348,10 +3197,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[row + direction][col + 1]->set_piece(originalPiece);
 				   pb[row + direction][col + 1]->set_color(originalColor);
 
-				   return true; // Pionek mo¿e zas³oniæ szacha
+				   return true;
 			   }
-
-			   // Przywracamy pierwotny stan
 			   currentBox->ImageLocation = pb[row + direction][col + 1]->ImageLocation;
 			   currentBox->set_piece(pb[row + direction][col + 1]->check_piece());
 			   currentBox->set_color(pb[row + direction][col + 1]->check_color());
@@ -3388,7 +3235,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
         {
             if (pb[newRow][newCol]->check_color() != pieceColor)
             {
-                // Symulujemy ruch skoczka
                 custom_picturebox^ originalBox = pb[newRow][newCol];
                 Piece originalPiece = originalBox->check_piece();
                 PieceColor originalColor = originalBox->check_color();
@@ -3402,10 +3248,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
                 currentBox->set_piece(EMPTY);
                 currentBox->set_color(NONE);
 
-                // Sprawdzamy, czy król jest nadal w szachu
                 if (!king_still_checked(pb, nullptr, nullptr, nullptr))
                 {
-                    // Przywracamy pierwotny stan
                     currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
                     currentBox->set_piece(pb[newRow][newCol]->check_piece());
                     currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3414,10 +3258,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
                     pb[newRow][newCol]->set_piece(originalPiece);
                     pb[newRow][newCol]->set_color(originalColor);
 
-                    return true; // Skoczek mo¿e zas³oniæ szacha
+                    return true; 
                 }
-
-                // Przywracamy pierwotny stan
                 currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
                 currentBox->set_piece(pb[newRow][newCol]->check_piece());
                 currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3437,7 +3279,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int col = currentBox->column;
 	   PieceColor pieceColor = currentBox->check_color();
 
-	   // Sprawdzenie mo¿liwych kierunków ruchu goñca (diagonalnie)
 	   array<Point>^ bishopDirections = gcnew array<Point>
 	   {
 		   Point(-1, -1), Point(-1, 1),
@@ -3452,9 +3293,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8)
 		   {
 			   if (pb[newRow][newCol]->check_color() == pieceColor)
-				   break; // Stop jeœli napotkano w³asn¹ figurê
+				   break; 
 
-			   // Symulacja ruchu goñca
 			   custom_picturebox^ originalBox = pb[newRow][newCol];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3468,10 +3308,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzenie, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr))
 			   {
-				   // Przywrócenie pierwotnego stanu
 				   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 				   currentBox->set_piece(pb[newRow][newCol]->check_piece());
 				   currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3480,10 +3318,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[newRow][newCol]->set_piece(originalPiece);
 				   pb[newRow][newCol]->set_color(originalColor);
 
-				   return true; // Goñcze mo¿e zas³oniæ szacha
+				   return true; 
 			   }
-
-			   // Przywrócenie pierwotnego stanu
 			   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 			   currentBox->set_piece(pb[newRow][newCol]->check_piece());
 			   currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3492,7 +3328,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   pb[newRow][newCol]->set_piece(originalPiece);
 			   pb[newRow][newCol]->set_color(originalColor);
 
-			   // Przesuniêcie do kolejnego pola na przek¹tnej
 			   newRow += direction.X;
 			   newCol += direction.Y;
 		   }
@@ -3507,13 +3342,11 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int col = currentBox->column;
 	   PieceColor pieceColor = currentBox->check_color();
 
-	   // Sprawdzenie mo¿liwych kierunków ruchu wie¿y (poziomo i pionowo)
 	   array<Point>^ rookDirections = gcnew array<Point>
 	   {
-		   Point(-1, 0), Point(1, 0), // ruchy pionowe
-			   Point(0, -1), Point(0, 1)  // ruchy poziome
+		   Point(-1, 0), Point(1, 0), 
+			   Point(0, -1), Point(0, 1)  
 	   };
-
 	   for each (Point direction in rookDirections)
 	   {
 		   int newRow = row + direction.X;
@@ -3522,9 +3355,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8)
 		   {
 			   if (pb[newRow][newCol]->check_color() == pieceColor)
-				   break; // Stop jeœli napotkano w³asn¹ figurê
+				   break; 
 
-			   // Symulacja ruchu wie¿y
 			   custom_picturebox^ originalBox = pb[newRow][newCol];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3538,10 +3370,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzenie, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr))
 			   {
-				   // Przywracanie pierwotnego stanu
 				   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 				   currentBox->set_piece(pb[newRow][newCol]->check_piece());
 				   currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3550,10 +3380,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[newRow][newCol]->set_piece(originalPiece);
 				   pb[newRow][newCol]->set_color(originalColor);
 
-				   return true; // Wie¿a mo¿e zas³oniæ szacha
+				   return true;
 			   }
 
-			   // Przywracanie pierwotnego stanu
 			   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 			   currentBox->set_piece(pb[newRow][newCol]->check_piece());
 			   currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3562,7 +3391,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   pb[newRow][newCol]->set_piece(originalPiece);
 			   pb[newRow][newCol]->set_color(originalColor);
 
-			   // Przesuniêcie do kolejnego pola w kierunku
 			   newRow += direction.X;
 			   newCol += direction.Y;
 		   }
@@ -3577,13 +3405,12 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 	   int col = currentBox->column;
 	   PieceColor pieceColor = currentBox->check_color();
 
-	   // Tablica kierunków ruchu hetmana (poziomo, pionowo i po skosie)
 	   array<Point>^ queenDirections = gcnew array<Point>
 	   {
-		   Point(-1, 0), Point(1, 0),    // ruchy pionowe
-			   Point(0, -1), Point(0, 1),    // ruchy poziome
-			   Point(-1, -1), Point(-1, 1),  // ruchy po skosie w górê
-			   Point(1, -1), Point(1, 1)     // ruchy po skosie w dó³
+		   Point(-1, 0), Point(1, 0),    
+			   Point(0, -1), Point(0, 1),   
+			   Point(-1, -1), Point(-1, 1),  
+			   Point(1, -1), Point(1, 1)     
 	   };
 
 	   for each (Point direction in queenDirections)
@@ -3594,9 +3421,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8)
 		   {
 			   if (pb[newRow][newCol]->check_color() == pieceColor)
-				   break; // Stop jeœli napotkano w³asn¹ figurê
+				   break;
 
-			   // Symulacja ruchu hetmana
 			   custom_picturebox^ originalBox = pb[newRow][newCol];
 			   Piece originalPiece = originalBox->check_piece();
 			   PieceColor originalColor = originalBox->check_color();
@@ -3610,10 +3436,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   currentBox->set_piece(EMPTY);
 			   currentBox->set_color(NONE);
 
-			   // Sprawdzenie, czy król jest nadal w szachu
 			   if (!king_still_checked(pb, nullptr, nullptr, nullptr))
 			   {
-				   // Przywracanie pierwotnego stanu
 				   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 				   currentBox->set_piece(pb[newRow][newCol]->check_piece());
 				   currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3622,10 +3446,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[newRow][newCol]->set_piece(originalPiece);
 				   pb[newRow][newCol]->set_color(originalColor);
 
-				   return true; // Hetman mo¿e zas³oniæ szacha
+				   return true;
 			   }
 
-			   // Przywracanie pierwotnego stanu
 			   currentBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 			   currentBox->set_piece(pb[newRow][newCol]->check_piece());
 			   currentBox->set_color(pb[newRow][newCol]->check_color());
@@ -3634,7 +3457,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   pb[newRow][newCol]->set_piece(originalPiece);
 			   pb[newRow][newCol]->set_color(originalColor);
 
-			   // Przesuniêcie do kolejnego pola w kierunku
 			   newRow += direction.X;
 			   newCol += direction.Y;
 		   }
@@ -3655,7 +3477,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   Point(1, -1), Point(1, 0), Point(1, 1)
 	   };
 
-	   // Sprawdzenie czy król mo¿e wykonaæ jakiœ ruch
 	   for each (Point move in kingMoves) {
 		   int newRow = kingRow + move.X;
 		   int newCol = kingCol + move.Y;
@@ -3667,19 +3488,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   PieceColor originalColor = originalBox->check_color();
 				   String^ originalImageLocation = originalBox->ImageLocation;
 
-				   // Przeniesienie króla na docelow¹ pozycjê
 				   pb[newRow][newCol]->ImageLocation = kingBox->ImageLocation;
 				   pb[newRow][newCol]->set_piece(kingBox->check_piece());
 				   pb[newRow][newCol]->set_color(kingBox->check_color());
 
-				   // Aktualizacja pozycji króla
 				   kingBox->ImageLocation = "";
 				   kingBox->set_piece(EMPTY);
 				   kingBox->set_color(NONE);
 
-				   // Sprawdzenie czy po ruchu król nadal jest w szachu
 				   if (!king_still_checked(pb, pb[newRow][newCol], originalBox, nullptr)) {
-					   // Przywrócenie pierwotnego stanu
 					   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 					   kingBox->set_piece(pb[newRow][newCol]->check_piece());
 					   kingBox->set_color(pb[newRow][newCol]->check_color());
@@ -3688,10 +3505,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   pb[newRow][newCol]->set_piece(originalPiece);
 					   pb[newRow][newCol]->set_color(originalColor);
 
-					   return false; // Król mo¿e siê unikn¹æ szacha
+					   return false; 
 				   }
-
-				   // Przywrócenie pierwotnego stanu
 				   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 				   kingBox->set_piece(pb[newRow][newCol]->check_piece());
 				   kingBox->set_color(pb[newRow][newCol]->check_color());
@@ -3702,15 +3517,13 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 		   }
 	   }
-
-	   // Sprawdzenie czy król mo¿e zbic figurê przeciwnika
 	   for each (Point move in kingMoves) {
 		   int newRow = kingRow + move.X;
 		   int newCol = kingCol + move.Y;
 
 		   if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
 			   if (pb[newRow][newCol]->check_color() == kingBox->check_color()) {
-				   continue; // Ignoruj pola z w³asnymi figurami
+				   continue; 
 			   }
 
 			   custom_picturebox^ originalBox = pb[newRow][newCol];
@@ -3718,19 +3531,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   PieceColor originalColor = originalBox->check_color();
 			   String^ originalImageLocation = originalBox->ImageLocation;
 
-			   // Przeniesienie króla na docelow¹ pozycjê
 			   pb[newRow][newCol]->ImageLocation = kingBox->ImageLocation;
 			   pb[newRow][newCol]->set_piece(kingBox->check_piece());
 			   pb[newRow][newCol]->set_color(kingBox->check_color());
 
-			   // Aktualizacja pozycji króla
 			   kingBox->ImageLocation = "";
 			   kingBox->set_piece(EMPTY);
 			   kingBox->set_color(NONE);
 
-			   // Sprawdzenie czy po ruchu król nadal jest w szachu
 			   if (!king_still_checked(pb, pb[newRow][newCol], originalBox, nullptr)) {
-				   // Przywrócenie pierwotnego stanu
 				   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 				   kingBox->set_piece(pb[newRow][newCol]->check_piece());
 				   kingBox->set_color(pb[newRow][newCol]->check_color());
@@ -3739,10 +3548,9 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   pb[newRow][newCol]->set_piece(originalPiece);
 				   pb[newRow][newCol]->set_color(originalColor);
 
-				   return false; // Król mo¿e siê unikn¹æ szacha
+				   return false;
 			   }
 
-			   // Przywrócenie pierwotnego stanu
 			   kingBox->ImageLocation = pb[newRow][newCol]->ImageLocation;
 			   kingBox->set_piece(pb[newRow][newCol]->check_piece());
 			   kingBox->set_color(pb[newRow][newCol]->check_color());
@@ -3753,8 +3561,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   }
 	   }
 
-
-	   // Check if any piece can block the check or capture the threatening piece
 	   for (int row = 0; row < 8; row++) {
 		   for (int col = 0; col < 8; col++) {
 			   custom_picturebox^ currentBox = pb[row][col];
