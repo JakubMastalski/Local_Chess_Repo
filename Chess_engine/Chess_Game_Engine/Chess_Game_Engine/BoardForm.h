@@ -3,6 +3,7 @@
 #include "custom_picturebox.h"
 #include <cmath> 
 #include <algorithm> 
+#include <math.h>
 
 
 namespace ChessGameEngine {

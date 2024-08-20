@@ -281,31 +281,31 @@ public:
                  return this->color;
              }
          }
-        public:
-            void set_piece(custom_picturebox^ pb_piece, Piece newPiece)
-            {
-                if (pb_piece == nullptr)
-                {
-                    MessageBox::Show("Error: Picture box does not contain a valid piece");
-                    return;
-                }
-                else
-                {
-                    pb_piece->piece = newPiece;
-                }
-            }
-
-      public:
-        void set_color(custom_picturebox^ pb_piececolor, PieceColor newColor)
-        { 
-            if (pb_piececolor == nullptr)
+    public:
+        void set_piece(Piece newPiece)
+        {
+            if (this == nullptr)
             {
                 MessageBox::Show("Error: Picture box does not contain a valid piece");
                 return;
             }
             else
             {
-                pb_piececolor->color = newColor;
+                this->piece = newPiece;
+            }
+        }
+
+      public:
+        void set_color(PieceColor newColor)
+        { 
+            if (this == nullptr)
+            {
+                MessageBox::Show("Error: Picture box does not contain a valid piece");
+                return;
+            }
+            else
+            {
+                this->color = newColor;
             }
         }
 private:
