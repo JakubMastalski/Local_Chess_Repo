@@ -203,7 +203,6 @@ private: System::Void setTimeToolStripMenuItem_Click(System::Object^ sender, Sys
     private:bool check_Bishop_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
 	private:bool check_Rook_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
     private:bool check_Queen_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
-	private:bool check_King_Attack(custom_picturebox^ attackingKing, int targetKingRow, int targetKingCol);
 	private:bool is_king_under_attack(custom_picturebox^ piece, int kingRow, int kingCol);
 	private:bool king_still_checked(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target, custom_picturebox^ last_moved);
     private: System::Void picturebox_bishop_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);

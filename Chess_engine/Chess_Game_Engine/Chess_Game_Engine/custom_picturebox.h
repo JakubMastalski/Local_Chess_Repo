@@ -255,32 +255,32 @@ public:
        // Geter PieceColor color
         public:
             
-            Piece check_piece(custom_picturebox^ pb_piece)
+            Piece custom_picturebox::check_piece()
             {
-                if (pb_piece == nullptr)
+                if (this == nullptr)
                 {
                     MessageBox::Show("Error: Picture box does not contain a valid piece");
                     return Piece::EMPTY;
                 }
                 else
                 {
-                    return pb_piece->piece;
+                    return this->piece;
                 }
             }
             
-        public:
-        PieceColor check_color(custom_picturebox^ pb_piececolor)
-        {
-            if (pb_piececolor == nullptr)
-            {
-                MessageBox::Show("Error: Picture box does not contain a valid piece");
-                return PieceColor::NONE;
-            }
-            else
-            {
-                return pb_piececolor->color;
-            }
-        }
+     public:
+         PieceColor check_color()
+         {
+             if (this == nullptr)
+             {
+                 MessageBox::Show("Error: Picture box does not contain a valid piece");
+                 return PieceColor::NONE;
+             }
+             else
+             {
+                 return this->color;
+             }
+         }
         public:
             void set_piece(custom_picturebox^ pb_piece, Piece newPiece)
             {
