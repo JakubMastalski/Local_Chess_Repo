@@ -2921,11 +2921,22 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   return check_Rook_Attack(piece, kingRow, kingCol);
 	   case QUEEN:
 		   return check_Queen_Attack(piece, kingRow, kingCol);
-	
+	   case KING:
+		   return check_King_Attack(piece, kingRow, kingCol);
 	   default:
 		   return false;
 	   }
    }
+
+   bool BoardForm::check_King_Attack(custom_picturebox^ attackingKing, int targetKingRow, int targetKingCol)
+   {
+	   int kingRow = attackingKing->row;
+	   int kingCol = attackingKing->column;
+
+	   // Sprawdzenie, czy król atakuj¹cy jest w odleg³oœci 1 pola od króla docelowego
+	   return (abs(kingRow - targetKingRow) <= 1 && abs(kingCol - targetKingCol) <= 1);
+   }
+
 
    bool BoardForm::check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol)
    {
