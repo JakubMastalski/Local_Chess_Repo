@@ -16,9 +16,6 @@ namespace ChessGameEngine {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Summary for BoardForm
-	/// </summary>
 	public ref class BoardForm : public System::Windows::Forms::Form
 	{
 	private:
