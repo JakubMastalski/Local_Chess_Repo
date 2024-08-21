@@ -41,7 +41,7 @@ public:
     custom_picturebox()
     {
         BackColor = System::Drawing::Color::Transparent;
-        Size = System::Drawing::Size(50, 50);
+        Size = System::Drawing::Size(52, 50);
         SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
         TabIndex = 6;
         TabStop = false;

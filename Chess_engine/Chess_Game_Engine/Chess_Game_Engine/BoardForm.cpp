@@ -2118,45 +2118,45 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves_PAWM(selectedPictureBox);
 						if (selectedPictureBox->ImageLocation != "")
-							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+							selectedPictureBox->BackColor = System::Drawing::Color::ForestGreen;
 						break;
 					case KNIGHT:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves_KNIGHT(selectedPictureBox);
 						if (selectedPictureBox->ImageLocation != "")
-							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+							selectedPictureBox->BackColor = System::Drawing::Color::ForestGreen;
 						break;
 					case BISHOP:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves_BISHOP(selectedPictureBox);
 						if (selectedPictureBox->ImageLocation != "")
-							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+							selectedPictureBox->BackColor = System::Drawing::Color::ForestGreen;
 						break;
 					case ROOK:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves_ROOK(selectedPictureBox);
 
 						if (selectedPictureBox->ImageLocation != "")
-							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+							selectedPictureBox->BackColor = System::Drawing::Color::ForestGreen;
 						break;
 					case QUEEN:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves_QUEEN(selectedPictureBox);
 
 						if (selectedPictureBox->ImageLocation != "")
-							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+							selectedPictureBox->BackColor = System::Drawing::Color::ForestGreen;
 						break;
 					case KING:
 						chosen_piece = selectedPictureBox;
 						highlight_possible_moves_KING(selectedPictureBox);
 
 						if (selectedPictureBox->ImageLocation != "")
-							selectedPictureBox->BackColor = System::Drawing::Color::Gray;
+							selectedPictureBox->BackColor = System::Drawing::Color::ForestGreen;
 						break;
 					case EMPTY:
 						break;
 					default:
-						MessageBox::Show("incorrect pieces.");
+						MessageBox::Show("Incorrect pieces.");
 						break;
 					}
 				}
@@ -2254,7 +2254,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   if (target_pb->check_piece() != EMPTY &&
 						   target_pb->check_color() != selected_pb->check_color()) {
 						   color_before = target_pb->check_color();
-						   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+						   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+						   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 						   target_pb->set_color(GREEN);
 					   }
 
@@ -2311,7 +2312,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   }
 				   else
 				   {
-					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+					   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+					   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 				   }
 			   }
 		   }
@@ -2360,7 +2362,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 			   }
 			   else if (target_pb->check_color() != bishopColor) {
-				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+				   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 				   break;
 			   }
 			   else {
@@ -2414,7 +2417,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 
 			   else if (target_pb->check_color() != rookColor) {
-				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+				   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 				   break;
 			   }
 			   else {
@@ -2476,7 +2480,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 
 			   else if (target_pb->check_color() != queenColor) {
-				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+				   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 				   break;
 			   }
 
@@ -2505,7 +2510,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   }
 
 			   else if (target_pb->check_color() != queenColor) {
-				   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+				   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+				   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 				   break;
 			   }
 
@@ -2552,7 +2558,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 					   target_pb->ImageLocation = "C:\\Users\\USER\\Desktop\\on_move.png";
 				   }
 				   else if (target_pb->check_color() != kingColor) {
-					   target_pb->BackColor = System::Drawing::Color::DarkGreen;
+					   target_pb->BackgroundImage = Image::FromFile("C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\BG.png");
+					   target_pb->BackgroundImageLayout = ImageLayout::Stretch;
 				   }
 			   }
 		   }
@@ -2654,17 +2661,20 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    {
 	   for (int i = 0; i < 8; ++i) {
 		   for (int j = 0; j < 8; ++j) {
-			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::DarkGreen ||
-				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::Gray ||
+			   if (pictureBoxes[i][j]->BackColor == System::Drawing::Color::ForestGreen ||
 				   pictureBoxes[i][j]->BackColor == System::Drawing::Color::LightBlue) {
 
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 			   }
 
-			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png")
-			   {
+			   if (pictureBoxes[i][j]->ImageLocation == "C:\\Users\\USER\\Desktop\\on_move.png") {
 				   pictureBoxes[i][j]->BackColor = System::Drawing::Color::Transparent;
 				   pictureBoxes[i][j]->ImageLocation = "";
+			   }
+
+			   if (pictureBoxes[i][j]->BackgroundImage != nullptr) {
+				   pictureBoxes[i][j]->BackgroundImage = nullptr;
+				   pictureBoxes[i][j]->BackgroundImageLayout = ImageLayout::None;
 			   }
 		   }
 	   }
@@ -3560,6 +3570,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			   pb[newRow][newCol]->set_color(originalColor);
 		   }
 	   }
+
 
 	   for (int row = 0; row < 8; row++) {
 		   for (int col = 0; col < 8; col++) {
