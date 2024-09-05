@@ -21,10 +21,10 @@
     <ClCompile Include="BoardForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="custom_picturebox.cpp">
+    <ClCompile Include="ChessPiece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Piece_Class.cpp">
+    <ClCompile Include="ChessBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +32,13 @@
     <ClInclude Include="BoardForm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InitializeChessBoard.h">
+    <ClInclude Include="ChessPiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="custom_picturebox.h">
+    <ClInclude Include="ChessBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Piece_Class.h">
+    <ClInclude Include="ChessEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

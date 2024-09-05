@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <vector>
-#include "custom_picturebox.h"
 #include <cmath> 
 #include <algorithm> 
 #include <math.h>
+#include "ChessPiece.h"
+#include "ChessBoard.h"
 
 
 namespace ChessGameEngine {
@@ -108,25 +109,26 @@ namespace ChessGameEngine {
 		Point startLocation_selected;
 		Point startLocation_target;
 
-		custom_picturebox^ onHit_target = nullptr;
-		custom_picturebox^ hiddenPictureBox = nullptr;
-		custom_picturebox^ selectedPictureBox = nullptr;
-		custom_picturebox^ targetPictureBox = nullptr;
-		custom_picturebox^ white_king = nullptr;
-		custom_picturebox^ black_king = nullptr;
-		custom_picturebox^ last_moved_piece = nullptr;
-		custom_picturebox^ onMove_target = nullptr;
-		custom_picturebox^ target_pb = nullptr;
-		custom_picturebox^ clicked_pb = nullptr;
-		custom_picturebox^ enPassant_pb = nullptr;
-		custom_picturebox^ new_selected = nullptr;
-		custom_picturebox^ enPassantTarget_pb = nullptr;
-		custom_picturebox^ chosen_piece = nullptr;
-		custom_picturebox^ onMove_target_twoSteps = nullptr;
-		custom_picturebox^ passantable = nullptr;
-		custom_picturebox^ flipped_black_kingbox = nullptr;
-		custom_picturebox^ flipped_white_kingbox = nullptr;
-		custom_picturebox^ pictureBoxInstance = gcnew custom_picturebox();
+		ChessPiece^ onHit_target = nullptr;
+		ChessPiece^ hiddenPictureBox = nullptr;
+		ChessPiece^ target_pb = nullptr;
+		ChessPiece^ clicked_pb = nullptr;
+		ChessPiece^ enPassantTarget_pb = nullptr;
+		ChessBoard^ pictureBoxInstance = gcnew ChessBoard();
+
+		ChessPiece^ selectedPictureBox = nullptr;
+		ChessPiece^ targetPictureBox = nullptr;
+		ChessPiece^ white_king = nullptr;
+		ChessPiece^ black_king = nullptr;
+		ChessPiece^ last_moved_piece = nullptr;
+		ChessPiece^ onMove_target = nullptr;
+		ChessPiece^ enPassant_pb = nullptr;
+		ChessPiece^ new_selected = nullptr;
+		ChessPiece^ chosen_piece = nullptr;
+		ChessPiece^ onMove_target_twoSteps = nullptr;
+		ChessPiece^ passantable = nullptr;
+		ChessPiece^ flipped_black_kingbox = nullptr;
+		ChessPiece^ flipped_white_kingbox = nullptr;
 
 		Control^ controlUnderCursor;
 
@@ -139,7 +141,7 @@ namespace ChessGameEngine {
 		PieceColor pieceColor_selected;
 		PieceColor pieceColor_target;
 
-		array<array<custom_picturebox^>^>^ pictureBoxes;
+		array<array<ChessPiece^>^>^ pictureBoxes;
 
 		String^ file_path;
 		String^ start_filepath;
@@ -171,45 +173,44 @@ private: System::Void picturebox_rook_MouseClick(System::Object^ sender, System:
 private: System::Void picturebox_queen_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 
 	   // Boolean functions
-private: bool change_pb(custom_picturebox^ selected_pb, custom_picturebox^ target_pb);
-private: bool check_Pawnmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-private: bool check_sent(custom_picturebox^ selected_pb);
-private: bool check_Knightmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-private: bool check_Bishopmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-private: bool check_Rookmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-private: bool check_Queenmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-private: bool check_Kingmove(array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected_pb);
-private: bool king_checked(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected_piece);
-private: bool check_Pawn_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
-private: bool check_Knight_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
-private: bool check_Bishop_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
-private: bool check_Rook_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
-private: bool check_Queen_Attack(custom_picturebox^ pawnBox, int kingRow, int kingCol);
-private: bool is_king_under_attack(custom_picturebox^ piece, int kingRow, int kingCol);
-private: bool king_still_checked(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target, custom_picturebox^ last_moved);
-private: bool is_king_still_in_check_after_move(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ selected, custom_picturebox^ target);
-private: bool is_checkmate(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ kingBox);
-private: bool pawn_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
-private: bool knight_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
-private: bool bishop_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
-private: bool rook_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
-private: bool queen_cansaveking(array<array<custom_picturebox^>^>^ pb, custom_picturebox^ currentBox);
+private: bool change_pb(ChessPiece^ selected_pb, ChessPiece^ target_pb);
+private: bool check_Pawnmove(array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected_pb);
+private: bool check_sent(ChessPiece^ selected_pb);
+private: bool check_Knightmove(array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected_pb);
+private: bool check_Bishopmove(array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected_pb);
+private: bool check_Rookmove(array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected_pb);
+private: bool check_Queenmove(array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected_pb);
+private: bool check_Kingmove(array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected_pb);
+private: bool king_checked(array<array<ChessPiece^>^>^ pb, ChessPiece^ selected_piece);
+private: bool check_Pawn_Attack(ChessPiece^ pawnBox, int kingRow, int kingCol);
+private: bool check_Knight_Attack(ChessPiece^ pawnBox, int kingRow, int kingCol);
+private: bool check_Bishop_Attack(ChessPiece^ pawnBox, int kingRow, int kingCol);
+private: bool check_Rook_Attack(ChessPiece^ pawnBox, int kingRow, int kingCol);
+private: bool check_Queen_Attack(ChessPiece^ pawnBox, int kingRow, int kingCol);
+private: bool is_king_under_attack(ChessPiece^ piece, int kingRow, int kingCol);
+private: bool king_still_checked(array<array<ChessPiece^>^>^ pb, ChessPiece^ selected, ChessPiece^ target, ChessPiece^ last_moved);
+private: bool is_king_still_in_check_after_move(array<array<ChessPiece^>^>^ pb, ChessPiece^ selected, ChessPiece^ target);
+private: bool is_checkmate(array<array<ChessPiece^>^>^ pb, ChessPiece^ kingBox);
+private: bool pawn_cansaveking(array<array<ChessPiece^>^>^ pb, ChessPiece^ currentBox);
+private: bool knight_cansaveking(array<array<ChessPiece^>^>^ pb, ChessPiece^ currentBox);
+private: bool bishop_cansaveking(array<array<ChessPiece^>^>^ pb, ChessPiece^ currentBox);
+private: bool rook_cansaveking(array<array<ChessPiece^>^>^ pb, ChessPiece^ currentBox);
+private: bool queen_cansaveking(array<array<ChessPiece^>^>^ pb, ChessPiece^ currentBox);
 private: bool is_square_under_attack(int row, int col, PieceColor kingColor);
 
 	   // Void functions
-private: void player_turn(bool onMove, array<array<custom_picturebox^>^>^ pictureBoxes, custom_picturebox^ selected);
-private: void castle(custom_picturebox^ king, custom_picturebox^ king_dest, custom_picturebox^ rook, custom_picturebox^ rook_dest);
-private: void reset_pb(array<array<custom_picturebox^>^>^ pictureBoxes);
-private: void highlight_possible_moves_PAWM(custom_picturebox^ selected_pb);
-private: void highlight_possible_moves_KNIGHT(custom_picturebox^ selected_pb);
-private: void highlight_possible_moves_BISHOP(custom_picturebox^ selected_pb);
-private: void highlight_possible_moves_ROOK(custom_picturebox^ selected_pb);
-private: void highlight_possible_moves_QUEEN(custom_picturebox^ selected_pb);
-private: void highlight_possible_moves_KING(custom_picturebox^ selected_pb);
+private: void player_turn(bool onMove, array<array<ChessPiece^>^>^ pictureBoxes, ChessPiece^ selected);
+private: void castle(ChessPiece^ king, ChessPiece^ king_dest, ChessPiece^ rook, ChessPiece^ rook_dest);
+private: void reset_pb(array<array<ChessPiece^>^>^ pictureBoxes);
+private: void highlight_possible_moves_PAWM(ChessPiece^ selected_pb);
+private: void highlight_possible_moves_KNIGHT(ChessPiece^ selected_pb);
+private: void highlight_possible_moves_BISHOP(ChessPiece^ selected_pb);
+private: void highlight_possible_moves_ROOK(ChessPiece^ selected_pb);
+private: void highlight_possible_moves_QUEEN(ChessPiece^ selected_pb);
+private: void highlight_possible_moves_KING(ChessPiece^ selected_pb);
 private: void reset_highlight_moves();
-private: void HandlePieceSelection(custom_picturebox^ selectedPictureBox);
-private: void HandlePieceUp(custom_picturebox^ selectedPictureBox, custom_picturebox^ targetPictureBox);
-private: void player_turnClick(); 
-
+private: void HandlePieceSelection(ChessPiece^ selectedPictureBox);
+private: void HandlePieceUp(ChessPiece^ selectedPictureBox, ChessPiece^ targetPictureBox);
+private: void player_turnClick();
 };
 }
