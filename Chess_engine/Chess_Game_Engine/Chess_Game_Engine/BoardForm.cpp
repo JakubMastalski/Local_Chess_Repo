@@ -1227,8 +1227,8 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 		   controlUnderCursor = selectedPictureBox->Parent->GetChildAtPoint(selectedPictureBox->Parent->PointToClient(Control::MousePosition));
 
 
-		targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
-		  
+		  targetPictureBox = dynamic_cast<custom_picturebox^>(controlUnderCursor);
+		 
 
 		   if (targetPictureBox == nullptr || selectedPictureBox == nullptr)
 		   {
@@ -1671,6 +1671,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 			if (check_targetpb != EMPTY && selected_pb->check_color(selected_pb) != check_targetpb && check_piece != KING) {
 				if (targetRow == 7 || targetRow == 0)
 				{
+					promotePawn = target_pb;
 					promote_panel->Visible = true;
 					promote_panel->Enabled = true;
 					promote_panel->BringToFront();
@@ -2125,8 +2126,6 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 				}
 			}
 		}
-
-		// Przywrócenie wygl¹du figur na planszy
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				pictureBoxes[i][j]->BringToFront();
@@ -2265,6 +2264,7 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
 						HandlePieceSelection(chosen_piece);
 						chosen_piece->Location = selectedPictureBox->Location;
 						targetPictureBox = selectedPictureBox;
+						promotePawn = targetPictureBox;
 						HandlePieceUp(chosen_piece, selectedPictureBox);
 
 						player_turnClick();
@@ -3156,15 +3156,15 @@ void BoardForm::setTimeToolStripMenuItem_Click(System::Object^ sender, System::E
    {
 	   if (!whiteonMove)
 	   {
-		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
-		   targetPictureBox->set_color(targetPictureBox, WHITE);
+		   promotePawn->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\white_queen.png";
+		   promotePawn->set_color(promotePawn, WHITE);
 	   }
 	   else
 	   {
-		   targetPictureBox->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
-		   targetPictureBox->set_color(targetPictureBox, BLACK);
+		   promotePawn->ImageLocation = "C:\\Users\\USER\\Desktop\\Local_Chess_Repo\\img\\black_queen.png";
+		   promotePawn->set_color(promotePawn, BLACK);
 	   }
-	   targetPictureBox->set_piece(targetPictureBox, QUEEN);
+	   promotePawn->set_piece(promotePawn, QUEEN);
 	   grid_panel->Enabled = true;
 	   promote_panel->Visible = false;
 	   promote_panel->Enabled = false;
